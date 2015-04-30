@@ -1,9 +1,10 @@
-package com.siakad.modul_penilaian;
+package com.siakad.modul_penilaian.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,24 +12,31 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.siakad.model.Mahasiswa;
+import com.sia.main.domain.Pd;
+import com.sia.main.domain.Pemb;
+import com.siakad.modul_penilaian.service.PdService;
+import com.siakad.modul_penilaian.service.PembService;
 
 @Controller
 public class ControllerNilai {
+	@Autowired
+	private PdService servicePd;
+	
+	@Autowired
+	private PembService servicePemb;
 	
 	@RequestMapping(value = {"/kelola_nilai/", "/lihat_nilai/"}, method = RequestMethod.GET)
 	public ModelAndView tampilkanDaftarKelas(Locale locale, Model model) {
-		List<String> kelas = generateKelas();
+		List<Pemb> kelas = servicePemb.getAllPembelajaran();
 		ModelAndView daftarKelas = new ModelAndView();
 		daftarKelas.setViewName("daftar_kelas");
 		daftarKelas.addObject("listKelas", kelas);
-		
 		return daftarKelas;
 	}
 
 	@RequestMapping(value = "/kelola_nilai/{namaKelas}", method = RequestMethod.GET)
 	public ModelAndView tampilkanKelolaNilai(@PathVariable String namaKelas, Locale locale, Model model) {
-		List<Mahasiswa> mhs = Mahasiswa.generateMahasiswa();
+		List<Pd> mhs = servicePd.getAll();
 		List<String> komp = generateKomponenNilai();
 		
 		ModelAndView kelolaNilai = new ModelAndView();
@@ -42,12 +50,12 @@ public class ControllerNilai {
 	
 	@RequestMapping(value = "/lihat_nilai/{namaKelas}", method = RequestMethod.GET)
 	public ModelAndView tampilkanLihatNilai(@PathVariable String namaKelas, Locale locale, Model model) {
-		List<Mahasiswa> mhs = Mahasiswa.generateMahasiswa();
+		//List<Mahasiswa> mhs = Mahasiswa.generateMahasiswa();
 		
 		ModelAndView lihatNilai = new ModelAndView();
 		lihatNilai.setViewName("lihat_nilai");
 		lihatNilai.addObject("namaKelas", namaKelas);
-		lihatNilai.addObject("listMhs", mhs);
+		//lihatNilai.addObject("listMhs", mhs);
 		
 		return lihatNilai;
 	}

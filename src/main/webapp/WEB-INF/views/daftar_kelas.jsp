@@ -45,7 +45,7 @@
 				<div class="col-md-8" class="content">
 					<div class="list-group">
 					<c:forEach var="kelas" items="${listKelas}">
-						<a href="${kelas}" class="list-group-item"><c:out value="${kelas}"></c:out></a>
+						<a href="${kelas}" class="list-group-item"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></a>
 					</c:forEach>
 					</div>
 				</div>

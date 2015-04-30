@@ -1,4 +1,4 @@
-package com.siakad.modul_penilaian;
+package com.siakad.modul_penilaian.controller;
 
 import java.util.Locale;
 

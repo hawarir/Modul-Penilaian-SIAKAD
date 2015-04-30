@@ -60,8 +60,8 @@
 								<tbody>
 									<c:forEach var="mhs" items="${listMhs}">
 										<tr>
-											<td><c:out value="${mhs.getNRP()}"></c:out></td>
-											<td><c:out value="${mhs.getNama()}"></c:out></td>
+											<td><c:out value="${mhs.getNimPd()}"></c:out></td>
+											<td><c:out value="${mhs.getNmPd()}"></c:out></td>
 											<c:forEach var="komponen" items="${listKomponen}">
 												<td><input type="text" class="form-control"/></td>
 											</c:forEach>
