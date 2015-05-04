@@ -54,10 +54,10 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="mhs" items="${listMhs}">
+								<c:forEach var="mhs" items="${krsInfo}">
 								<tr>
-									<td><c:out value="${mhs.getNRP()}"></c:out></td>
-									<td><c:out value="${mhs.getNama()}"></c:out></td>
+									<td><c:out value="${mhs.getPd().getNimPd()}"></c:out></td>
+									<td><c:out value="${mhs.getPd().getNmPd()}"></c:out></td>
 									<td>A</td>
 								</tr>
 								</c:forEach>

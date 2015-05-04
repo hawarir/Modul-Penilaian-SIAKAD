@@ -58,10 +58,10 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach var="mhs" items="${listMhs}">
+									<c:forEach var="mhs" items="${krsInfo}">
 										<tr>
-											<td><c:out value="${mhs.getNimPd()}"></c:out></td>
-											<td><c:out value="${mhs.getNmPd()}"></c:out></td>
+											<td><c:out value="${mhs.getPd().getNimPd()}"></c:out></td>
+											<td><c:out value="${mhs.getPd().getNmPd()}"></c:out></td>
 											<c:forEach var="komponen" items="${listKomponen}">
 												<td><input type="text" class="form-control"/></td>
 											</c:forEach>

@@ -31,6 +31,7 @@ public class PdRepositoryImpl implements PdRepository {
 	}
 
 	@Override
+	@Transactional
 	public Pd getById(UUID idPd) {
 		// TODO Auto-generated method stub
 		return (Pd) sessionFactory.getCurrentSession().get(Pd.class, idPd);

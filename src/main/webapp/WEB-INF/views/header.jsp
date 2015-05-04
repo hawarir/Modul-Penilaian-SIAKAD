@@ -20,32 +20,22 @@
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<li class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Pembelajaran <b class="caret">
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Penilaian <b class="caret">
 				</b>
 				</a>
 					<ul class="dropdown-menu" role="menu">
 						<li class="dropdown-submenu">
-							<a href="#">Kelola Kalender Akademik</a>
+							<a href="#">Nilai Per Kelas</a>
 							<ul class="dropdown-menu">
-								<li><a href="#">Kelola Tahun Ajaran</a></li>
-								<li><a href="#">Kelola Peride</a></li>
-								<li><a href="#">Kelola Tanggal Penting</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/kelola_nilai/">Kelola Nilai</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/lihat_nilai/">Lihat Nilai</a></li>
 							</ul>
 						</li>
 						<li>
-							<a href="#">Kelola Pembelajaran</a>
+							<a href="${pageContext.servletContext.contextPath}/lihat_ip/">Indeks Prestasi</a>
 						</li>
 						<li>
-							<a href="#">Perwalian</a>
-						</li>
-						<li>
-							<a href="#">Rombongan Belajar</a>
-						</li>
-						<li>
-							<a href="#">KRS</a>
-						</li>
-						<li>
-							<a href="#">Absensi</a>
+							<a href="${pageContext.servletContext.contextPath}/kuisioner/">Kuisioner Dosen</a>
 						</li>
 					</ul>
 				</li>	

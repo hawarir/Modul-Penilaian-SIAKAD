@@ -6,5 +6,5 @@ import com.sia.main.domain.Pemb;
 
 public interface PembRepository {
 	public List<Pemb> get(String where, String order, int limit, int offset);
-	public List<Pemb> leftOuterJoin();
+	public List<Pemb> leftJoinMk();
 }

@@ -31,7 +31,7 @@ public class PembRepositoryImpl implements PembRepository {
 	
 	@Override
 	@Transactional
-	public List<Pemb> leftOuterJoin() {
+	public List<Pemb> leftJoinMk() {
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT pemb FROM Pemb as pemb LEFT JOIN pemb.mk");
 		return query.list();
 	}
