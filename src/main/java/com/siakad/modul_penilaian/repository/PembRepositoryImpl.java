@@ -1,6 +1,7 @@
 package com.siakad.modul_penilaian.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -27,6 +28,13 @@ public class PembRepositoryImpl implements PembRepository {
 			dbOrder += " ORDER BY " + order;
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM Pemb" + dbWhere + dbOrder);
 		return query.list();
+	}
+	
+	@Override
+	@Transactional
+	public Pemb getById(UUID idPemb) {
+		// TODO Auto-generated method stub
+		return (Pemb) sessionFactory.getCurrentSession().get(Pemb.class, idPemb);
 	}
 	
 	@Override

@@ -17,13 +17,13 @@ public class KomponenNilaiServiceImpl implements KomponenNilaiService {
 	@Override
 	public List<KomponenNilai> getAllKomponen(UUID idPemb) {
 		// TODO Auto-generated method stub
-		return repositoryKompNilai.get("id_pemb='" + idPemb + "'", "", -1, -1);
+		return repositoryKompNilai.get("id_pemb='" + idPemb + "' AND a_komp_aktif=TRUE", "", -1, -1);
 	}
 
 	@Override
-	public void tambahKomponen(KomponenNilai komp) {
+	public UUID tambahKomponen(KomponenNilai komp) {
 		// TODO Auto-generated method stub
-
+		return repositoryKompNilai.insert(komp);
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class KomponenNilaiServiceImpl implements KomponenNilaiService {
 	@Override
 	public void hapusKomponen(UUID idKomp) {
 		// TODO Auto-generated method stub
-
+		repositoryKompNilai.delete(idKomp);
 	}
 
 }

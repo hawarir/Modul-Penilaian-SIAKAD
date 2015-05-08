@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/site.min.css">
 	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/sia.css">
 	<script type="text/javascript" src="${pageContext.servletContext.contextPath}/resources/js/site.min.js"></script>
+	<script type="text/javascript" src="${pageContext.servletContext.contextPath}/resources/js/jquery-1.8.3.min.js"></script>
 	<!--[if lt IE 9]>
 	<script src="assets/js/html5shiv.js">
 	</script>
@@ -24,9 +25,8 @@
 <body style="background:url(${pageContext.servletContext.contextPath}/resources/img/wild_flowers.png) repeat 0 0">
 	<div class="container">
 		<div class="wrapper">
-			<%@include file="header.jsp" %>
+			<%@include file="header.jsp" %>		
 			
-			<!-- content -->
 			<div class="row">
 				<div class="container">
 					<div class="col-md-12" style="margin-bottom:10px;">
@@ -42,51 +42,166 @@
 					</div>
 				</div>
 			</div>
-			<form action="#">
-				<div class="row">
-					<div class="container">
-						<div class="col-md-2"></div>
-						<div class="col-md-8" class="content">						
-							<table class="table">
-								<thead>
-									<tr>
-										<th>NRP</th>
-										<th>Nama Mahasiswa</th>
-										<c:forEach var="komponen" items="${listKomponen}">
-											<th style="width:10%"><c:out value="${komponen}"></c:out></th>
-										</c:forEach>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="mhs" items="${krsInfo}">
-										<tr>
-											<td><c:out value="${mhs.getPd().getNimPd()}"></c:out></td>
-											<td><c:out value="${mhs.getPd().getNmPd()}"></c:out></td>
-											<c:forEach var="komponen" items="${listKomponen}">
-												<td><input type="text" class="form-control"/></td>
+			
+			<!-- content -->
+			<div class="row">
+				<div class="container">
+					<form action="simpan/">
+						<div class="row">
+							<div class="container">
+								<div class="col-md-12" class="content">						
+									<table class="table">
+										<thead>
+											<tr>
+												<th>NRP</th>
+												<th>Nama Mahasiswa</th>
+												<c:forEach var="komponen" items="${listKomponen}">
+													<th style="width:10%"><c:out value="${komponen.getNamaKomponen()}"></c:out></th>
+												</c:forEach>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="krs" items="${krsInfo}">
+												<tr>
+													<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
+													<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
+													<c:forEach var="komponen" items="${listKomponen}">
+														<!-- Untuk setiap kotak nilai IDnya idKrs&idKomponen -->
+														<td><input type="text" class="form-control" id="${krs.getIdKrs()}&${komponen.getIdKomponen()}"/></td>
+													</c:forEach>
+												</tr>
 											</c:forEach>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
+										</tbody>
+									</table>
+								</div>
+							</div>
 						</div>
-						<div class="col-md-2"></div>
-					</div>
+						<div class="row">
+							<div class="container">
+								<div class="col-md-12">
+									<div class="pull-right">
+										<input type="submit" class="btn btn-primary" value="Simpan"/>
+										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalKomponen">Atur Komponen</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
 				</div>
-				<div class="row">
-					<div class="container">
-						<div class="col-md-2">
-						</div>
-						<div class="col-md-8">
-							<input type="submit" class="btn btn-primary" value="Simpan"/>
-							<button type="button" class="btn">Tambah Komponen</button>
-						</div>
-						<div class="col-md-2">
-						</div>
-					</div>
-				</div>
-			</form>
+			</div>
 			<!-- end of content -->
+			<!-- modal -->
+			<div class="modal fade" id="modalKomponen" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title" id="modalTitle">Atur Komponen Nilai</h4>
+						</div>
+						<div class="modal-body">
+							<p>Silahkan atur nama komponen penilaian dan persentase setiap komponen di bawah. 
+							Total persentase komponen tidak boleh melebihi 100%.</p>
+							<div class="row">
+								<div class="col-md-12">
+									<form action="" id="formKomponen">
+										<table class="table" id="tabelKomponen">
+											<thead>
+												<tr>
+													<th>Nama Komponen</th>
+													<th>Persentase Komponen</th>
+													<th>Action</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach var="komp" items="${listKomponen }">
+												<tr id="modal-${komp.getIdKomponen()}">													
+													<td><input type="text" class="form-control" value="<c:out value="${komp.getNamaKomponen()}"></c:out>"/></td>
+													<td><input type="text" class="form-control" value="<c:out value="${komp.getPersentaseKomponen()}"></c:out>"/></td>
+													<td><button type="button" class="btn btn-danger tombolHapusKomponen" name="${komp.getIdKomponen()}"><i class="glyphicon glyphicon-minus"></i></button></td>
+												</tr>
+												</c:forEach>
+												<tr id="newRowKomponen">
+													<td><input type="text" class="form-control" id="namaKomponenNew"/></td>
+													<td><input type="text" class="form-control" id="persentaseKomponenNew"/></td>
+													<td><button type="button" class="btn btn-success" id="tombolTambahKomponen"><i class="glyphicon glyphicon-plus"></i></button></td>
+												</tr>
+											</tbody>
+										</table>
+										<button type="submit" class="btn btn-primary pull-right" id="tombolSimpanKomponen">Simpan</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end of modal -->
+			<!-- script ajax tambah komponen -->
+			<script>
+				$(document).ready(function() {
+					$("#tombolTambahKomponen").click(function() {
+						if($("#namaKomponenNew").val() != "" && $("#persentaseKomponenNew").val() != "") {
+							var namaKomp = $("#namaKomponenNew").val();
+							var persenKomp = $("#persentaseKomponenNew").val();
+							
+							var komp = {
+									"idKomponen" : null,
+									"namaKomponen" : namaKomp,
+									"persentaseKomponen" : persenKomp,
+									"aKompAktif" : true,
+									"pemb" : null
+							};
+							
+							$.ajax({
+								url : "tambah_komponen/",
+								type : "POST",
+								contentType: "application/json",
+								data : JSON.stringify(komp),
+								success : function(data) {
+									if(data.status == "ok") {
+										$("#newRowKomponen").before('<tr>'
+											+ '<td><input type="text" class="form-control" value="' + namaKomp + '"/></td>'
+											+ '<td><input type="text" class="form-control" value="' + persenKomp +'"/></td>'
+											+ '<td><button type="button" class="btn btn-danger tombolKurangKomponen" name="'+ data.data +'"><i class="glyphicon glyphicon-minus"></i></button></td>'
+											+ '<tr>'
+										);
+										$("#namaKomponenNew").val("");
+										$("#persentaseKomponenNew").val("");
+										alert(data.message);
+									}
+									else
+										alert("Komponen gagal ditambahkan");
+								}
+							});
+						}
+					});
+				});
+			</script>
+			<!-- end of script ajax tambah komponen -->
+			
+			<!-- script ajax hapus komponen -->
+			<script>
+				$(document).ready(function() {
+					$(".tombolHapusKomponen").click(function() {
+						var idKomponen = $(this).attr('name');
+						$.ajax({
+							url : "hapus_komponen/",
+							type : "POST",
+							contentType : "application/json",
+							data : JSON.stringify(idKomponen),
+							success : function(data) {
+								$("#modal-" + idKomponen).closest("tr").remove();
+								console.log($(this));
+								alert("Komponen berhasil dihapus");
+							}
+						});
+					});
+				});
+			</script>
+			<!-- end of script ajax hapus komponen -->
+			
 			<%@include file="footer.jsp" %>
 		</div>
 	</div>	
