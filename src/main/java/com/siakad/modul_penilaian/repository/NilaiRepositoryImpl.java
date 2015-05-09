@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sia.main.domain.Nilai;
 
@@ -18,10 +19,12 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 	private SessionFactory sessionFactory;
 	
 	@Override
+	@Transactional
 	public void insertBulkNilai(List<Nilai> listNilai) {
 		// TODO Auto-generated method stub
 		for (Nilai nilai : listNilai) {
-			if(isExist(nilai.getKrs().getIdKrs(), nilai.getKomponenNilai().getIdKomponen())) {
+			nilai = getId(nilai);
+			if(nilai.getIdNilai() != null) {
 				updateNilai(nilai);
 			}
 			else {
@@ -54,15 +57,18 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 	}
 
 	@Override
-	public boolean isExist(UUID idKrs, UUID idKomponen) {
+	@Transactional
+	public Nilai getId(Nilai nilai) {
 		// TODO Auto-generated method stub
-		Query query = sessionFactory.getCurrentSession().createQuery("FROM Nilai WHERE id_krs = :idKrs AND id_komponen = :idKomponen");
-		query.setParameter("idKrs", idKrs);
-		query.setParameter("idKomponen", idKomponen);
+		Query query = sessionFactory.getCurrentSession().createQuery("FROM Nilai WHERE id_krs = '" + nilai.getKrs().getIdKrs() 
+				+ "' AND id_komponen = '" + nilai.getKomponenNilai().getIdKomponen() + "'");
 		if(query.list().isEmpty())
-			return false;
-		else
-			return true;
+			return nilai;
+		else {
+			Nilai existingNilai = (Nilai) query.list().get(0);
+			existingNilai.setNilai(nilai.getNilai());
+			return existingNilai;
+		}
 	}
 
 }

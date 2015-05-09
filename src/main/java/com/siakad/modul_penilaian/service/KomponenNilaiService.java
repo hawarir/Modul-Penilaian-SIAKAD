@@ -10,4 +10,5 @@ public interface KomponenNilaiService {
 	public UUID tambahKomponen(KomponenNilai komp);
 	public void editKomponen(UUID idKomp, String nama, double presentase);
 	public void hapusKomponen(UUID idKomp);
+	public KomponenNilai getById(UUID idKomp);
 }

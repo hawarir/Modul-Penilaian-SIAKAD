@@ -46,11 +46,11 @@
 			<!-- content -->
 			<div class="row">
 				<div class="container">
-					<form action="simpan/">
+					<form action="">
 						<div class="row">
 							<div class="container">
 								<div class="col-md-12" class="content">						
-									<table class="table">
+									<table class="table" id="tabelNilai">
 										<thead>
 											<tr>
 												<th>NRP</th>
@@ -62,12 +62,11 @@
 										</thead>
 										<tbody>
 											<c:forEach var="krs" items="${krsInfo}">
-												<tr>
+												<tr class="mahasiswa" name="${krs.getIdKrs()}">
 													<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
 													<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
 													<c:forEach var="komponen" items="${listKomponen}">
-														<!-- Untuk setiap kotak nilai IDnya idKrs&idKomponen -->
-														<td><input type="text" class="form-control" id="${krs.getIdKrs()}&${komponen.getIdKomponen()}"/></td>
+														<td class="komponen-nilai" name="${komponen.getIdKomponen()}"><input type="text" class="form-control"/></td>
 													</c:forEach>
 												</tr>
 											</c:forEach>
@@ -80,7 +79,7 @@
 							<div class="container">
 								<div class="col-md-12">
 									<div class="pull-right">
-										<input type="submit" class="btn btn-primary" value="Simpan"/>
+										<button type="submit" class="btn btn-primary" id="tombolSimpanNilai">Simpan</button>
 										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalKomponen">Atur Komponen</button>
 									</div>
 								</div>
@@ -90,6 +89,7 @@
 				</div>
 			</div>
 			<!-- end of content -->
+			
 			<!-- modal -->
 			<div class="modal fade" id="modalKomponen" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
 				<div class="modal-dialog">
@@ -103,7 +103,7 @@
 							Total persentase komponen tidak boleh melebihi 100%.</p>
 							<div class="row">
 								<div class="col-md-12">
-									<form action="" id="formKomponen">
+									<form id="formKomponen">
 										<table class="table" id="tabelKomponen">
 											<thead>
 												<tr>
@@ -127,7 +127,7 @@
 												</tr>
 											</tbody>
 										</table>
-										<button type="submit" class="btn btn-primary pull-right" id="tombolSimpanKomponen">Simpan</button>
+										<button class="btn btn-primary pull-right" id="tombolSimpanKomponen">Simpan</button>
 									</form>
 								</div>
 							</div>
@@ -138,6 +138,7 @@
 				</div>
 			</div>
 			<!-- end of modal -->
+			
 			<!-- script ajax tambah komponen -->
 			<script>
 				$(document).ready(function() {
@@ -201,6 +202,44 @@
 				});
 			</script>
 			<!-- end of script ajax hapus komponen -->
+			
+			<!-- script submit nilai -->
+			<script>
+				$(document).ready(function() {
+					$("#tombolSimpanNilai").click(function() {
+						var listNilai = new Array();
+						$("tr.mahasiswa").each(function(index, element) {
+							var idKrs = $(element).attr("name");
+							var komponens = $(element).find("td.komponen-nilai");
+							
+							$(komponens).each(function(index, element) {
+								var idKomp = $(element).attr("name");
+								var nilai = $(element).find("input").val();
+								
+								var objNilai = {
+										"idKrs" : idKrs,
+										"idKomp" : idKomp,
+										"nilai" : nilai
+								};
+								
+								listNilai.push(objNilai);
+							});
+						});
+						
+						$.ajax({
+							url : "simpan_nilai/",
+							type : "POST",
+							contentType : "application/json",
+							data : JSON.stringify(listNilai),
+							success : function(data) {
+								if(data.status == "ok") {
+									alert("Nilai berhasil disimpan");
+								}
+							}
+						});
+					});
+				});
+			</script>
 			
 			<%@include file="footer.jsp" %>
 		</div>

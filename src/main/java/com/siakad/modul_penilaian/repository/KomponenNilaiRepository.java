@@ -12,4 +12,5 @@ public interface KomponenNilaiRepository {
 	public void update(KomponenNilai komp);
 	public void delete(UUID idKomp);
 	public double totalPresentase(UUID idPemb);
+	public KomponenNilai getById(UUID idKomp);
 }

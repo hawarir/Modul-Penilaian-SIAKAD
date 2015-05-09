@@ -90,4 +90,11 @@ public class KomponenNilaiRepositoryImpl implements KomponenNilaiRepository {
 		return 0;
 	}
 
+	@Override
+	@Transactional
+	public KomponenNilai getById(UUID idKomp) {
+		// TODO Auto-generated method stub
+		return (KomponenNilai) sessionFactory.getCurrentSession().get(KomponenNilai.class, idKomp);
+	}
+
 }

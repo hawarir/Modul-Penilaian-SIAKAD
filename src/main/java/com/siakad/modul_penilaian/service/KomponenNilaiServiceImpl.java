@@ -38,4 +38,10 @@ public class KomponenNilaiServiceImpl implements KomponenNilaiService {
 		repositoryKompNilai.delete(idKomp);
 	}
 
+	@Override
+	public KomponenNilai getById(UUID idKomp) {
+		// TODO Auto-generated method stub
+		return repositoryKompNilai.getById(idKomp);
+	}
+
 }

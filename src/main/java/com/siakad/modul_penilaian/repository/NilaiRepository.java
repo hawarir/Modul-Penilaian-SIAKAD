@@ -9,5 +9,5 @@ public interface NilaiRepository {
 	public void insertBulkNilai(List<Nilai> listNilai);
 	public UUID insertNilai(Nilai nilai);
 	public void updateNilai(Nilai nilai);
-	public boolean isExist(UUID idKrs, UUID idKomponen);
+	public Nilai getId(Nilai nilai);
 }

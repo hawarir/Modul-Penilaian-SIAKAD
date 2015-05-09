@@ -25,5 +25,11 @@ public class KrsServiceImpl implements KrsService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public Krs getById(UUID idKrs) {
+		// TODO Auto-generated method stub
+		return repositoryKrs.getById(idKrs);
+	}
 	
 }

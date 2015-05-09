@@ -1,6 +1,7 @@
 package com.siakad.modul_penilaian.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -42,6 +43,13 @@ public class KrsRepositoryImpl implements KrsRepository{
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs as krs LEFT JOIN krs.pd" + dbWhere + dbOrder);
 		//System.out.println(query.toString());
 		return query.list();
+	}
+
+	@Override
+	@Transactional
+	public Krs getById(UUID idKrs) {
+		// TODO Auto-generated method stub
+		return (Krs) sessionFactory.getCurrentSession().get(Krs.class, idKrs);
 	}
 	
 }
