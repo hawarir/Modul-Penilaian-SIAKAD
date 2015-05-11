@@ -10,4 +10,5 @@ public interface NilaiRepository {
 	public UUID insertNilai(Nilai nilai);
 	public void updateNilai(Nilai nilai);
 	public Nilai getId(Nilai nilai);
+	public List<Nilai> getByKrs(List<UUID> listIdKrs);
 }

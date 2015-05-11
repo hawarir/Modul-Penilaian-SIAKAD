@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -46,7 +47,7 @@
 			<!-- content -->
 			<div class="row">
 				<div class="container">
-					<form action="">
+					<form action="simpan_nilai/">
 						<div class="row">
 							<div class="container">
 								<div class="col-md-12" class="content">						
@@ -58,6 +59,7 @@
 												<c:forEach var="komponen" items="${listKomponen}">
 													<th style="width:10%"><c:out value="${komponen.getNamaKomponen()}"></c:out></th>
 												</c:forEach>
+												<th>Nilai Akhir</th>
 											</tr>
 										</thead>
 										<tbody>
@@ -66,8 +68,16 @@
 													<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
 													<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
 													<c:forEach var="komponen" items="${listKomponen}">
-														<td class="komponen-nilai" name="${komponen.getIdKomponen()}"><input type="text" class="form-control"/></td>
+														<td class="komponen-nilai" name="${komponen.getIdKomponen()}">
+															<c:forEach var="nilai" items="${listNilai}">
+																<c:if test="${nilai.getKrs().getIdKrs() == krs.getIdKrs() && nilai.getKomponenNilai().getIdKomponen() ==  komponen.getIdKomponen()}">
+																	<c:set var="resultNilai" value="${nilai.getNilai()}" scope="page"></c:set>
+																</c:if>
+															</c:forEach>
+															<input type="text" class="form-control" value='${resultNilai}' />															
+														</td>
 													</c:forEach>
+													<td><input type="text" class="form-control" value='' disabled/></td>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -79,7 +89,7 @@
 							<div class="container">
 								<div class="col-md-12">
 									<div class="pull-right">
-										<button type="submit" class="btn btn-primary" id="tombolSimpanNilai">Simpan</button>
+										<button type="button" class="btn btn-primary" id="tombolSimpanNilai">Simpan</button>
 										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalKomponen">Atur Komponen</button>
 									</div>
 								</div>
@@ -240,6 +250,7 @@
 					});
 				});
 			</script>
+			<!-- end of script submit nilai -->
 			
 			<%@include file="footer.jsp" %>
 		</div>

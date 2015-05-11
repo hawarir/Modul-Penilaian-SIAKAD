@@ -53,11 +53,13 @@ public class ControllerNilai {
 	public ModelAndView tampilkanKelolaNilai(@PathVariable UUID idPemb, Locale locale, Model model) {
 		List<Krs> krsInfo = serviceKrs.getPesertaKelas(idPemb);
 		List<KomponenNilai> komp = serviceKomp.getAllKomponen(idPemb);
+		List<Nilai> listNilai = serviceNilai.getNilaiKelas(krsInfo);
 		
 		ModelAndView kelolaNilai = new ModelAndView();
 		kelolaNilai.setViewName("kelola_nilai");
 		kelolaNilai.addObject("krsInfo", krsInfo);
 		kelolaNilai.addObject("listKomponen", komp);
+		kelolaNilai.addObject("listNilai", listNilai);
 		
 		return kelolaNilai;
 	}

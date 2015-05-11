@@ -1,5 +1,6 @@
 package com.siakad.modul_penilaian.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,6 +70,19 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 			existingNilai.setNilai(nilai.getNilai());
 			return existingNilai;
 		}
+	}
+
+	@Override
+	@Transactional
+	public List<Nilai> getByKrs(List<UUID> listIdKrs) {
+		// TODO Auto-generated method stub
+		List<Nilai> listNilai = new ArrayList<Nilai>();
+		for (UUID idKrs : listIdKrs) {
+			Query query = sessionFactory.getCurrentSession().createQuery("FROM Nilai WHERE id_krs = '" + idKrs + "'");
+			listNilai.addAll(query.list());
+		}
+		
+		return listNilai;
 	}
 
 }
