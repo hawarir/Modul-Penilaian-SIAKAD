@@ -25,7 +25,7 @@
 	<div class="container">
 		<div class="wrapper">
 			<%@include file="header.jsp" %>
-			<!-- content -->
+			<!-- breadcrumb -->
 			<div class="row">
 				<div class="container">
 					<div class="col-md-12" style="margin-bottom:10px;">
@@ -40,16 +40,19 @@
 					</div>
 				</div>
 			</div>
+			<!-- end of breadcrumb -->
+			
+			<!-- content -->
 			<div class="row">
-				<div class="col-md-2"></div>
-				<div class="col-md-8" class="content">
-					<div class="list-group">
-					<c:forEach var="kelas" items="${listKelas}">
-						<a href="${kelas.getIdPemb()}/" class="list-group-item"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></a>
-					</c:forEach>
+				<div class="container">
+					<div class="col-md-6 col-md-offset-3" class="content">
+						<div class="list-group">
+						<c:forEach var="kelas" items="${listKelas}">
+							<a href="${kelas.getIdPemb()}/" class="list-group-item"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></a>
+						</c:forEach>
+						</div>
 					</div>
 				</div>
-				<div class="col-md-2"></div>
 			</div>
 			<!-- end of content -->
 			<%@include file="footer.jsp" %>
