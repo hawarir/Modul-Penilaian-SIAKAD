@@ -21,15 +21,15 @@ public class KrsServiceImpl implements KrsService {
 	}
 
 	@Override
-	public List<Krs> getNilaiPesertaDidik(UUID idPd) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public Krs getById(UUID idKrs) {
 		// TODO Auto-generated method stub
 		return repositoryKrs.getById(idKrs);
+	}
+
+	@Override
+	public void updateNilaiAkhir(Krs krs) {
+		// TODO Auto-generated method stub
+		repositoryKrs.update(krs);
 	}
 	
 }

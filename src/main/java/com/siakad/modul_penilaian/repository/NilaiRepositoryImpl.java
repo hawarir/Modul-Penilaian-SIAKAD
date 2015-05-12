@@ -85,4 +85,18 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 		return listNilai;
 	}
 
+	@Override
+	@Transactional
+	public double getNilaiAkhir(UUID idKrs) {
+		// TODO Auto-generated method stub
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT nilai FROM Nilai as nilai LEFT JOIN nilai.komponenNilai WHERE id_krs='" + idKrs + "' AND a_komp_aktif = TRUE");
+		List<Nilai> listNilai = query.list();
+		double result = 0;
+		for (Nilai nilai : listNilai) {
+			result += (nilai.getNilai()*nilai.getKomponenNilai().getPersentaseKomponen())/100;
+		}
+		//System.out.println(idKrs + ": " + result);
+		return result;
+	}
+
 }

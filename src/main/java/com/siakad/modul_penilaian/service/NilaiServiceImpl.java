@@ -32,4 +32,10 @@ public class NilaiServiceImpl implements NilaiService {
 		return repositoryNilai.getByKrs(listIdKrs);
 	}
 
+	@Override
+	public double getNilaiAkhir(Krs krs) {
+		// TODO Auto-generated method stub
+		return repositoryNilai.getNilaiAkhir(krs.getIdKrs());
+	}
+
 }

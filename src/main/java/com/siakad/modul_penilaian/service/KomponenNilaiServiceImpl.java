@@ -27,9 +27,11 @@ public class KomponenNilaiServiceImpl implements KomponenNilaiService {
 	}
 
 	@Override
-	public void editKomponen(UUID idKomp, String nama, double presentase) {
+	public void simpanKomponen(List<KomponenNilai> listKomponen) {
 		// TODO Auto-generated method stub
-
+		for (KomponenNilai komponen : listKomponen) {
+			repositoryKompNilai.update(komponen);
+		}
 	}
 
 	@Override

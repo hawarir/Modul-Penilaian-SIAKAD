@@ -8,4 +8,5 @@ import com.sia.main.domain.Nilai;
 public interface NilaiService {
 	public void submitNilai(List<Nilai> listNilai);
 	public List<Nilai> getNilaiKelas(List<Krs> listKrs);
+	public double getNilaiAkhir(Krs krs);
 }

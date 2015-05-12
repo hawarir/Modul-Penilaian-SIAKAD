@@ -10,8 +10,10 @@
 	<link rel="bookmark" href="${pageContext.servletContext.contextPath}/resources/favicon_16.ico">
 	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/site.min.css">
 	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/sia.css">
+	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/gritter/css/jquery.gritter.css">
 	<script type="text/javascript" src="${pageContext.servletContext.contextPath}/resources/js/site.min.js"></script>
 	<script type="text/javascript" src="${pageContext.servletContext.contextPath}/resources/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="${pageContext.servletContext.contextPath}/resources/gritter/js/jquery.gritter.js"></script>
 	<!--[if lt IE 9]>
 	<script src="assets/js/html5shiv.js">
 	</script>
@@ -69,6 +71,7 @@
 													<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
 													<c:forEach var="komponen" items="${listKomponen}">
 														<td class="komponen-nilai" name="${komponen.getIdKomponen()}">
+															<c:set var="resultNilai" value="0" scope="page"></c:set>
 															<c:forEach var="nilai" items="${listNilai}">
 																<c:if test="${nilai.getKrs().getIdKrs() == krs.getIdKrs() && nilai.getKomponenNilai().getIdKomponen() ==  komponen.getIdKomponen()}">
 																	<c:set var="resultNilai" value="${nilai.getNilai()}" scope="page"></c:set>
@@ -124,9 +127,9 @@
 											</thead>
 											<tbody>
 												<c:forEach var="komp" items="${listKomponen }">
-												<tr id="modal-${komp.getIdKomponen()}">													
-													<td><input type="text" class="form-control" value="<c:out value="${komp.getNamaKomponen()}"></c:out>"/></td>
-													<td><input type="text" class="form-control" value="<c:out value="${komp.getPersentaseKomponen()}"></c:out>"/></td>
+												<tr class="komponen-modal" id="modal-${komp.getIdKomponen()}">													
+													<td><input type="text" class="form-control nama-komponen" value="<c:out value="${komp.getNamaKomponen()}"></c:out>"/></td>
+													<td><input type="text" class="form-control persentase-komponen" value="<c:out value="${komp.getPersentaseKomponen()}"></c:out>"/></td>
 													<td><button type="button" class="btn btn-danger tombolHapusKomponen" name="${komp.getIdKomponen()}"><i class="glyphicon glyphicon-minus"></i></button></td>
 												</tr>
 												</c:forEach>
@@ -137,7 +140,7 @@
 												</tr>
 											</tbody>
 										</table>
-										<button class="btn btn-primary pull-right" id="tombolSimpanKomponen">Simpan</button>
+										<button type="button" class="btn btn-primary pull-right" id="tombolSimpanKomponen">Simpan</button>
 									</form>
 								</div>
 							</div>
@@ -149,52 +152,66 @@
 			</div>
 			<!-- end of modal -->
 			
-			<!-- script ajax tambah komponen -->
+			<!-- script ajax-->
 			<script>
+				//script tambah komponen
 				$(document).ready(function() {
 					$("#tombolTambahKomponen").click(function() {
 						if($("#namaKomponenNew").val() != "" && $("#persentaseKomponenNew").val() != "") {
 							var namaKomp = $("#namaKomponenNew").val();
 							var persenKomp = $("#persentaseKomponenNew").val();
+							var totalPersen = 0.0;
 							
-							var komp = {
-									"idKomponen" : null,
-									"namaKomponen" : namaKomp,
-									"persentaseKomponen" : persenKomp,
-									"aKompAktif" : true,
-									"pemb" : null
-							};
-							
-							$.ajax({
-								url : "tambah_komponen/",
-								type : "POST",
-								contentType: "application/json",
-								data : JSON.stringify(komp),
-								success : function(data) {
-									if(data.status == "ok") {
-										$("#newRowKomponen").before('<tr>'
-											+ '<td><input type="text" class="form-control" value="' + namaKomp + '"/></td>'
-											+ '<td><input type="text" class="form-control" value="' + persenKomp +'"/></td>'
-											+ '<td><button type="button" class="btn btn-danger tombolKurangKomponen" name="'+ data.data +'"><i class="glyphicon glyphicon-minus"></i></button></td>'
-											+ '<tr>'
-										);
-										$("#namaKomponenNew").val("");
-										$("#persentaseKomponenNew").val("");
-										alert(data.message);
-									}
-									else
-										alert("Komponen gagal ditambahkan");
-								}
+							$("input.persentase-komponen").each(function(index, element) {
+								totalPersen += parseFloat($(element).val());
 							});
+							
+							if(parseFloat(totalPersen + parseFloat(persenKomp)) > 100.0) {
+								$.gritter.add({
+									title : 'Notifikasi',
+									text : 'Total persentase tidak boleh di atas 100',
+									sticky : true
+								});
+							}
+							else {
+								var komp = {
+										"idKomponen" : null,
+										"namaKomponen" : namaKomp,
+										"persentaseKomponen" : persenKomp,
+										"aKompAktif" : true,
+										"pemb" : null
+								};
+								
+								$.ajax({
+									url : "tambah_komponen/",
+									type : "POST",
+									contentType: "application/json",
+									data : JSON.stringify(komp),
+									success : function(data) {
+										if(data.status == "ok") {
+											$("#newRowKomponen").before('<tr>'
+												+ '<td><input type="text" class="form-control nama-komponen" value="' + namaKomp + '"/></td>'
+												+ '<td><input type="text" class="form-control persentase-komponen" value="' + persenKomp +'"/></td>'
+												+ '<td><button type="button" class="btn btn-danger tombolKurangKomponen" name="'+ data.data +'"><i class="glyphicon glyphicon-minus"></i></button></td>'
+												+ '<tr>'
+											);
+											$.gritter.add({
+												title : 'Notifikasi',
+												text : data.message,
+												sticky : false,
+												time : 200
+											});
+										}
+									}
+								});
+							}
+							
+							$("#namaKomponenNew").val("");
+							$("#persentaseKomponenNew").val("");
 						}
 					});
-				});
-			</script>
-			<!-- end of script ajax tambah komponen -->
-			
-			<!-- script ajax hapus komponen -->
-			<script>
-				$(document).ready(function() {
+					
+					//hapus komponen
 					$(".tombolHapusKomponen").click(function() {
 						var idKomponen = $(this).attr('name');
 						$.ajax({
@@ -205,17 +222,69 @@
 							success : function(data) {
 								$("#modal-" + idKomponen).closest("tr").remove();
 								console.log($(this));
-								alert("Komponen berhasil dihapus");
+								$.gritter.add({
+									title : 'Notifikasi',
+									text : data.message,
+									sticky : false,
+									time : 200
+								});
 							}
 						});
 					});
-				});
-			</script>
-			<!-- end of script ajax hapus komponen -->
-			
-			<!-- script submit nilai -->
-			<script>
-				$(document).ready(function() {
+					
+					//simpan komponen
+					$("#tombolSimpanKomponen").click(function() {
+						var totalPersen = 0.0;
+						$("input.persentase-komponen").each(function(index, element) {
+							totalPersen += parseFloat($(element).val());
+						});
+						
+						if(totalPersen > 100) {
+							$.gritter.add({
+								title : 'Notifikasi',
+								text : 'Total persentase tidak boleh di atas 100',
+								sticky : true
+							});
+						}
+						else {
+							var listKomponen = new Array();
+							$("tr.komponen-modal").each(function(index, element) {
+								var idKomponen = $(element).find("button").attr("name");
+								var namaKomponen = $(element).find("input.nama-komponen").val();
+								var persentaseKomponen = $(element).find("input.persentase-komponen").val();
+								
+								var komponen = {
+										"idKomponen" : idKomponen,
+										"namaKomponen" : namaKomponen,
+										"persentaseKomponen" : persentaseKomponen,
+										"aKompAktif" : true,
+										"pemb" : null
+								};
+								
+								listKomponen.push(komponen);
+							});
+							
+							$.ajax({
+								url : "simpan_komponen/",
+								type : "POST",
+								contentType : "application/json",
+								data : JSON.stringify(listKomponen),
+								success : function(data) {
+									if(data.status == "ok") {
+										$.gritter.add({
+											title : 'Notifikasi',
+											text : data.message,
+											sticky : false,
+											time : 200
+										});
+										location.reload();
+									}
+								}
+							});
+						}
+					});
+					
+					//submit nilai
 					$("#tombolSimpanNilai").click(function() {
 						var listNilai = new Array();
 						$("tr.mahasiswa").each(function(index, element) {
@@ -243,14 +312,19 @@
 							data : JSON.stringify(listNilai),
 							success : function(data) {
 								if(data.status == "ok") {
-									alert("Nilai berhasil disimpan");
+									$.gritter.add({
+										title : 'Notifikasi',
+										text : data.message,
+										sticky : false,
+										time : 200
+									});
 								}
 							}
 						});
 					});
 				});
 			</script>
-			<!-- end of script submit nilai -->
+			<!-- end of script ajax -->
 			
 			<%@include file="footer.jsp" %>
 		</div>

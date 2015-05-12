@@ -86,11 +86,24 @@ public class ControllerNilai {
 	@RequestMapping(value = "/kelola_nilai/{idPemb}/hapus_komponen/", method = RequestMethod.POST)
 	public @ResponseBody AjaxResponse hapusKomponenNilai(@RequestBody UUID idKomp) {
 		serviceKomp.hapusKomponen(idKomp);
-		return new AjaxResponse();
+		return new AjaxResponse("ok", "Komponen berhasil dihapus", null);
+	}
+	
+	@RequestMapping(value = "/kelola_nilai/{idPemb}/simpan_komponen/", method = RequestMethod.POST)
+	public @ResponseBody AjaxResponse simpanKomponenNilai(@RequestBody KomponenNilai[] listKomponen, @PathVariable UUID idPemb) {
+		List<KomponenNilai> listKomponenNilai = new ArrayList<KomponenNilai>();
+		for (KomponenNilai komponen : listKomponen) {
+			Pemb foreignPemb = servicePemb.getById(idPemb);
+			komponen.setPemb(foreignPemb);
+			
+			listKomponenNilai.add(komponen);
+		}
+		serviceKomp.simpanKomponen(listKomponenNilai);
+		return new AjaxResponse("ok", "Komponen berhasil disimpan", null);
 	}
 	
 	@RequestMapping(value = "/kelola_nilai/{idPemb}/simpan_nilai/", method = RequestMethod.POST)
-	public @ResponseBody AjaxResponse simpanNilai(@RequestBody JSONNilai[] listNilaiJSON) {
+	public @ResponseBody AjaxResponse simpanNilai(@RequestBody JSONNilai[] listNilaiJSON, @PathVariable UUID idPemb) {
 		List<Nilai> listNilai = new ArrayList<Nilai>();
 		for (JSONNilai nilaiJSON : listNilaiJSON) {
 			Nilai nilai = new Nilai();
@@ -100,8 +113,13 @@ public class ControllerNilai {
 			
 			listNilai.add(nilai);
 		}
-		
 		serviceNilai.submitNilai(listNilai);
+		List<Krs> listKrs = serviceKrs.getPesertaKelas(idPemb);
+		for (Krs krs : listKrs) {
+			//System.out.println(serviceNilai.getNilaiAkhir(krs));
+			krs.setNilaiAkhir(serviceNilai.getNilaiAkhir(krs));
+			serviceKrs.updateNilaiAkhir(krs);
+		}
 		return new AjaxResponse("ok", "Nilai berhasil disimpan", null);
 	}
 }

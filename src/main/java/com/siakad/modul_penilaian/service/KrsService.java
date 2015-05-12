@@ -7,6 +7,6 @@ import com.sia.main.domain.Krs;
 
 public interface KrsService {
 	public List<Krs> getPesertaKelas(UUID idPemb);
-	public List<Krs> getNilaiPesertaDidik(UUID idPd);
+	public void updateNilaiAkhir(Krs krs);
 	public Krs getById(UUID idKrs);
 }

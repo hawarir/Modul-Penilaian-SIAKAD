@@ -9,4 +9,5 @@ public interface KrsRepository {
 	public List<Krs> get(String where, String order, int limit, int offset);
 	public List<Krs> leftJoinPd(String where, String order);
 	public Krs getById(UUID idKrs);
+	public void update(Krs krs);
 }

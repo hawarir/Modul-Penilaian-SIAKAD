@@ -8,7 +8,7 @@ import com.sia.main.domain.KomponenNilai;
 public interface KomponenNilaiService {
 	public List<KomponenNilai> getAllKomponen(UUID idPemb);
 	public UUID tambahKomponen(KomponenNilai komp);
-	public void editKomponen(UUID idKomp, String nama, double presentase);
+	public void simpanKomponen(List<KomponenNilai> listKomponen);
 	public void hapusKomponen(UUID idKomp);
 	public KomponenNilai getById(UUID idKomp);
 }

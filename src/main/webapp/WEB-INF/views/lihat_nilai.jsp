@@ -43,8 +43,7 @@
 			</div>
 			<div class="row">
 				<div class="container">
-					<div class="col-md-2"></div>
-					<div class="col-md-8" class="content">
+					<div class="col-md-6 col-md-offset-3" class="content">
 						<table class="table">
 							<thead>
 								<tr>
@@ -54,17 +53,16 @@
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="mhs" items="${krsInfo}">
+								<c:forEach var="krs" items="${krsInfo}">
 								<tr>
-									<td><c:out value="${mhs.getPd().getNimPd()}"></c:out></td>
-									<td><c:out value="${mhs.getPd().getNmPd()}"></c:out></td>
-									<td>A</td>
+									<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
+									<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
+									<td><c:out value="${krs.getNilaiAkhir()}"></c:out>
 								</tr>
 								</c:forEach>
 							</tbody>
 						</table>
 					</div>
-					<div class="col-md-2"></div>
 				</div>
 			</div>
 			<!-- end of content -->

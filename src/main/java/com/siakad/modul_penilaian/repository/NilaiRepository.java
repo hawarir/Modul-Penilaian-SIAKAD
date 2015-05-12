@@ -11,4 +11,5 @@ public interface NilaiRepository {
 	public void updateNilai(Nilai nilai);
 	public Nilai getId(Nilai nilai);
 	public List<Nilai> getByKrs(List<UUID> listIdKrs);
+	public double getNilaiAkhir(UUID idKrs);
 }
