@@ -17,7 +17,7 @@ public class KrsServiceImpl implements KrsService {
 	@Override
 	public List<Krs> getPesertaKelas(UUID idPemb) {
 		// TODO Auto-generated method stub
-		return repositoryKrs.leftJoinPd("id_pemb='" + idPemb + "'", "");
+		return repositoryKrs.getByPemb(idPemb);
 	}
 
 	@Override

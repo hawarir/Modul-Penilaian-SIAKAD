@@ -40,7 +40,7 @@
 							<li>
 								<a href="${pageContext.servletContext.contextPath}/kelola_nilai/">Kelola Nilai Mahasiswa</a>
 							</li>
-							<li class="active"><c:out value="${namaKelas}"></c:out></li>
+							<li class="active"><a href="#"><c:out value="${namaKelas}"></c:out></a></li>
 						</ol>
 					</div>
 				</div>
@@ -193,7 +193,7 @@
 												+ '<td><input type="text" class="form-control nama-komponen" value="' + namaKomp + '"/></td>'
 												+ '<td><input type="text" class="form-control persentase-komponen" value="' + persenKomp +'"/></td>'
 												+ '<td><button type="button" class="btn btn-danger tombolKurangKomponen" name="'+ data.data +'"><i class="glyphicon glyphicon-minus"></i></button></td>'
-												+ '<tr>'
+												+ '</tr>'
 											);
 											$.gritter.add({
 												title : 'Notifikasi',
@@ -209,6 +209,13 @@
 							$("#namaKomponenNew").val("");
 							$("#persentaseKomponenNew").val("");
 						}
+						else {
+							$.gritter.add({
+								title : 'Notifikasi',
+								text : 'Data komponen nilai kurang lengkap',
+								sticky : true
+							});
+						}
 					});
 					
 					//hapus komponen
@@ -220,8 +227,7 @@
 							contentType : "application/json",
 							data : JSON.stringify(idKomponen),
 							success : function(data) {
-								$("#modal-" + idKomponen).closest("tr").remove();
-								console.log($(this));
+								$("#modal-" + idKomponen).remove();
 								$.gritter.add({
 									title : 'Notifikasi',
 									text : data.message,
@@ -243,6 +249,13 @@
 							$.gritter.add({
 								title : 'Notifikasi',
 								text : 'Total persentase tidak boleh di atas 100',
+								sticky : true
+							});
+						}
+						else if(totalPersen < 100) {
+							$.gritter.add({
+								title : 'Notifikasi',
+								text : 'Total persentase tidak boleh di bawah 100',
 								sticky : true
 							});
 						}

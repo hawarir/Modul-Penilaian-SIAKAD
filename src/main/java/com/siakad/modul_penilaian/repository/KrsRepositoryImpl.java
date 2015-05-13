@@ -34,16 +34,9 @@ public class KrsRepositoryImpl implements KrsRepository{
 
 	@Override
 	@Transactional
-	public List<Krs> leftJoinPd(String where, String order) {
+	public List<Krs> getByPemb(UUID idPemb) {
 		// TODO Auto-generated method stub
-		String dbWhere = "";
-		String dbOrder = "";
-		if(where != "")
-			dbWhere += " WHERE " + where;
-		if(order != "")
-			dbOrder += " ORDER BY " + order;
-		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs as krs LEFT JOIN krs.pd" + dbWhere + dbOrder);
-		//System.out.println(query.toString());
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs as krs LEFT JOIN krs.pd LEFT JOIN krs.konversiNilai WHERE id_pemb='" + idPemb + "' ORDER BY nim_pd ASC");
 		return query.list();
 	}
 

@@ -19,7 +19,7 @@
 	<script>
 		var context_path = "${pageContext.servletContext.contextPath}";
 	</script>
-	<title>Insert title here</title>
+	<title>Lihat Nilai</title>
 </head>
 <body style="background:url(${pageContext.servletContext.contextPath}/resources/img/wild_flowers.png) repeat 0 0">
 	<div class="container">
@@ -36,7 +36,7 @@
 							<li>
 								<a href="${pageContext.servletContext.contextPath}/lihat_nilai/">Lihat Nilai Kelas</a>
 							</li>
-							<li class="active"><c:out value="${namaKelas}"></c:out></li>
+							<li class="active"><a href="#"><c:out value="${namaKelas}"></c:out></a></li>
 						</ol>
 					</div>
 				</div>
@@ -50,6 +50,7 @@
 									<th>NRP</th>
 									<th>Nama Mahasiswa</th>
 									<th>Nilai Akhir</th>
+									<th>Nilai Huruf</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -58,6 +59,7 @@
 									<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
 									<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
 									<td><c:out value="${krs.getNilaiAkhir()}"></c:out>
+									<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out> </td>
 								</tr>
 								</c:forEach>
 							</tbody>
