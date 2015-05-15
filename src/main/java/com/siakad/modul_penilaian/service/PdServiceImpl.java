@@ -17,31 +17,7 @@ public class PdServiceImpl implements PdService {
 	@Override
 	public List<Pd> getAll() {
 		// TODO Auto-generated method stub
-		return repositoryPd.get("", "", -1, -1);
-	}
-
-	@Override
-	public List<Pd> getByPembelajaran(String pemb) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Pd getById(UUID idPd) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String save(Pd pd) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String delete(UUID idPd) {
-		// TODO Auto-generated method stub
-		return null;
+		return repositoryPd.get("aPdTerhapus = FALSE", "", -1, -1);
 	}
 
 }

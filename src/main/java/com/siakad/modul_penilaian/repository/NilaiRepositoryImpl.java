@@ -21,21 +21,21 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 	
 	@Override
 	@Transactional
-	public void insertBulkNilai(List<Nilai> listNilai) {
+	public void insertBulk(List<Nilai> listNilai) {
 		// TODO Auto-generated method stub
 		for (Nilai nilai : listNilai) {
 			nilai = getId(nilai);
 			if(nilai.getIdNilai() != null) {
-				updateNilai(nilai);
+				update(nilai);
 			}
 			else {
-				insertNilai(nilai);
+				insert(nilai);
 			}
 		}
 	}
 
 	@Override
-	public UUID insertNilai(Nilai nilai) {
+	public UUID insert(Nilai nilai) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();
@@ -47,7 +47,7 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 	}
 
 	@Override
-	public void updateNilai(Nilai nilai) {
+	public void update(Nilai nilai) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();
 		Transaction tx = session.beginTransaction();

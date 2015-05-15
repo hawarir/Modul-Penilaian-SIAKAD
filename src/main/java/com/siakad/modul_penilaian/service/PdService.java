@@ -9,8 +9,4 @@ import com.sia.main.domain.Pd;
 
 public interface PdService {
 	public List<Pd> getAll();
-	public List<Pd> getByPembelajaran(String pemb);
-	public Pd getById(UUID idPd);
-	public String save(Pd pd);
-	public String delete(UUID idPd);
 }

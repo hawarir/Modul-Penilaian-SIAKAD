@@ -37,28 +37,4 @@ public class PdRepositoryImpl implements PdRepository {
 		return (Pd) sessionFactory.getCurrentSession().get(Pd.class, idPd);
 	}
 
-	@Override
-	public UUID insert(Pd pd) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void update(Pd pd) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void delete(UUID idPd) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public long count(String where) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

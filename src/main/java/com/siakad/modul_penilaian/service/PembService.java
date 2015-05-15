@@ -7,5 +7,6 @@ import com.sia.main.domain.Pemb;
 
 public interface PembService {
 	public List<Pemb> getAllPembelajaran();
+	public List<Pemb> getPembAktif(UUID idTglSmt);
 	public Pemb getById(UUID idPemb);
 }

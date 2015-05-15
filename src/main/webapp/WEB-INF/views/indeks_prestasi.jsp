@@ -25,7 +25,7 @@
 	<div class="container">
 		<div class="wrapper">
 			<%@include file="header.jsp" %>
-			<!-- content -->
+			<!-- breadcrumb -->
 			<div class="row">
 				<div class="container">
 					<div class="col-md-12" style="margin-bottom:10px;">
@@ -34,47 +34,72 @@
 								<a href="${pageContext.servletContext.contextPath}/">Beranda</a>
 							</li>
 							<li class="active">
-								<a href="${pageContext.servletContext.contextPath}/kelola_nilai/">Indeks Prestasi Mahasiswa</a>
+								<a href="#">Indeks Prestasi Mahasiswa</a>
 							</li>
 						</ol>
 					</div>
 				</div>
 			</div>
+			<!-- end of breadcrumb -->
+			
+			<!-- toggle -->
 			<div class="row">
-				<div class="col-md-2"></div>
-				<div class="col-md-8">
-					<ul class="nav nav-pills">
-						<li class="active"><a href="#">Indeks Kumulatif</a></li>
-						<li><a href="#">Indeks Periodik</a></li>
-					</ul>
+				<div class="container">
+					<div class="col-md-6 col-md-offset-3">
+						<ul class="nav nav-pills">
+							<li class="active"><a href="#">Indeks Kumulatif</a></li>
+							<li><a href="#">Indeks Periodik</a></li>
+						</ul>
+					</div>
 				</div>
-				<div class="col-md-2"></div>
 			</div>
+			<!-- end of toggle -->
+			
+			<!-- content -->
 			<div class="row">
-				<div class="col-md-2"></div>
-				<div class="col-md-8">
-					<table class="table">
-						<thead>
-							<tr>
-								<th>NRP</th>
-								<th>Nama</th>
-								<th>Indeks Prestasi</th>
-							</tr>
-						</thead>
-						<tbody>
-							<c:forEach var="mhs" items="${listMhs}">
-							<tr>
-								<td><c:out value="${mhs.getNRP()}"></c:out></td>
-								<td><c:out value="${mhs.getNama()}"></c:out></td>
-								<td>4.00</td>
-							</tr>
-							</c:forEach>
-						</tbody>
-					</table>
+				<div class="container">
+					<div class="col-md-6 col-md-offset-3">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>NRP</th>
+									<th>Nama</th>
+									<th>Indeks Prestasi</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="mhs" items="${listMhs}">
+								<tr>
+									<td><c:out value="${mhs.getNRP()}"></c:out></td>
+									<td><c:out value="${mhs.getNama()}"></c:out></td>
+									<td>4.00</td>
+								</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</div>
 				</div>
-				<div class="col-md-2"></div>
 			</div>
 			<!-- end of content -->
+			
+			<!-- pagination -->
+			<div class="row">
+				<div class="container">
+					<div class="col-md-4 col-md-offset-4">
+						<ul class="pagination">
+							<li class="active"><a href="#">First</a></li>
+							<li><a href="#">&lt;&lt;</a></li>
+							<li class="active"><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">&gt;&gt;</a></li>
+							<li class="active"><a href="#">Last</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- end of pagination -->
+			
 			<%@include file="footer.jsp" %>
 		</div>
 	</div>

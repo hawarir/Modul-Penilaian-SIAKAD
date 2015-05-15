@@ -18,25 +18,13 @@ public class KrsRepositoryImpl implements KrsRepository{
 	@Autowired
 	private SessionFactory sessionFactory;
 
-	@Override
-	@Transactional
-	public List<Krs> get(String where, String order, int limit, int offset) {
-		// TODO Auto-generated method stub
-		String dbWhere = "";
-		String dbOrder = "";
-		if(where != "")
-			dbWhere += " WHERE " + where;
-		if(order != "")
-			dbOrder += " ORDER BY " + order;
-		Query query = sessionFactory.getCurrentSession().createQuery("FROM Krs" + dbWhere + dbOrder);
-		return query.list();
-	}
-
+	private final String kondisiKrsOke = "krs.aKrsBatal = FALSE AND krs.aKrsTerhapus = FALSE AND krs.aKrsDisetujui = TRUE";
+	
 	@Override
 	@Transactional
 	public List<Krs> getByPemb(UUID idPemb) {
 		// TODO Auto-generated method stub
-		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs as krs LEFT JOIN krs.pd LEFT JOIN krs.konversiNilai WHERE id_pemb='" + idPemb + "' ORDER BY nim_pd ASC");
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs as krs LEFT JOIN krs.pd LEFT JOIN krs.konversiNilai WHERE id_pemb='" + idPemb + "' AND " + kondisiKrsOke + " ORDER BY nim_pd ASC");
 		return query.list();
 	}
 
@@ -56,6 +44,14 @@ public class KrsRepositoryImpl implements KrsRepository{
 		tx.commit();
 		session.flush();
 		session.close();
+	}
+
+	@Override
+	@Transactional
+	public List<Krs> getAktifByPd(UUID idPd, UUID idTglSmt) {
+		// TODO Auto-generated method stub
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs krs WHERE krs.pd.idPd = '" + idPd + "' AND krs.pemb.tglSmt.idTglSmt = '" + idTglSmt + "' AND " + kondisiKrsOke);
+		return query.list();
 	}
 	
 }

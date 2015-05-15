@@ -6,8 +6,8 @@ import java.util.UUID;
 import com.sia.main.domain.Krs;
 
 public interface KrsRepository {
-	public List<Krs> get(String where, String order, int limit, int offset);
 	public List<Krs> getByPemb(UUID idPemb);
+	public List<Krs> getAktifByPd(UUID idPd, UUID idTglSmt);
 	public Krs getById(UUID idKrs);
 	public void update(Krs krs);
 }

@@ -19,7 +19,7 @@ public class NilaiServiceImpl implements NilaiService {
 	@Override
 	public void submitNilai(List<Nilai> listNilai) {
 		// TODO Auto-generated method stub
-		repositoryNilai.insertBulkNilai(listNilai);
+		repositoryNilai.insertBulk(listNilai);
 	}
 
 	@Override
