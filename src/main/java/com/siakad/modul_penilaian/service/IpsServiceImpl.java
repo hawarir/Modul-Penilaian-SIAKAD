@@ -14,7 +14,14 @@ public class IpsServiceImpl implements IpsService {
 	@Override
 	public void masukkanIps(Ips ips) {
 		// TODO Auto-generated method stub
-
+		if(repositoryIps.find(ips.getPd().getIdPd(), ips.getTglSmt().getIdTglSmt()) == null) {
+			repositoryIps.insert(ips);
+		}
+		else {
+			Ips existingIps = repositoryIps.find(ips.getPd().getIdPd(), ips.getTglSmt().getIdTglSmt());
+			existingIps.setNilaiIps(ips.getNilaiIps());
+			repositoryIps.update(existingIps);
+		}
 	}
 
 }

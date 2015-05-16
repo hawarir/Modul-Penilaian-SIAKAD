@@ -38,9 +38,8 @@
 								<a href="${pageContext.servletContext.contextPath}/">Beranda</a>
 							</li>
 							<li>
-								<a href="${pageContext.servletContext.contextPath}/kelola_nilai/">Kelola Nilai Mahasiswa</a>
+								<a href="#">Konversi Nilai</a>
 							</li>
-							<li class="active"><c:out value="${namaKelas}"></c:out></li>
 						</ol>
 					</div>
 				</div>

@@ -3,15 +3,19 @@ package com.siakad.modul_penilaian.controller;
 import java.util.List;
 import java.util.Locale;
 
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sia.main.domain.Ips;
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Pd;
 import com.sia.main.domain.TglSmt;
+import com.siakad.modul_penilaian.service.IpsService;
 import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.PdService;
 import com.siakad.modul_penilaian.service.PembService;
@@ -30,6 +34,9 @@ public class ControllerIP {
 	
 	@Autowired
 	private KrsService serviceKrs;
+	
+	@Autowired
+	private IpsService serviceIps;
 	
 	@RequestMapping("/lihat_ip/")
 	public ModelAndView tampilkanIP(Locale locale, Model model) {
@@ -53,10 +60,18 @@ public class ControllerIP {
 			for (Krs krs : listKrsAktif) {
 				jumlahMutu += serviceKrs.getNilaiMutu(krs.getIdKrs());
 				jumlahSks += krs.getPemb().getMk().getJumlahSKS();
-				System.out.println(pd.getNmPd() + ": " + serviceKrs.getNilaiMutu(krs.getIdKrs()) + " dari " + krs.getPemb().getMk().getJumlahSKS() + " sks.");
 			}
-			double IPS = jumlahMutu/jumlahSks;
-			System.out.println(IPS);
+			double nilaiIps = jumlahMutu/jumlahSks;
+			
+			Ips ips = new Ips();
+			ips.setNilaiIps(nilaiIps);
+			ips.setPd(pd);
+			ips.setTglSmt(tglSmtAktif);
+			ips.setTglBuatIps(LocalDateTime.now());
+			
+			System.out.println(ips.getPd().getNmPd() + ": " + ips.getNilaiIps() + " pada " + ips.getTglSmt().getSmt().getNmSmt());
+			
+			serviceIps.masukkanIps(ips);
 		}
 	}
 }

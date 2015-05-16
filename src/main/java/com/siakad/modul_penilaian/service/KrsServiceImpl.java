@@ -36,7 +36,10 @@ public class KrsServiceImpl implements KrsService {
 	public double getNilaiMutu(UUID idKrs) {
 		// TODO Auto-generated method stub
 		Krs krs = repositoryKrs.getById(idKrs);
-		return krs.getKonversiNilai().getNilaiHuruf() * krs.getPemb().getMk().getJumlahSKS();
+		if(krs.getKonversiNilai() != null)
+			return krs.getKonversiNilai().getNilaiHuruf() * krs.getPemb().getMk().getJumlahSKS();
+		else
+			return 0;
 	}
 
 	@Override

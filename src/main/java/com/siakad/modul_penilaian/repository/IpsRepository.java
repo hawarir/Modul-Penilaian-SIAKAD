@@ -9,5 +9,5 @@ public interface IpsRepository {
 	public List<Ips> getAll();
 	public UUID insert(Ips ips);
 	public void update(Ips ips);
-	public UUID find(Ips ips);
+	public Ips find(UUID idPd, UUID idTglSmt);
 }
