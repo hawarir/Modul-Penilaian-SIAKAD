@@ -1,5 +1,7 @@
 package com.siakad.modul_penilaian.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,15 @@ public class IpsServiceImpl implements IpsService {
 		}
 		else {
 			Ips existingIps = repositoryIps.find(ips.getPd().getIdPd(), ips.getTglSmt().getIdTglSmt());
-			existingIps.setNilaiIps(ips.getNilaiIps());
-			repositoryIps.update(existingIps);
+			ips.setIdIps(existingIps.getIdIps());
+			repositoryIps.update(ips);
 		}
+	}
+
+	@Override
+	public List<Ips> ambilSemuaIps() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -19,9 +19,11 @@ public class IpsRepositoryImpl implements IpsRepository {
 	private SessionFactory sessionFactory;
 	
 	@Override
+	@Transactional
 	public List<Ips> getAll() {
 		// TODO Auto-generated method stub
-		return null;
+		Query query = sessionFactory.getCurrentSession().createQuery("FROM Ips");
+		return query.list();
 	}
 
 	@Override

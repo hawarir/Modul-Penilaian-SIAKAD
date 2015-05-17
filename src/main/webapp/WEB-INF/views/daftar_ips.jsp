@@ -9,7 +9,9 @@
 	<link rel="bookmark" href="${pageContext.servletContext.contextPath}/resources/favicon_16.ico">
 	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/site.min.css">
 	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/css/sia.css">
+	<link rel="stylesheet" href="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/css/jquery.dataTables.min.css">
 	<script type="text/javascript" src="${pageContext.servletContext.contextPath}/resources/js/site.min.js"></script>
+	<script type="text/javascript" src="${pageContext.servletContext.contextPath}/resources/js/jquery-1.8.3.min.js"></script>
 	<!--[if lt IE 9]>
 	<script src="assets/js/html5shiv.js">
 	</script>
@@ -19,7 +21,7 @@
 	<script>
 		var context_path = "${pageContext.servletContext.contextPath}";
 	</script>
-	<title>Indeks Prestasi</title>
+	<title>Indeks Prestasi Semester</title>
 </head>
 <body style="background:url(${pageContext.servletContext.contextPath}/resources/img/wild_flowers.png) repeat 0 0">
 	<div class="container">
@@ -42,19 +44,6 @@
 			</div>
 			<!-- end of breadcrumb -->
 			
-			<!-- toggle -->
-			<div class="row">
-				<div class="container">
-					<div class="col-md-6 col-md-offset-3">
-						<ul class="nav nav-pills">
-							<li class="active"><a href="#">Indeks Kumulatif</a></li>
-							<li><a href="#">Indeks Periodik</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<!-- end of toggle -->
-			
 			<!-- content -->
 			<div class="row">
 				<div class="container">
@@ -64,7 +53,7 @@
 								<tr>
 									<th>NRP</th>
 									<th>Nama</th>
-									<th>Indeks Prestasi</th>
+									<th>IPSth>
 								</tr>
 							</thead>
 							<tbody>

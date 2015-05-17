@@ -38,21 +38,19 @@ public class ControllerIP {
 	@Autowired
 	private IpsService serviceIps;
 	
-	@RequestMapping("/lihat_ip/")
-	public ModelAndView tampilkanIP(Locale locale, Model model) {
+	@RequestMapping("/lihat_ips/")
+	public ModelAndView tampilkanIPS(Locale locale, Model model) {
 		ModelAndView indeksPrestasi = new ModelAndView();
-		indeksPrestasi.setViewName("indeks_prestasi");
+		indeksPrestasi.setViewName("daftar_ips");
 		
 		return indeksPrestasi;
 	}
 	
-	@RequestMapping("/update_ip/")
-	public void updateIP(Locale locale, Model model) {
-		List<Pd> listAllPd = servicePd.getAll(); //ambil semua mahasiswa yang masih aktif
-		TglSmt tglSmtAktif = serviceTglSmt.getTglSmtAktif(); //ambil semester yang masih aktif sekarang
+	@RequestMapping("/update_ips/")
+	public void updateIPS(Locale locale, Model model) {
+		List<Pd> listAllPd = servicePd.getAll();
+		TglSmt tglSmtAktif = serviceTglSmt.getTglSmtAktif();
 		
-		//ambil nilai indeks prestasi pada masing-masing pelajaran peserta didik
-		//mutu adalah hasi perkalian antara nilai huruf dan jumlah sks
 		for (Pd pd : listAllPd) {
 			double jumlahMutu = 0.0;
 			int jumlahSks = 0;
@@ -68,8 +66,6 @@ public class ControllerIP {
 			ips.setPd(pd);
 			ips.setTglSmt(tglSmtAktif);
 			ips.setTglBuatIps(LocalDateTime.now());
-			
-			System.out.println(ips.getPd().getNmPd() + ": " + ips.getNilaiIps() + " pada " + ips.getTglSmt().getSmt().getNmSmt());
 			
 			serviceIps.masukkanIps(ips);
 		}
