@@ -167,21 +167,28 @@
 						<p>Profile</p></a></li>
 				<li class="droplink"><a href="#"
 					class="waves-effect waves-button"><span
-						class="menu-icon glyphicon glyphicon-flash"></span>
-						<p>Levels</p> <span class="arrow"></span></a>
+						class="menu-icon glyphicon glyphicon-education"></span>
+						<p>Modul Penilaian</p> <span class="arrow"></span></a>
 					<ul class="sub-menu">
-						<li class="droplink"><a href="#"><p>Level 1.1</p> <span
+						<li class="droplink"><a href="#"><p>Nilai</p> <span
 								class="arrow"></span></a>
 							<ul class="sub-menu">
-								<li class="droplink"><a href="#"><p>Level 2.1</p> <span
-										class="arrow"></span></a>
-									<ul class="sub-menu">
-										<li><a href="#">Level 3.1</a></li>
-									</ul></li>
-								<li><a href="#">Level 2.2</a></li>
-							</ul></li>
-						<li><a href="#">Level 1.2</a></li>
-					</ul></li>
+								<li><a href="${pageContext.servletContext.contextPath}/kelola_nilai/">Kelola Nilai</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/lihat_nilai/">Lihat Nilai</a></li>
+							</ul>
+						</li>
+						<li class="droplink"><a href="#"><p>Indeks Prestasi</p> <span
+								class="arrow"></span></a>
+							<ul class="sub-menu">
+								<li><a href="${pageContext.servletContext.contextPath}/lihat_ips/">Peringkat IPS</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/lihat_ipk/">Peringkat IPK</a></li>
+							</ul>
+						</li>
+						<li class="droplink"><a href="#"><p>Kuisioner Dosen</p> <span
+								class="arrow"></span></a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 		</div>
 		<!-- Page Sidebar Inner -->

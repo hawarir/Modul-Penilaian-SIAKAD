@@ -29,7 +29,7 @@ public class IpsServiceImpl implements IpsService {
 	@Override
 	public List<Ips> ambilSemuaIps() {
 		// TODO Auto-generated method stub
-		return null;
+		return repositoryIps.getAll();
 	}
 
 }

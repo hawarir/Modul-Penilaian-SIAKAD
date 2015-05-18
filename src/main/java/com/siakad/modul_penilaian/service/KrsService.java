@@ -11,4 +11,5 @@ public interface KrsService {
 	public double getNilaiMutu(UUID idKrs);
 	public Krs getById(UUID idKrs);
 	public List<Krs> getKrsAktifByPd(UUID idPd, UUID idTglSmt);
+	public List<Krs> getAllByPd(UUID idPd);
 }

@@ -11,10 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sia.main.domain.Ipk;
 import com.sia.main.domain.Ips;
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Pd;
 import com.sia.main.domain.TglSmt;
+import com.siakad.modul_penilaian.service.IpkService;
 import com.siakad.modul_penilaian.service.IpsService;
 import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.PdService;
@@ -38,10 +40,25 @@ public class ControllerIP {
 	@Autowired
 	private IpsService serviceIps;
 	
+	@Autowired
+	private IpkService serviceIpk;
+	
 	@RequestMapping("/lihat_ips/")
 	public ModelAndView tampilkanIPS(Locale locale, Model model) {
+		List<Ips> listIps = serviceIps.ambilSemuaIps();
 		ModelAndView indeksPrestasi = new ModelAndView();
 		indeksPrestasi.setViewName("daftar_ips");
+		indeksPrestasi.addObject("listIps", listIps);
+		
+		return indeksPrestasi;
+	}
+	
+	@RequestMapping("/lihat_ipk/")
+	public ModelAndView tampilkanIPK(Locale locale, Model model) {
+		List<Ipk> listIpk = serviceIpk.ambilSemuaIpk();
+		ModelAndView indeksPrestasi = new ModelAndView();
+		indeksPrestasi.setViewName("daftar_ipk");
+		indeksPrestasi.addObject("listIpk", listIpk);
 		
 		return indeksPrestasi;
 	}
@@ -68,6 +85,28 @@ public class ControllerIP {
 			ips.setTglBuatIps(LocalDateTime.now());
 			
 			serviceIps.masukkanIps(ips);
+		}
+	}
+	
+	@RequestMapping("/update_ipk/")
+	public void updateIPk(Locale locale, Model model) {
+		List<Pd> listAllPd = servicePd.getAll();
+		
+		for (Pd pd : listAllPd) {
+			double jumlahMutu = 0.0;
+			int jumlahSks = 0;
+			List<Krs> listSemuaKrsPd = serviceKrs.getAllByPd(pd.getIdPd());
+			for (Krs krs : listSemuaKrsPd) {
+				jumlahMutu += serviceKrs.getNilaiMutu(krs.getIdKrs());
+				jumlahSks += krs.getPemb().getMk().getJumlahSKS();
+			}
+			double nilaiIpk = jumlahMutu/jumlahSks;
+			
+			Ipk ipk = new Ipk();
+			ipk.setNilaiIpk(nilaiIpk);
+			ipk.setPd(pd);
+			
+			serviceIpk.masukkanIpk(ipk);
 		}
 	}
 }

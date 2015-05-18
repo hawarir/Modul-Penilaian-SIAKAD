@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+    <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/resources/favicon_16.ico">
-	<title>Lihat Nilai Mahasiswa</title>
+	<title>Indeks Prestasi Kumulatif</title>
 	
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<meta charset="UTF-8">
@@ -70,6 +70,13 @@
 	<script
 		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery-ui/jquery-ui.min.js"></script>
 	
+	<!-- css dan js spesifik -->
+	<link
+		href="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/css/jquery.dataTables.min.css"
+		rel="stylesheet" type="text/css" />
+	<script
+		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/js/jquery.dataTables.min.js"></script>
+	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -79,31 +86,30 @@
 </head>
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
+	
 	<!-- content -->
 	<div class="row">
 		<div class="container">
-			<div class="col-md-6 col-md-offset-3" class="content">
+			<div class="col-md-6 col-md-offset-3">
 				<div class="panel panel-white">
 					<div class="panel-heading">
-						<h4 class="panel-title">Lihat Nilai Kelas ${namaKelas}</h4>
+						<h4 class="panel-title">Ranking IPK</h4>
 					</div>
 					<div class="panel-body">
-						<table class="table">
+						<table class="table" id="tabel_ipk">
 							<thead>
 								<tr>
 									<th>NRP</th>
-									<th>Nama Mahasiswa</th>
-									<th>Nilai Akhir</th>
-									<th>Nilai Huruf</th>
+									<th>Nama</th>
+									<th>IPK</th>
 								</tr>
 							</thead>
 							<tbody>
-								<c:forEach var="krs" items="${krsInfo}">
+								<c:forEach var="ipk" items="${listIpk}">
 								<tr>
-									<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
-									<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
-									<td><fmt:formatNumber value="${krs.getNilaiAkhir()}" maxFractionDigits="2"></fmt:formatNumber></td>
-									<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
+									<td><c:out value="${ipk.getPd().getNimPd()}"></c:out></td>
+									<td><c:out value="${ipk.getPd().getNmPd()}"></c:out></td>
+									<td><fmt:formatNumber value="${ipk.getNilaiIpk()}" maxFractionDigits="2"></fmt:formatNumber></td>
 								</tr>
 								</c:forEach>
 							</tbody>
@@ -114,6 +120,15 @@
 		</div>
 	</div>
 	<!-- end of content -->
+	
+	<!-- script custom -->
+	<script>
+		$(document).ready(function() {
+			$("#tabel_ipk").DataTable();
+		});
+	</script>
+	<!-- end of script -->
+	
 	<%@include file="footer.jsp" %>
 </body>
 </html>

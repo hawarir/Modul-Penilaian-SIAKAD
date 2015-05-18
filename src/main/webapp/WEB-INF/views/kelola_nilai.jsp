@@ -69,6 +69,13 @@
 	<script
 		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery-ui/jquery-ui.min.js"></script>
 	
+	<!-- css dan js spesifik -->
+	<link
+		href="${pageContext.servletContext.contextPath}/resources/plugins/toastr/toastr.min.css"
+		rel="stylesheet" />
+	<script
+		src="${pageContext.servletContext.contextPath}/resources/plugins/toastr/toastr.min.js"></script>
+	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -80,18 +87,14 @@
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
 	
-	<!-- css dan js spesifik -->
-	<link
-		href="${pageContext.servletContext.contextPath}/resources/plugins/toastr/toastr.min.css"
-		rel="stylesheet" />
-	<script
-		src="${pageContext.servletContext.contextPath}/resources/plugins/toastr/toastr.min.js"></script>
-	
 	<!-- content -->
 	<div class="row">
 		<div class="container">
 			<div class="col-md-12">
 				<div class="panel panel-white">
+					<div class="panel-heading">
+						<h4 class="panel-title">Kelola Nilai Kelas ${namaKelas}</h4>
+					</div>
 					<div class="panel-body">
 						<form action="simpan_nilai/">					
 							<table class="table" id="tabelNilai">

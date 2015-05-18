@@ -48,4 +48,9 @@ public class KrsServiceImpl implements KrsService {
 		return repositoryKrs.getAktifByPd(idPd, idTglSmt);
 	}
 	
+	@Override
+	public List<Krs> getAllByPd(UUID idPd) {
+		return repositoryKrs.getAllByPd(idPd);
+	}
+	
 }
