@@ -186,6 +186,9 @@
 						</li>
 						<li class="droplink"><a href="#"><p>Kuisioner Dosen</p> <span
 								class="arrow"></span></a>
+							<ul class="sub-menu">
+								<li><a href="${pageContext.servletContext.contextPath}/kelola_kuisioner/">Kelola Kuisioner</a></li>
+							</ul>
 						</li>
 					</ul>
 				</li>

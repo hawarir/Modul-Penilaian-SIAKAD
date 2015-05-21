@@ -165,7 +165,7 @@
 									</thead>
 									<tbody>
 										<c:forEach var="komp" items="${listKomponen }">
-										<tr class="komponen-modal" id="modal-${komp.getIdKomponen()}">													
+										<tr class="komponen-modal">													
 											<td><input type="text" class="form-control nama-komponen" value="<c:out value="${komp.getNamaKomponen()}"></c:out>"/></td>
 											<td><input type="text" class="form-control persentase-komponen" value="<c:out value="${komp.getPersentaseKomponen()}"></c:out>"/></td>
 											<td><button type="button" class="btn btn-danger tombolHapusKomponen" name="${komp.getIdKomponen()}"><i class="glyphicon glyphicon-minus"></i></button></td>
@@ -244,7 +244,7 @@
 									$("#newRowKomponen").before('<tr>'
 										+ '<td><input type="text" class="form-control nama-komponen" value="' + namaKomp + '"/></td>'
 										+ '<td><input type="text" class="form-control persentase-komponen" value="' + persenKomp +'"/></td>'
-										+ '<td><button type="button" class="btn btn-danger tombolKurangKomponen" name="'+ data.data +'"><i class="glyphicon glyphicon-minus"></i></button></td>'
+										+ '<td><button type="button" class="btn btn-danger tombolHapusKomponen" name="'+ data.data +'"><i class="glyphicon glyphicon-minus"></i></button></td>'
 										+ '</tr>'
 									);
 									toastr["success"](data.message, "Sukses");
@@ -262,15 +262,16 @@
 			});
 			
 			//hapus komponen
-			$(".tombolHapusKomponen").click(function() {
+			$("body").on("click", ".tombolHapusKomponen", function() {
 				var idKomponen = $(this).attr('name');
+				var button = $(this);
 				$.ajax({
 					url : "hapus_komponen/",
 					type : "POST",
 					contentType : "application/json",
 					data : JSON.stringify(idKomponen),
 					success : function(data) {
-						$("#modal-" + idKomponen).remove();
+						$(button).closest("tr").remove();
 						toastr["success"](data.message, "Sukses");
 					}
 				});
