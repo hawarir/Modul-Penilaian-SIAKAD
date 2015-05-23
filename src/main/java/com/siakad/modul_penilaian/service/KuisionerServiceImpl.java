@@ -32,4 +32,10 @@ public class KuisionerServiceImpl implements KuisionerService {
 		return repositoryKuisioner.getById(idKuisioner);
 	}
 
+	@Override
+	public void hapusKuisioner(UUID idKuisioner) {
+		// TODO Auto-generated method stub
+		repositoryKuisioner.delete(idKuisioner);
+	}
+
 }

@@ -192,7 +192,7 @@
 	
 	<!-- script khusus-->
 	<script>
-		//script tambah komponen
+		
 		$(document).ready(function() {
 			toastr.options = {
 					  "closeButton": true,
@@ -212,6 +212,7 @@
 					  "hideMethod": "fadeOut"
 					}
 			
+			//script tambah komponen
 			$("#tombolTambahKomponen").click(function() {
 				if($("#namaKomponenNew").val() != "" && $("#persentaseKomponenNew").val() != "") {
 					var namaKomp = $("#namaKomponenNew").val();

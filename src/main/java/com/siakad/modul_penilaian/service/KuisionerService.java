@@ -9,4 +9,5 @@ public interface KuisionerService {
 	public List<Kuisioner> getAllKuisioner();
 	public UUID tambahKuisioner(Kuisioner kuisioner);
 	public Kuisioner getById(UUID idKuisioner);
+	public void hapusKuisioner(UUID idKuisioner);
 }

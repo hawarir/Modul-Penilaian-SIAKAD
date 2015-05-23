@@ -106,13 +106,13 @@
 							</thead>
 							<tbody>
 								<c:forEach var="kuisioner" items="${listKuisioner}">
-								<tr>
+								<tr id="${kuisioner.getIdKuisioner()}" name="${kuisioner.getIdKuisioner()}">
 									<td><c:out value="${kuisioner.getNmKuisioner()}"></c:out></td>
 									<td>
-										<button type="button" class="btn btn-primary">
+										<button type="button" class="btn btn-primary tombolUbahKuisioner" data-toggle="modal" data-target="#modalKuisioner">
 											<i class="glyphicon glyphicon-pencil"></i>
 										</button>
-										<button type="button" class="btn btn-danger">
+										<button type="button" class="btn btn-danger tombolHapusKuisioner">
 											<i class="glyphicon glyphicon-minus"></i>
 										</button>
 									</td>
@@ -120,7 +120,7 @@
 								</c:forEach>
 							</tbody>
 						</table>
-						<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalKuisionerBaru">Buat Kuisioner Baru</button>
+						<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalKuisioner">Buat Kuisioner Baru</button>
 					</div>
 				</div>
 			</div>
@@ -129,14 +129,14 @@
 	<!-- end of content -->
 	
 	<!-- modal nama kuisioner -->
-	<div class="modal fade" id="modalKuisionerBaru" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal fade" id="modalKuisioner" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div id="contentNamaKuisioner">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-						<h4 class="modal-title">Nama Kuisioner</h4>
-					</div>
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title">Nama Kuisioner</h4>
+				</div>
+				<div id="contentNamaKuisioner">					
 					<div class="modal-body">
 						<p>Silahkan masukkan nama kuisioner yang akan dibuat beserta skala penilaian yang akan digunakan.</p>
 						<form id="formNamaKuisioner">
@@ -156,10 +156,6 @@
 				</div>
 				
 				<div class="hide" id="contentPertanyaanKuisioner">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-						<h4 class="modal-title">Pertanyaan Kuisioner</h4>
-					</div>
 					<div class="modal-body">
 						<p>Silahkan masukkan pertanyaan-pertanyaan dari kuisioner yang akan dibuat.</p>
 						<form id="formPertanyaanKuisioner">
@@ -192,6 +188,41 @@
 	<script>
 		$(document).ready(function() {
 			var idKuisioner;
+			toastr.options = {
+					  "closeButton": true,
+					  "debug": false,
+					  "newestOnTop": false,
+					  "progressBar": false,
+					  "positionClass": "toast-top-center",
+					  "preventDuplicates": true,
+					  "showDuration": "300",
+					  "hideDuration": "1000",
+					  "timeOut": 0,
+					  "extendedTimeOut": 0,
+					  "showEasing": "swing",
+					  "hideEasing": "linear",
+					  "showMethod": "fadeIn",
+					  "hideMethod": "fadeOut",
+					  "tapToDismiss": true
+					}
+			
+			// close modal
+			$("button.close").click(function() {
+				if($("#contentNamaKuisioner").hasClass("hide")) {
+					$("#contentNamaKuisioner").toggleClass("hide");
+				}
+				if($("#contentPertanyaanKuisioner").hasClass("hide") == false) {
+					$("#contentPertanyaanKuisioner").toggleClass("hide");
+				}
+				
+				$("#namaKuisioner").val("");
+				$("#skalaKuisioner").val("");
+				$("#pertanyaanBaru").val("");
+				
+				$("tr.pertanyaan").each(function(index, element) {
+					$(element).remove();
+				});
+			});
 			
 			// tambah kuisioner
 			$("#buttonSubmitNama").click(function() {
@@ -220,6 +251,27 @@
 					
 					$("#contentNamaKuisioner, #contentPertanyaanKuisioner").toggleClass("hide");
 				}
+			});
+			
+			// hapus kuisioner
+			$("body").on("click", ".tombolHapusKuisioner", function() {
+				idKuisioner = $(this).closest("tr").attr("name");
+				toastr["warning"]("Apakah anda yakin akan menghapus kuisioner?<br /><br /><button type='button' class='btn btn-success' id='konfirmasiHapusKuisioner'>Ya</button> <button type='button' class='btn btn-danger'>Tidak</button>", "Peringatan");
+			});
+			
+			$("body").on("click", "#konfirmasiHapusKuisioner", function() {
+				$.ajax({
+					url : "hapus_kuisioner/",
+					type : "POST",
+					contentType: "application/json",
+					data : JSON.stringify(idKuisioner),
+					success : function(data) {
+						if(data.status == "ok") {
+							$("body").find("#" + idKuisioner).remove();
+							toastr["success"]("Kuisioner berhasil dihapus", "Sukses");
+						}
+					}
+				});
 			});
 			
 			// tambah pertanyaan
@@ -293,6 +345,28 @@
 					}
 				});
 			});
+			
+			//get pertanyaan
+			$("body").on("click", ".tombolUbahKuisioner", function() {
+				idKuisioner = $(this).closest("tr").attr("name");
+				$("#contentNamaKuisioner, #contentPertanyaanKuisioner").toggleClass("hide");
+				
+				$.ajax({
+					url : "ambil_pertanyaan/",
+					type : "POST",
+					contentType : "application/json",
+					data : JSON.stringify(idKuisioner),
+					success : function(data) {
+						for(i=0; i<data.data.length; i++) {
+							$("#rowPertanyaanBaru").before('<tr class="pertanyaan">'
+								+ '<td><input type="text" class="form-control pertanyaanKuisionerBaru" value="' + data.data[i].pertanyaan + '"/></td>'
+								+ '<td><button type="button" class="btn btn-danger tombolHapusPertanyaan" name="' + data.data[i].idPertanyaanKuisioner + '"><i class="glyphicon glyphicon-minus"></i></button></td>'
+								+ '</tr>'
+							);
+						}
+					}
+				});
+			});			
 		});
 	</script>
 	<!-- end of script khusus -->

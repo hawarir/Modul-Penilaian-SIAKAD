@@ -47,6 +47,18 @@ public class ControllerKuisioner {
 		return new AjaxResponse("ok", "Kuisioner berhasil ditambahkan", idKuisionerBaru);
 	}
 	
+	@RequestMapping(value = "/kelola_kuisioner/hapus_kuisioner/", method = RequestMethod.POST)
+	public @ResponseBody AjaxResponse hapusKuisioner(@RequestBody UUID idKuisioner) {
+		serviceKuisioner.hapusKuisioner(idKuisioner);
+		return new AjaxResponse("ok", "Kuisioner berhasil dihapus", null);
+	}
+	
+	@RequestMapping(value = "/kelola_kuisioner/ambil_pertanyaan/", method = RequestMethod.POST)
+	public @ResponseBody AjaxResponse ambilSemuaPertanyaan(@RequestBody UUID idKuisioner) {
+		List<PertanyaanKuisioner> listPertanyaan = servicePertanyaan.ambilBerdasarKuisioner(idKuisioner);
+		return new AjaxResponse("ok", "Pertanyaan dari Kuisioner", listPertanyaan);
+	}
+	
 	@RequestMapping(value = "/kelola_kuisioner/tambah_pertanyaan/", method = RequestMethod.POST)
 	public @ResponseBody AjaxResponse tambahPertanyaan(@RequestBody JSONPertanyaan pertanyaanJSON) {
 		PertanyaanKuisioner pertanyaanKuisioner = new PertanyaanKuisioner();

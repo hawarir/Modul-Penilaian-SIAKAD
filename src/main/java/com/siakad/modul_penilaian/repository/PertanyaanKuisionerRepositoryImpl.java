@@ -1,5 +1,6 @@
 package com.siakad.modul_penilaian.repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.Query;
@@ -8,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sia.main.domain.PertanyaanKuisioner;
 
@@ -17,6 +19,14 @@ public class PertanyaanKuisionerRepositoryImpl implements
 	@Autowired
 	private SessionFactory sessionFactory;
 
+	@Override
+	@Transactional
+	public List<PertanyaanKuisioner> getByIdKuisioner(UUID idKuisioner) {
+		// TODO Auto-generated method stub
+		Query query = sessionFactory.getCurrentSession().createQuery("FROM PertanyaanKuisioner WHERE id_kuisioner='" + idKuisioner + "' AND aPertanyaanAktif = TRUE");
+		return query.list();
+	}
+	
 	@Override
 	public UUID insert(PertanyaanKuisioner pertanyaan) {
 		// TODO Auto-generated method stub

@@ -66,7 +66,7 @@ public class ControllerIP {
 	@RequestMapping("/update_ips/")
 	public void updateIPS(Locale locale, Model model) {
 		List<Pd> listAllPd = servicePd.getAll();
-		TglSmt tglSmtAktif = serviceTglSmt.getTglSmtAktif();
+		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
 		
 		for (Pd pd : listAllPd) {
 			double jumlahMutu = 0.0;

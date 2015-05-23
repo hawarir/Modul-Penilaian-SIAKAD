@@ -12,7 +12,7 @@ public class TglSmtServiceImpl implements TglSmtService {
 	private TglSmtRepository repositoryTglSmt;
 	
 	@Override
-	public TglSmt getTglSmtAktif() {
+	public TglSmt ambilTglSmtAktif() {
 		// TODO Auto-generated method stub
 		return repositoryTglSmt.getAktif();
 	}
