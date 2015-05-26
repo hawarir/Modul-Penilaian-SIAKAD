@@ -188,6 +188,7 @@
 								class="arrow"></span></a>
 							<ul class="sub-menu">
 								<li><a href="${pageContext.servletContext.contextPath}/kelola_kuisioner/">Kelola Kuisioner</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/isi_kuisioner/">Isi Kuisioner</a></li>
 							</ul>
 						</li>
 					</ul>

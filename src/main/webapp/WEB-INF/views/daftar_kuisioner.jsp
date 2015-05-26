@@ -6,7 +6,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/resources/favicon_16.ico">
-	<title>Daftar Kelas</title>
+	<title>Daftar Kuisioner</title>
 	
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<meta charset="UTF-8">
@@ -75,6 +75,13 @@
 	        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	        <![endif]-->
+	
+	<!-- plugin spesifik -->
+	<link
+		href="${pageContext.servletContext.contextPath}/resources/plugins/select2/css/select2.min.css"
+		rel="stylesheet" type="text/css" />
+	<script
+		src="${pageContext.servletContext.contextPath}/resources/plugins/select2/js/select2.min.js"></script>
 </head>
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
@@ -82,17 +89,21 @@
 	<!-- content -->
 	<div class="row">
 		<div class="container">
-			<div class="col-md-6 col-md-offset-3" class="content">
+			<div class="col-md-6 col-md-offset-3">
 				<div class="panel panel-white">
 					<div class="panel-heading">
-						<h4 class="panel-title">Daftar Kelas</h4>
+						<h4 class="panel-title">Daftar Kuisioner</h4>
 					</div>
-					<div class="panel-body">						
+					<div class="panel-body">
 						<form method="post" action="">
 							<div class="form-group">
-								<select class="form-control" name="idPemb">
-									<c:forEach var="kelas" items="${listKelas}">
-									<option value="${kelas.getIdPemb()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
+								<select class="form-control" name="idKuisioner">
+									<c:forEach var="krs" varStatus="status" items="${daftarKrs}">
+									<optgroup name="${krs.getIdKrs()}" label="${krs.getPemb().getMk().getNamaMK()}">
+										<c:forEach var="kuisioner" items="${daftarKuisioner}">
+										<option value="${kuisioner.getIdKuisioner()}"><c:out value="${kuisioner.getNmKuisioner()}"></c:out></option>
+										</c:forEach>
+									</optgroup>
 									</c:forEach>
 								</select>
 							</div>
@@ -104,6 +115,21 @@
 		</div>
 	</div>
 	<!-- end of content -->
+	
+	<script>
+	$(document).ready(function() {
+		var idKrs;
+		
+		$("select").on("change", function() {
+			idKrs = $(this.options[this.selectedIndex]).closest('optgroup').attr('name');
+		});
+		
+		$("form").submit(function() {
+			var input = $("<input>").attr("type", "hidden").attr("name", "idKrs").val(idKrs);
+			$("form").append($(input));
+		});
+	});
+	</script>
 	
 	<%@include file="footer.jsp" %>
 </body>

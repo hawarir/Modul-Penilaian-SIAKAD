@@ -6,7 +6,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/resources/favicon_16.ico">
-	<title>Daftar Kelas</title>
+	<title>Isi Kuisioner</title>
 	
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<meta charset="UTF-8">
@@ -75,6 +75,9 @@
 	        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	        <![endif]-->
+	<link
+		href="${pageContext.servletContext.contextPath}/resources/plugins/jquery-ui/jquery-ui.min.css"
+		rel="stylesheet" type="text/css" />
 </head>
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
@@ -82,21 +85,32 @@
 	<!-- content -->
 	<div class="row">
 		<div class="container">
-			<div class="col-md-6 col-md-offset-3" class="content">
+			<div class="col-md-10 col-md-offset-1">
 				<div class="panel panel-white">
 					<div class="panel-heading">
-						<h4 class="panel-title">Daftar Kelas</h4>
+						<h4 class="panel-title"><c:out value="${kuisioner.getNmKuisioner()}"></c:out> </h4>
 					</div>
-					<div class="panel-body">						
-						<form method="post" action="">
-							<div class="form-group">
-								<select class="form-control" name="idPemb">
-									<c:forEach var="kelas" items="${listKelas}">
-									<option value="${kelas.getIdPemb()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
+					<div class="panel-body">
+						<form>
+							<table class="table">
+								<thead>
+									<tr>
+										<th>No</th>
+										<th>Pertanyaan</th>
+										<th>Skor</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="pertanyaan" varStatus="status" items="${daftarPertanyaan}">
+									<tr>
+										<td><c:out value="${status.index + 1}"></c:out></td>
+										<td><c:out value="${pertanyaan.getPertanyaan()}"></c:out></td>
+										<td><div class="slider"></div></td>
+									</tr>
 									</c:forEach>
-								</select>
-							</div>
-							<button type="submit" class="btn btn-primary pull-right">Buka</button>
+								</tbody>
+							</table>
+							<button type="submit" class="btn btn-primary pull-right">Submit</button>
 						</form>
 					</div>
 				</div>
@@ -104,6 +118,21 @@
 		</div>
 	</div>
 	<!-- end of content -->
+	
+	<script>
+	$(document).ready(function() {
+		$(".slider").slider({
+			min : 1,
+			max : "${kuisioner.getSkalaKuisioner()}"
+		});
+		
+		$("button").click(function() {
+			$(".slider").each(function(index, element) {
+				alert($(element).slider("value"));
+			});
+		});
+	});
+	</script>
 	
 	<%@include file="footer.jsp" %>
 </body>

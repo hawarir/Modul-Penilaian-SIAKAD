@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sia.main.domain.Krs;
 import com.sia.main.domain.Kuisioner;
 import com.sia.main.domain.PertanyaanKuisioner;
+import com.sia.main.domain.TglSmt;
 import com.siakad.modul_penilaian.service.AjaxResponse;
 import com.siakad.modul_penilaian.service.JSONPertanyaan;
+import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.KuisionerService;
 import com.siakad.modul_penilaian.service.PertanyaanKuisionerService;
+import com.siakad.modul_penilaian.service.TglSmtService;
 
 @Controller
 public class ControllerKuisioner {
@@ -30,8 +34,43 @@ public class ControllerKuisioner {
 	@Autowired
 	private PertanyaanKuisionerService servicePertanyaan;
 	
+	@Autowired
+	private KrsService serviceKrs;
+	
+	@Autowired
+	private TglSmtService serviceTglSmt;
+	
+	@RequestMapping(value = "/isi_kuisioner/", method = RequestMethod.GET)
+	public ModelAndView tampilkanDaftarIsiKuisioner(Locale locale, Model model) {
+		UUID idPd = UUID.fromString("56f893a7-8988-444d-9e03-aa94832c88b0"); // hardcode id_pd Hawari Rahman
+		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
+		List<Krs> daftarKrs = serviceKrs.getKrsAktifByPd(idPd, tglSmtAktif.getIdTglSmt());
+		List<Kuisioner> daftarKuisioner = serviceKuisioner.getAllKuisioner();
+		
+		ModelAndView daftarIsiKuisioner = new ModelAndView();
+		daftarIsiKuisioner.setViewName("daftar_kuisioner");
+		daftarIsiKuisioner.addObject("daftarKrs", daftarKrs);
+		daftarIsiKuisioner.addObject("daftarKuisioner", daftarKuisioner);
+		
+		return daftarIsiKuisioner;
+	}
+	
+	@RequestMapping(value = "/isi_kuisioner/", method = RequestMethod.POST)
+	public ModelAndView tampilkanIsiKuisioner(@RequestParam("idKrs") UUID idKrs, @RequestParam("idKuisioner") UUID idKuisioner) {
+		Kuisioner kuisioner = serviceKuisioner.getById(idKuisioner);
+		List<PertanyaanKuisioner> daftarPertanyaan = servicePertanyaan.ambilBerdasarKuisioner(idKuisioner);
+		
+		ModelAndView isiKuisioner = new ModelAndView();
+		isiKuisioner.setViewName("isi_kuisioner");
+		isiKuisioner.addObject("kuisioner", kuisioner);
+		isiKuisioner.addObject("daftarPertanyaan", daftarPertanyaan);
+		isiKuisioner.addObject("idKrs", idKrs);
+		
+		return isiKuisioner;
+	}
+	
 	@RequestMapping(value = "/kelola_kuisioner/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarKuisioner(Locale locale, Model model) {
+	public ModelAndView tampilkanDaftarKelolaKuisioner(Locale locale, Model model) {
 		List<Kuisioner> listKuisionerAktif = serviceKuisioner.getAllKuisioner();
 		
 		ModelAndView daftarKuisioner = new ModelAndView();
@@ -48,13 +87,13 @@ public class ControllerKuisioner {
 	}
 	
 	@RequestMapping(value = "/kelola_kuisioner/hapus_kuisioner/", method = RequestMethod.POST)
-	public @ResponseBody AjaxResponse hapusKuisioner(@RequestBody UUID idKuisioner) {
+	public @ResponseBody AjaxResponse hapusKuisioner(@RequestParam("idKuisioner") UUID idKuisioner) {
 		serviceKuisioner.hapusKuisioner(idKuisioner);
 		return new AjaxResponse("ok", "Kuisioner berhasil dihapus", null);
 	}
 	
 	@RequestMapping(value = "/kelola_kuisioner/ambil_pertanyaan/", method = RequestMethod.POST)
-	public @ResponseBody AjaxResponse ambilSemuaPertanyaan(@RequestBody UUID idKuisioner) {
+	public @ResponseBody AjaxResponse ambilSemuaPertanyaan(@RequestParam("idKuisioner") UUID idKuisioner) {
 		List<PertanyaanKuisioner> listPertanyaan = servicePertanyaan.ambilBerdasarKuisioner(idKuisioner);
 		return new AjaxResponse("ok", "Pertanyaan dari Kuisioner", listPertanyaan);
 	}
@@ -71,7 +110,7 @@ public class ControllerKuisioner {
 	}
 	
 	@RequestMapping(value = "/kelola_kuisioner/hapus_pertanyaan/", method = RequestMethod.POST)
-	public @ResponseBody AjaxResponse hapusPertanyaan(@RequestBody UUID idPertanyaan) {
+	public @ResponseBody AjaxResponse hapusPertanyaan(@RequestParam("idPertanyaan") UUID idPertanyaan) {
 		servicePertanyaan.hapusPertanyaan(idPertanyaan);
 		return new AjaxResponse("ok", "Pertanyaan berhasil dihapus", null);
 	}

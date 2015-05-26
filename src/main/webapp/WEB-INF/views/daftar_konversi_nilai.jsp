@@ -156,8 +156,7 @@
 						$.ajax({
 							url : "hapus_konversi/",
 							type : "POST",
-							contentType : "application/json",
-							data : JSON.stringify(idKonversi),
+							data : {"idKonversi" : idKonversi},
 							success : function(data) {
 								if(data.status == "ok") {
 									$(button).closest("tr").remove();
@@ -168,7 +167,8 @@
 										time : 200
 									});
 								}
-							}
+							},
+							dataType : "json"
 						});
 					});
 					

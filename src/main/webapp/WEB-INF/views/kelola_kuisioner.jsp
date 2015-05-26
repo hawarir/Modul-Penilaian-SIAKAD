@@ -263,14 +263,14 @@
 				$.ajax({
 					url : "hapus_kuisioner/",
 					type : "POST",
-					contentType: "application/json",
-					data : JSON.stringify(idKuisioner),
+					data : {"idKuisioner" : idKuisioner},
 					success : function(data) {
 						if(data.status == "ok") {
 							$("body").find("#" + idKuisioner).remove();
 							toastr["success"]("Kuisioner berhasil dihapus", "Sukses");
 						}
-					}
+					},
+					dataType: "json"
 				});
 			});
 			
@@ -311,11 +311,11 @@
 				$.ajax({
 					url : "hapus_pertanyaan/",
 					type : "POST",
-					contentType : "application/json",
-					data : JSON.stringify(idPertanyaan),
+					data : {"idPertanyaan" : idPertanyaan},
 					success : function(data) {
 						$(tombol).closest("tr").remove();
-					}
+					},
+					dataType : 'json'
 				});
 			});
 			
@@ -346,7 +346,7 @@
 				});
 			});
 			
-			//get pertanyaan
+			//ambil pertanyaan
 			$("body").on("click", ".tombolUbahKuisioner", function() {
 				idKuisioner = $(this).closest("tr").attr("name");
 				$("#contentNamaKuisioner, #contentPertanyaanKuisioner").toggleClass("hide");
@@ -354,8 +354,7 @@
 				$.ajax({
 					url : "ambil_pertanyaan/",
 					type : "POST",
-					contentType : "application/json",
-					data : JSON.stringify(idKuisioner),
+					data : {"idKuisioner" : idKuisioner},
 					success : function(data) {
 						for(i=0; i<data.data.length; i++) {
 							$("#rowPertanyaanBaru").before('<tr class="pertanyaan">'
@@ -364,7 +363,8 @@
 								+ '</tr>'
 							);
 						}
-					}
+					},
+					dataType : "json"
 				});
 			});			
 		});

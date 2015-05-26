@@ -194,6 +194,7 @@
 	<script>
 		
 		$(document).ready(function() {
+			var idPemb = "${idPemb}";
 			toastr.options = {
 					  "closeButton": true,
 					  "debug": false,
@@ -236,7 +237,7 @@
 						};
 						
 						$.ajax({
-							url : "tambah_komponen/",
+							url : idPemb + "/tambah_komponen/",
 							type : "POST",
 							contentType: "application/json",
 							data : JSON.stringify(komp),
@@ -269,8 +270,8 @@
 				$.ajax({
 					url : "hapus_komponen/",
 					type : "POST",
-					contentType : "application/json",
-					data : JSON.stringify(idKomponen),
+					dataType : "json",
+					data : {"idKomp" : idKomponen},
 					success : function(data) {
 						$(button).closest("tr").remove();
 						toastr["success"](data.message, "Sukses");
@@ -310,7 +311,7 @@
 					});
 					
 					$.ajax({
-						url : "simpan_komponen/",
+						url : idPemb + "/simpan_komponen/",
 						type : "POST",
 						contentType : "application/json",
 						data : JSON.stringify(listKomponen),
@@ -346,7 +347,7 @@
 				});
 				
 				$.ajax({
-					url : "simpan_nilai/",
+					url : idPemb + "/simpan_nilai/",
 					type : "POST",
 					contentType : "application/json",
 					data : JSON.stringify(listNilai),

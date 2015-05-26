@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -55,8 +56,8 @@ public class ControllerNilai {
 		return daftarKelas;
 	}
 
-	@RequestMapping(value = "/kelola_nilai/{idPemb}/", method = RequestMethod.GET)
-	public ModelAndView tampilkanKelolaNilai(@PathVariable UUID idPemb, Locale locale, Model model) {
+	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.POST)
+	public ModelAndView tampilkanKelolaNilai(@RequestParam("idPemb") UUID idPemb) {
 		List<Krs> krsInfo = serviceKrs.getPesertaKelas(idPemb);
 		List<KomponenNilai> komp = serviceKomp.getAllKomponen(idPemb);
 		List<Nilai> listNilai = serviceNilai.getNilaiKelas(krsInfo);
@@ -69,12 +70,13 @@ public class ControllerNilai {
 		kelolaNilai.addObject("listKomponen", komp);
 		kelolaNilai.addObject("listNilai", listNilai);
 		kelolaNilai.addObject("namaKelas", namaKelas);
+		kelolaNilai.addObject("idPemb", idPemb);
 		
 		return kelolaNilai;
 	}
 	
-	@RequestMapping(value = "/lihat_nilai/{idPemb}/", method = RequestMethod.GET)
-	public ModelAndView tampilkanLihatNilai(@PathVariable UUID idPemb, Locale locale, Model model) {
+	@RequestMapping(value = "/lihat_nilai/", method = RequestMethod.POST)
+	public ModelAndView tampilkanLihatNilai(@RequestParam("idPemb") UUID idPemb, Locale locale, Model model) {
 		List<Krs> krsInfo = serviceKrs.getPesertaKelas(idPemb);
 		Pemb pemb = servicePemb.getById(idPemb);
 		String namaKelas = pemb.getMk().getNamaMK() + " " + pemb.getNmPemb();
@@ -95,8 +97,8 @@ public class ControllerNilai {
 		return new AjaxResponse("ok", "Komponen berhasil ditambah", idNew);
 	}
 	
-	@RequestMapping(value = "/kelola_nilai/{idPemb}/hapus_komponen/", method = RequestMethod.POST)
-	public @ResponseBody AjaxResponse hapusKomponenNilai(@RequestBody UUID idKomp) {
+	@RequestMapping(value = "/kelola_nilai/hapus_komponen/", method = RequestMethod.POST)
+	public @ResponseBody AjaxResponse hapusKomponenNilai(@RequestParam("idKomp") UUID idKomp) {
 		serviceKomp.hapusKomponen(idKomp);
 		return new AjaxResponse("ok", "Komponen berhasil dihapus", null);
 	}
@@ -136,7 +138,7 @@ public class ControllerNilai {
 	}
 	
 	@RequestMapping(value = "/konversi_nilai/", method = RequestMethod.GET)
-	public ModelAndView tampilkanKonversiNilai(Locale locale, Model model) {
+	public ModelAndView tampilkanKonversiNilai() {
 		List<KonversiNilai> listKonversi = serviceKonversi.getKonversiNilai();
 		ModelAndView daftarKonversi = new ModelAndView();
 		daftarKonversi.setViewName("daftar_konversi_nilai");
@@ -198,7 +200,7 @@ public class ControllerNilai {
 	}
 	
 	@RequestMapping(value = "/konversi_nilai/hapus_konversi/", method = RequestMethod.POST)
-	public @ResponseBody AjaxResponse hapusKonversiNilai(@RequestBody UUID idKonversi) {
+	public @ResponseBody AjaxResponse hapusKonversiNilai(@RequestParam("idKuisioner") UUID idKonversi) {
 		serviceKonversi.hapusKonversiNilai(idKonversi);
 		return new AjaxResponse("ok", "Konversi berhasil dihapus", null);
 	}
