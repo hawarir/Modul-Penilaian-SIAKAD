@@ -22,6 +22,12 @@ public class PertanyaanKuisionerServiceImpl implements
 	}
 	
 	@Override
+	public PertanyaanKuisioner getById(UUID idPertanyaan) {
+		// TODO Auto-generated method stub
+		return repositoryPertanyaan.getById(idPertanyaan);
+	}
+	
+	@Override
 	public UUID tambahPertanyaan(PertanyaanKuisioner pertanyaan) {
 		// TODO Auto-generated method stub
 		return repositoryPertanyaan.insert(pertanyaan);

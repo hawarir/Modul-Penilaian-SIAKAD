@@ -95,7 +95,7 @@
 						<h4 class="panel-title">Daftar Kuisioner</h4>
 					</div>
 					<div class="panel-body">
-						<form method="post" action="">
+						<form id="formKuisioner" method="post" action="">
 							<div class="form-group">
 								<select class="form-control" name="idKuisioner">
 									<c:forEach var="krs" varStatus="status" items="${daftarKrs}">
@@ -117,16 +117,10 @@
 	<!-- end of content -->
 	
 	<script>
-	$(document).ready(function() {
-		var idKrs;
-		
-		$("select").on("change", function() {
-			idKrs = $(this.options[this.selectedIndex]).closest('optgroup').attr('name');
-		});
-		
-		$("form").submit(function() {
-			var input = $("<input>").attr("type", "hidden").attr("name", "idKrs").val(idKrs);
-			$("form").append($(input));
+	$(document).ready(function() {		
+		$("#formKuisioner").submit(function() {
+			var idKrs = $("select option:selected").closest('optgroup').attr('name');
+			$("#formKuisioner").append('<input type="hidden" name="idKrs" value="' + idKrs + '" />');
 		});
 	});
 	</script>

@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import javax.management.ServiceNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,12 +20,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Kuisioner;
+import com.sia.main.domain.NilaiKuisioner;
 import com.sia.main.domain.PertanyaanKuisioner;
 import com.sia.main.domain.TglSmt;
 import com.siakad.modul_penilaian.service.AjaxResponse;
+import com.siakad.modul_penilaian.service.JSONNilaiKuisioner;
 import com.siakad.modul_penilaian.service.JSONPertanyaan;
 import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.KuisionerService;
+import com.siakad.modul_penilaian.service.NilaiKuisionerService;
 import com.siakad.modul_penilaian.service.PertanyaanKuisionerService;
 import com.siakad.modul_penilaian.service.TglSmtService;
 
@@ -35,6 +41,9 @@ public class ControllerKuisioner {
 	private PertanyaanKuisionerService servicePertanyaan;
 	
 	@Autowired
+	private NilaiKuisionerService serviceNilaiKuisioner;
+	
+	@Autowired
 	private KrsService serviceKrs;
 	
 	@Autowired
@@ -44,8 +53,8 @@ public class ControllerKuisioner {
 	public ModelAndView tampilkanDaftarIsiKuisioner(Locale locale, Model model) {
 		UUID idPd = UUID.fromString("56f893a7-8988-444d-9e03-aa94832c88b0"); // hardcode id_pd Hawari Rahman
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
-		List<Krs> daftarKrs = serviceKrs.getKrsAktifByPd(idPd, tglSmtAktif.getIdTglSmt());
-		List<Kuisioner> daftarKuisioner = serviceKuisioner.getAllKuisioner();
+		List<Krs> daftarKrs = serviceKrs.ambilKrsAktifBerdasarkanPd(idPd, tglSmtAktif.getIdTglSmt());
+		List<Kuisioner> daftarKuisioner = serviceKuisioner.ambilSemuaKuisioner();
 		
 		ModelAndView daftarIsiKuisioner = new ModelAndView();
 		daftarIsiKuisioner.setViewName("daftar_kuisioner");
@@ -57,7 +66,7 @@ public class ControllerKuisioner {
 	
 	@RequestMapping(value = "/isi_kuisioner/", method = RequestMethod.POST)
 	public ModelAndView tampilkanIsiKuisioner(@RequestParam("idKrs") UUID idKrs, @RequestParam("idKuisioner") UUID idKuisioner) {
-		Kuisioner kuisioner = serviceKuisioner.getById(idKuisioner);
+		Kuisioner kuisioner = serviceKuisioner.ambilKuisioner(idKuisioner);
 		List<PertanyaanKuisioner> daftarPertanyaan = servicePertanyaan.ambilBerdasarKuisioner(idKuisioner);
 		
 		ModelAndView isiKuisioner = new ModelAndView();
@@ -69,9 +78,23 @@ public class ControllerKuisioner {
 		return isiKuisioner;
 	}
 	
+	@RequestMapping(value = "/isi_kuisioner/{idKrs}/simpan_kuisioner/", method = RequestMethod.POST)
+	public @ResponseBody AjaxResponse submitKuisioner(@RequestBody JSONNilaiKuisioner[] daftarNilai, @PathVariable UUID idKrs) {
+		for (JSONNilaiKuisioner nilai : daftarNilai) {
+			NilaiKuisioner nilaiKuisioner = new NilaiKuisioner();
+			nilaiKuisioner.setKrs(serviceKrs.ambilKrs(idKrs));
+			nilaiKuisioner.setPertanyaanKuisioner(servicePertanyaan.getById(nilai.getIdPertanyaan()));
+			nilaiKuisioner.setNilaiPertanyaan(nilai.getNilaiPertanyaan());
+			
+			serviceNilaiKuisioner.simpanNilaiKuisioner(nilaiKuisioner);
+		}
+		
+		return new AjaxResponse("ok", "Kuisioner berhasil disimpan", null);
+	}
+	
 	@RequestMapping(value = "/kelola_kuisioner/", method = RequestMethod.GET)
 	public ModelAndView tampilkanDaftarKelolaKuisioner(Locale locale, Model model) {
-		List<Kuisioner> listKuisionerAktif = serviceKuisioner.getAllKuisioner();
+		List<Kuisioner> listKuisionerAktif = serviceKuisioner.ambilSemuaKuisioner();
 		
 		ModelAndView daftarKuisioner = new ModelAndView();
 		daftarKuisioner.setViewName("kelola_kuisioner");
@@ -103,7 +126,7 @@ public class ControllerKuisioner {
 		PertanyaanKuisioner pertanyaanKuisioner = new PertanyaanKuisioner();
 		pertanyaanKuisioner.setPertanyaan(pertanyaanJSON.getPertanyaan());
 		pertanyaanKuisioner.setaPertanyaanAktif(true);
-		pertanyaanKuisioner.setKuisioner(serviceKuisioner.getById(pertanyaanJSON.getIdKuisioner()));
+		pertanyaanKuisioner.setKuisioner(serviceKuisioner.ambilKuisioner(pertanyaanJSON.getIdKuisioner()));
 		
 		UUID idPertanyaanBaru = servicePertanyaan.tambahPertanyaan(pertanyaanKuisioner);
 		return new AjaxResponse("ok", "Pertanyaan berhasil ditambahkan", idPertanyaanBaru);
@@ -122,7 +145,7 @@ public class ControllerKuisioner {
 			pertanyaan.setIdPertanyaanKuisioner(pertanyaanJSON.getIdPertanyaan());
 			pertanyaan.setPertanyaan(pertanyaanJSON.getPertanyaan());
 			pertanyaan.setaPertanyaanAktif(true);
-			pertanyaan.setKuisioner(serviceKuisioner.getById(pertanyaanJSON.getIdKuisioner()));
+			pertanyaan.setKuisioner(serviceKuisioner.ambilKuisioner(pertanyaanJSON.getIdKuisioner()));
 			
 			servicePertanyaan.simpanPertanyaan(pertanyaan);
 		}

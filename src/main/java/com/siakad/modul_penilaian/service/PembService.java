@@ -6,7 +6,7 @@ import java.util.UUID;
 import com.sia.main.domain.Pemb;
 
 public interface PembService {
-	public List<Pemb> getAllPembelajaran();
-	public List<Pemb> getPembAktif(UUID idTglSmt);
-	public Pemb getById(UUID idPemb);
+	public List<Pemb> ambilSemuaPemb();
+	public List<Pemb> ambilPembAktif(UUID idTglSmt);
+	public Pemb ambilPemb(UUID idPemb);
 }

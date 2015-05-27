@@ -15,7 +15,7 @@ public class KonversiNilaiServiceImpl implements KonversiNilaiService {
 	private KonversiNilaiRepository repositoryKonversiNilai;
 	
 	@Override
-	public List<KonversiNilai> getKonversiNilai() {
+	public List<KonversiNilai> ambilSemuaKonversiNilai() {
 		// TODO Auto-generated method stub
 		return repositoryKonversiNilai.getAll();
 	}
@@ -41,7 +41,7 @@ public class KonversiNilaiServiceImpl implements KonversiNilaiService {
 	}
 
 	@Override
-	public KonversiNilai getByBatas(double batas) {
+	public KonversiNilai ambilBerdasarkanBatas(double batas) {
 		// TODO Auto-generated method stub
 		List<KonversiNilai> listKonversi = repositoryKonversiNilai.getAll();
 		for (KonversiNilai konversiNilai : listKonversi) {

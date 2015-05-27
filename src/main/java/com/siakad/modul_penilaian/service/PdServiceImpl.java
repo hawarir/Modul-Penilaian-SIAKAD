@@ -15,7 +15,7 @@ public class PdServiceImpl implements PdService {
 	private PdRepository repositoryPd;
 	
 	@Override
-	public List<Pd> getAll() {
+	public List<Pd> ambilSemuaPd() {
 		// TODO Auto-generated method stub
 		return repositoryPd.get("aPdTerhapus = FALSE", "", -1, -1);
 	}

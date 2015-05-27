@@ -17,13 +17,13 @@ public class NilaiServiceImpl implements NilaiService {
 	private NilaiRepository repositoryNilai;
 	
 	@Override
-	public void submitNilai(List<Nilai> listNilai) {
+	public void masukkanNilai(List<Nilai> listNilai) {
 		// TODO Auto-generated method stub
 		repositoryNilai.insertBulk(listNilai);
 	}
 
 	@Override
-	public List<Nilai> getNilaiKelas(List<Krs> listKrs) {
+	public List<Nilai> ambilNilaiKelas(List<Krs> listKrs) {
 		// TODO Auto-generated method stub
 		List<UUID> listIdKrs = new ArrayList<UUID>();
 		for (Krs krs : listKrs) {
@@ -33,7 +33,7 @@ public class NilaiServiceImpl implements NilaiService {
 	}
 
 	@Override
-	public double getNilaiAkhir(Krs krs) {
+	public double ambilNilaiAkhir(Krs krs) {
 		// TODO Auto-generated method stub
 		return repositoryNilai.getNilaiAkhir(krs.getIdKrs());
 	}

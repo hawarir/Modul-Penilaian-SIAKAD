@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component;
 import com.sia.main.domain.Pd;
 
 public interface PdService {
-	public List<Pd> getAll();
+	public List<Pd> ambilSemuaPd();
 }

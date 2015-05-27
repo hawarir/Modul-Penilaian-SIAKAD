@@ -15,19 +15,19 @@ public class PembServiceImpl implements PembService {
 	private PembRepository repositoryPemb;
 	
 	@Override
-	public List<Pemb> getAllPembelajaran() {
+	public List<Pemb> ambilSemuaPemb() {
 		// TODO Auto-generated method stub
 		return repositoryPemb.leftJoinMk();
 	}
 	
 	@Override
-	public List<Pemb> getPembAktif(UUID idTglSmt) {
+	public List<Pemb> ambilPembAktif(UUID idTglSmt) {
 		// TODO Auto-generated method stub
 		return repositoryPemb.get("id_tgl_smt = '" + idTglSmt + "'", "", -1, -1);
 	}
 
 	@Override
-	public Pemb getById(UUID idPemb) {
+	public Pemb ambilPemb(UUID idPemb) {
 		// TODO Auto-generated method stub
 		return repositoryPemb.getById(idPemb);
 	}

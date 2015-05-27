@@ -65,15 +65,15 @@ public class ControllerIP {
 	
 	@RequestMapping("/update_ips/")
 	public void updateIPS(Locale locale, Model model) {
-		List<Pd> listAllPd = servicePd.getAll();
+		List<Pd> listAllPd = servicePd.ambilSemuaPd();
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
 		
 		for (Pd pd : listAllPd) {
 			double jumlahMutu = 0.0;
 			int jumlahSks = 0;
-			List<Krs> listKrsAktif = serviceKrs.getKrsAktifByPd(pd.getIdPd(), tglSmtAktif.getIdTglSmt());
+			List<Krs> listKrsAktif = serviceKrs.ambilKrsAktifBerdasarkanPd(pd.getIdPd(), tglSmtAktif.getIdTglSmt());
 			for (Krs krs : listKrsAktif) {
-				jumlahMutu += serviceKrs.getNilaiMutu(krs.getIdKrs());
+				jumlahMutu += serviceKrs.ambilNilaiMutu(krs.getIdKrs());
 				jumlahSks += krs.getPemb().getMk().getJumlahSKS();
 			}
 			double nilaiIps = jumlahMutu/jumlahSks;
@@ -90,14 +90,14 @@ public class ControllerIP {
 	
 	@RequestMapping("/update_ipk/")
 	public void updateIPk(Locale locale, Model model) {
-		List<Pd> listAllPd = servicePd.getAll();
+		List<Pd> listAllPd = servicePd.ambilSemuaPd();
 		
 		for (Pd pd : listAllPd) {
 			double jumlahMutu = 0.0;
 			int jumlahSks = 0;
-			List<Krs> listSemuaKrsPd = serviceKrs.getAllByPd(pd.getIdPd());
+			List<Krs> listSemuaKrsPd = serviceKrs.ambilSemuaBerdasarkanPd(pd.getIdPd());
 			for (Krs krs : listSemuaKrsPd) {
-				jumlahMutu += serviceKrs.getNilaiMutu(krs.getIdKrs());
+				jumlahMutu += serviceKrs.ambilNilaiMutu(krs.getIdKrs());
 				jumlahSks += krs.getPemb().getMk().getJumlahSKS();
 			}
 			double nilaiIpk = jumlahMutu/jumlahSks;

@@ -7,6 +7,7 @@ import com.sia.main.domain.PertanyaanKuisioner;
 
 public interface PertanyaanKuisionerService {
 	public List<PertanyaanKuisioner> ambilBerdasarKuisioner(UUID idKuisioner);
+	public PertanyaanKuisioner getById(UUID idPertanyaan);
 	public UUID tambahPertanyaan(PertanyaanKuisioner pertanyaan);
 	public void simpanPertanyaan(PertanyaanKuisioner pertanyaan);
 	public void hapusPertanyaan(UUID idPertanyaan);

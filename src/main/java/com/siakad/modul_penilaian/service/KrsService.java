@@ -6,10 +6,10 @@ import java.util.UUID;
 import com.sia.main.domain.Krs;
 
 public interface KrsService {
-	public List<Krs> getPesertaKelas(UUID idPemb);
-	public void updateNilaiAkhir(Krs krs);
-	public double getNilaiMutu(UUID idKrs);
-	public Krs getById(UUID idKrs);
-	public List<Krs> getKrsAktifByPd(UUID idPd, UUID idTglSmt);
-	public List<Krs> getAllByPd(UUID idPd);
+	public List<Krs> ambilPesertaKelas(UUID idPemb);
+	public void perbaruiNilaiAkhir(Krs krs);
+	public double ambilNilaiMutu(UUID idKrs);
+	public Krs ambilKrs(UUID idKrs);
+	public List<Krs> ambilKrsAktifBerdasarkanPd(UUID idPd, UUID idTglSmt);
+	public List<Krs> ambilSemuaBerdasarkanPd(UUID idPd);
 }

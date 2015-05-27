@@ -15,7 +15,7 @@ public class KomponenNilaiServiceImpl implements KomponenNilaiService {
 	private KomponenNilaiRepository repositoryKompNilai;
 	
 	@Override
-	public List<KomponenNilai> getAllKomponen(UUID idPemb) {
+	public List<KomponenNilai> ambilSemuaKomponen(UUID idPemb) {
 		// TODO Auto-generated method stub
 		return repositoryKompNilai.get("id_pemb='" + idPemb + "' AND a_komp_aktif=TRUE", "", -1, -1);
 	}
@@ -41,7 +41,7 @@ public class KomponenNilaiServiceImpl implements KomponenNilaiService {
 	}
 
 	@Override
-	public KomponenNilai getById(UUID idKomp) {
+	public KomponenNilai ambilKomponen(UUID idKomp) {
 		// TODO Auto-generated method stub
 		return repositoryKompNilai.getById(idKomp);
 	}

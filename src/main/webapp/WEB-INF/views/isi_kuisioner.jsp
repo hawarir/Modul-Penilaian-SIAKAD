@@ -91,27 +91,25 @@
 						<h4 class="panel-title"><c:out value="${kuisioner.getNmKuisioner()}"></c:out> </h4>
 					</div>
 					<div class="panel-body">
-						<form>
-							<table class="table">
-								<thead>
-									<tr>
-										<th>No</th>
-										<th>Pertanyaan</th>
-										<th>Skor</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="pertanyaan" varStatus="status" items="${daftarPertanyaan}">
-									<tr>
-										<td><c:out value="${status.index + 1}"></c:out></td>
-										<td><c:out value="${pertanyaan.getPertanyaan()}"></c:out></td>
-										<td><div class="slider"></div></td>
-									</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-							<button type="submit" class="btn btn-primary pull-right">Submit</button>
-						</form>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>Pertanyaan</th>
+									<th>Skor</th>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach var="pertanyaan" varStatus="status" items="${daftarPertanyaan}">
+								<tr name="${pertanyaan.getIdPertanyaanKuisioner()}">
+									<td><c:out value="${status.index + 1}"></c:out></td>
+									<td><c:out value="${pertanyaan.getPertanyaan()}"></c:out></td>
+									<td><div class="slider"></div></td>
+								</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+						<button id="submitKuisioner" type="button" class="btn btn-primary pull-right">Submit</button>
 					</div>
 				</div>
 			</div>
@@ -121,14 +119,38 @@
 	
 	<script>
 	$(document).ready(function() {
+		var idKrs = "${idKrs}";
+		
 		$(".slider").slider({
 			min : 1,
 			max : "${kuisioner.getSkalaKuisioner()}"
 		});
 		
-		$("button").click(function() {
+		$("#submitKuisioner").click(function() {
+			var listNilai = new Array();
+			
 			$(".slider").each(function(index, element) {
-				alert($(element).slider("value"));
+				var idPertanyaan = $(element).closest("tr").attr("name");
+				var nilaiPertanyaan = $(element).slider("value");
+				
+				var nilaiJSON = {
+					"idPertanyaan" : idPertanyaan,
+					"nilaiPertanyaan" : nilaiPertanyaan
+				};
+				
+				listNilai.push(nilaiJSON);
+			});
+			
+			$.ajax({
+				url : idKrs + "/simpan_kuisioner/",
+				type : "POST",
+				contentType : "application/json",
+				data : JSON.stringify(listNilai),
+				success : function(data) {
+					if(data.status == "ok") {
+						alert("Kuisioner berhasil disimpan");
+					}
+				}
 			});
 		});
 	});

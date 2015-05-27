@@ -7,6 +7,7 @@ import com.sia.main.domain.PertanyaanKuisioner;
 
 public interface PertanyaanKuisionerRepository {
 	public List<PertanyaanKuisioner> getByIdKuisioner(UUID idKuisioner);
+	public PertanyaanKuisioner getById(UUID idPertanyaan);
 	public UUID insert(PertanyaanKuisioner pertanyaan);
 	public void update(PertanyaanKuisioner pertanyaan);
 	public void delete(UUID idPertanyaan);

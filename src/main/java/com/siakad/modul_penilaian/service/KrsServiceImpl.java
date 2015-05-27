@@ -15,25 +15,25 @@ public class KrsServiceImpl implements KrsService {
 	private KrsRepository repositoryKrs;
 
 	@Override
-	public List<Krs> getPesertaKelas(UUID idPemb) {
+	public List<Krs> ambilPesertaKelas(UUID idPemb) {
 		// TODO Auto-generated method stub
 		return repositoryKrs.getByPemb(idPemb);
 	}
 
 	@Override
-	public Krs getById(UUID idKrs) {
+	public Krs ambilKrs(UUID idKrs) {
 		// TODO Auto-generated method stub
 		return repositoryKrs.getById(idKrs);
 	}
 
 	@Override
-	public void updateNilaiAkhir(Krs krs) {
+	public void perbaruiNilaiAkhir(Krs krs) {
 		// TODO Auto-generated method stub
 		repositoryKrs.update(krs);
 	}
 
 	@Override
-	public double getNilaiMutu(UUID idKrs) {
+	public double ambilNilaiMutu(UUID idKrs) {
 		// TODO Auto-generated method stub
 		Krs krs = repositoryKrs.getById(idKrs);
 		if(krs.getKonversiNilai() != null)
@@ -43,13 +43,13 @@ public class KrsServiceImpl implements KrsService {
 	}
 
 	@Override
-	public List<Krs> getKrsAktifByPd(UUID idPd, UUID idTglSmt) {
+	public List<Krs> ambilKrsAktifBerdasarkanPd(UUID idPd, UUID idTglSmt) {
 		// TODO Auto-generated method stub
 		return repositoryKrs.getAktifByPd(idPd, idTglSmt);
 	}
 	
 	@Override
-	public List<Krs> getAllByPd(UUID idPd) {
+	public List<Krs> ambilSemuaBerdasarkanPd(UUID idPd) {
 		return repositoryKrs.getAllByPd(idPd);
 	}
 	

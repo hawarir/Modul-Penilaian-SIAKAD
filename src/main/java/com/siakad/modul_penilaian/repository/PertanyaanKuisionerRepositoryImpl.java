@@ -28,6 +28,13 @@ public class PertanyaanKuisionerRepositoryImpl implements
 	}
 	
 	@Override
+	@Transactional
+	public PertanyaanKuisioner getById(UUID idPertanyaan) {
+		// TODO Auto-generated method stub
+		return (PertanyaanKuisioner) sessionFactory.getCurrentSession().get(PertanyaanKuisioner.class, idPertanyaan);
+	}
+	
+	@Override
 	public UUID insert(PertanyaanKuisioner pertanyaan) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.openSession();

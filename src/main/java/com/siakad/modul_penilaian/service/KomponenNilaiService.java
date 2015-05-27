@@ -6,9 +6,9 @@ import java.util.UUID;
 import com.sia.main.domain.KomponenNilai;
 
 public interface KomponenNilaiService {
-	public List<KomponenNilai> getAllKomponen(UUID idPemb);
+	public List<KomponenNilai> ambilSemuaKomponen(UUID idPemb);
 	public UUID tambahKomponen(KomponenNilai komp);
 	public void simpanKomponen(List<KomponenNilai> listKomponen);
 	public void hapusKomponen(UUID idKomp);
-	public KomponenNilai getById(UUID idKomp);
+	public KomponenNilai ambilKomponen(UUID idKomp);
 }

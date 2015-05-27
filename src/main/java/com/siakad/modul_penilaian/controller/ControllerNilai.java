@@ -49,7 +49,7 @@ public class ControllerNilai {
 	
 	@RequestMapping(value = {"/kelola_nilai/", "/lihat_nilai/"}, method = RequestMethod.GET)
 	public ModelAndView tampilkanDaftarKelas(Locale locale, Model model) {
-		List<Pemb> kelas = servicePemb.getAllPembelajaran();
+		List<Pemb> kelas = servicePemb.ambilSemuaPemb();
 		ModelAndView daftarKelas = new ModelAndView();
 		daftarKelas.setViewName("daftar_kelas");
 		daftarKelas.addObject("listKelas", kelas);
@@ -58,10 +58,10 @@ public class ControllerNilai {
 
 	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.POST)
 	public ModelAndView tampilkanKelolaNilai(@RequestParam("idPemb") UUID idPemb) {
-		List<Krs> krsInfo = serviceKrs.getPesertaKelas(idPemb);
-		List<KomponenNilai> komp = serviceKomp.getAllKomponen(idPemb);
-		List<Nilai> listNilai = serviceNilai.getNilaiKelas(krsInfo);
-		Pemb pemb = servicePemb.getById(idPemb);
+		List<Krs> krsInfo = serviceKrs.ambilPesertaKelas(idPemb);
+		List<KomponenNilai> komp = serviceKomp.ambilSemuaKomponen(idPemb);
+		List<Nilai> listNilai = serviceNilai.ambilNilaiKelas(krsInfo);
+		Pemb pemb = servicePemb.ambilPemb(idPemb);
 		String namaKelas = pemb.getMk().getNamaMK() + " " + pemb.getNmPemb();
 		
 		ModelAndView kelolaNilai = new ModelAndView();
@@ -77,8 +77,8 @@ public class ControllerNilai {
 	
 	@RequestMapping(value = "/lihat_nilai/", method = RequestMethod.POST)
 	public ModelAndView tampilkanLihatNilai(@RequestParam("idPemb") UUID idPemb, Locale locale, Model model) {
-		List<Krs> krsInfo = serviceKrs.getPesertaKelas(idPemb);
-		Pemb pemb = servicePemb.getById(idPemb);
+		List<Krs> krsInfo = serviceKrs.ambilPesertaKelas(idPemb);
+		Pemb pemb = servicePemb.ambilPemb(idPemb);
 		String namaKelas = pemb.getMk().getNamaMK() + " " + pemb.getNmPemb();
 		
 		ModelAndView lihatNilai = new ModelAndView();
@@ -91,7 +91,7 @@ public class ControllerNilai {
 	
 	@RequestMapping(value = "/kelola_nilai/{idPemb}/tambah_komponen/", method = RequestMethod.POST)
 	public @ResponseBody AjaxResponse tambahKomponenNilai(@RequestBody KomponenNilai komponen, @PathVariable UUID idPemb) {
-		Pemb foreignPemb = servicePemb.getById(idPemb);
+		Pemb foreignPemb = servicePemb.ambilPemb(idPemb);
 		komponen.setPemb(foreignPemb);
 		UUID idNew = serviceKomp.tambahKomponen(komponen);
 		return new AjaxResponse("ok", "Komponen berhasil ditambah", idNew);
@@ -107,7 +107,7 @@ public class ControllerNilai {
 	public @ResponseBody AjaxResponse simpanKomponenNilai(@RequestBody KomponenNilai[] listKomponen, @PathVariable UUID idPemb) {
 		List<KomponenNilai> listKomponenNilai = new ArrayList<KomponenNilai>();
 		for (KomponenNilai komponen : listKomponen) {
-			Pemb foreignPemb = servicePemb.getById(idPemb);
+			Pemb foreignPemb = servicePemb.ambilPemb(idPemb);
 			komponen.setPemb(foreignPemb);
 			
 			listKomponenNilai.add(komponen);
@@ -121,25 +121,25 @@ public class ControllerNilai {
 		List<Nilai> listNilai = new ArrayList<Nilai>();
 		for (JSONNilai nilaiJSON : listNilaiJSON) {
 			Nilai nilai = new Nilai();
-			nilai.setKrs(serviceKrs.getById(nilaiJSON.getIdKrs()));
-			nilai.setKomponenNilai(serviceKomp.getById(nilaiJSON.getIdKomp()));
+			nilai.setKrs(serviceKrs.ambilKrs(nilaiJSON.getIdKrs()));
+			nilai.setKomponenNilai(serviceKomp.ambilKomponen(nilaiJSON.getIdKomp()));
 			nilai.setNilai(nilaiJSON.getNilai());
 			
 			listNilai.add(nilai);
 		}
-		serviceNilai.submitNilai(listNilai);
-		List<Krs> listKrs = serviceKrs.getPesertaKelas(idPemb);
+		serviceNilai.masukkanNilai(listNilai);
+		List<Krs> listKrs = serviceKrs.ambilPesertaKelas(idPemb);
 		for (Krs krs : listKrs) {
-			krs.setNilaiAkhir(serviceNilai.getNilaiAkhir(krs));
-			krs.setKonversiNilai(serviceKonversi.getByBatas(krs.getNilaiAkhir()));
-			serviceKrs.updateNilaiAkhir(krs);
+			krs.setNilaiAkhir(serviceNilai.ambilNilaiAkhir(krs));
+			krs.setKonversiNilai(serviceKonversi.ambilBerdasarkanBatas(krs.getNilaiAkhir()));
+			serviceKrs.perbaruiNilaiAkhir(krs);
 		}
 		return new AjaxResponse("ok", "Nilai berhasil disimpan", null);
 	}
 	
 	@RequestMapping(value = "/konversi_nilai/", method = RequestMethod.GET)
 	public ModelAndView tampilkanKonversiNilai() {
-		List<KonversiNilai> listKonversi = serviceKonversi.getKonversiNilai();
+		List<KonversiNilai> listKonversi = serviceKonversi.ambilSemuaKonversiNilai();
 		ModelAndView daftarKonversi = new ModelAndView();
 		daftarKonversi.setViewName("daftar_konversi_nilai");
 		daftarKonversi.addObject("listKonversi", listKonversi);
@@ -149,7 +149,7 @@ public class ControllerNilai {
 	
 	@RequestMapping(value = "/konversi_nilai/tambah_konversi/", method = RequestMethod.POST)
 	public @ResponseBody AjaxResponse tambahKonversiNilai(@RequestBody KonversiNilai konversi) {
-		List<KonversiNilai> listKonversi = serviceKonversi.getKonversiNilai();
+		List<KonversiNilai> listKonversi = serviceKonversi.ambilSemuaKonversiNilai();
 		HashMap<String, Integer> hashHuruf = new HashMap<String, Integer>();
 		HashMap<Double, Integer> hashNilai = new HashMap<Double, Integer>();
 		HashMap<Double, Integer> hashBatas = new HashMap<Double, Integer>();

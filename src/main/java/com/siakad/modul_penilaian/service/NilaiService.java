@@ -6,7 +6,7 @@ import com.sia.main.domain.Krs;
 import com.sia.main.domain.Nilai;
 
 public interface NilaiService {
-	public void submitNilai(List<Nilai> listNilai);
-	public List<Nilai> getNilaiKelas(List<Krs> listKrs);
-	public double getNilaiAkhir(Krs krs);
+	public void masukkanNilai(List<Nilai> listNilai);
+	public List<Nilai> ambilNilaiKelas(List<Krs> listKrs);
+	public double ambilNilaiAkhir(Krs krs);
 }

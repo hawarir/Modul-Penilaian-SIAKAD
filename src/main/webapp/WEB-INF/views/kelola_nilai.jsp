@@ -124,7 +124,7 @@
 													<input type="text" class="form-control" value='${resultNilai}' />															
 												</td>
 											</c:forEach>
-											<td><input type="text" class="form-control" value='' disabled/></td>
+											<td></td>
 										</tr>
 									</c:forEach>
 								</tbody>

@@ -15,7 +15,7 @@ public class KuisionerServiceImpl implements KuisionerService {
 	private KuisionerRepository repositoryKuisioner;
 
 	@Override
-	public List<Kuisioner> getAllKuisioner() {
+	public List<Kuisioner> ambilSemuaKuisioner() {
 		// TODO Auto-generated method stub
 		return repositoryKuisioner.get("aKuisionerAktif = TRUE", "", -1, -1);
 	}
@@ -27,7 +27,7 @@ public class KuisionerServiceImpl implements KuisionerService {
 	}
 
 	@Override
-	public Kuisioner getById(UUID idKuisioner) {
+	public Kuisioner ambilKuisioner(UUID idKuisioner) {
 		// TODO Auto-generated method stub
 		return repositoryKuisioner.getById(idKuisioner);
 	}

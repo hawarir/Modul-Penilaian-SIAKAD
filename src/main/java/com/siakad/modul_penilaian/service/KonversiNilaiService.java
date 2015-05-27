@@ -6,9 +6,9 @@ import java.util.UUID;
 import com.sia.main.domain.KonversiNilai;
 
 public interface KonversiNilaiService {
-	public List<KonversiNilai> getKonversiNilai();
+	public List<KonversiNilai> ambilSemuaKonversiNilai();
 	public UUID tambahKonversiNilai(KonversiNilai konversi);
 	public void hapusKonversiNilai(UUID idKonversi);
 	public void simpanKonversiNilai(KonversiNilai[] listKonversi);
-	public KonversiNilai getByBatas(double batas);
+	public KonversiNilai ambilBerdasarkanBatas(double batas);
 }
