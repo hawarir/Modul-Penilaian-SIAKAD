@@ -80,8 +80,8 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="row">
-		<div class="container">
+	<div class="container">
+		<div class="row">
 			<div class="col-md-6 col-md-offset-3" class="content">
 				<div class="panel panel-white">
 					<div class="panel-heading">

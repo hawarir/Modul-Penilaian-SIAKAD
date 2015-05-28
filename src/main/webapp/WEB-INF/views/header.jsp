@@ -174,7 +174,9 @@
 								class="arrow"></span></a>
 							<ul class="sub-menu">
 								<li><a href="${pageContext.servletContext.contextPath}/kelola_nilai/">Kelola Nilai</a></li>
-								<li><a href="${pageContext.servletContext.contextPath}/lihat_nilai/">Lihat Nilai</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/lihat_nilai/">Lihat Nilai Per Kelas</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/lihat_nilai_periode/">Nilai Per Periode</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/lihat_transkrip/">Transkrip Nilai</a></li>
 							</ul>
 						</li>
 						<li class="droplink"><a href="#"><p>Indeks Prestasi</p> <span
@@ -189,6 +191,12 @@
 							<ul class="sub-menu">
 								<li><a href="${pageContext.servletContext.contextPath}/kelola_kuisioner/">Kelola Kuisioner</a></li>
 								<li><a href="${pageContext.servletContext.contextPath}/isi_kuisioner/">Isi Kuisioner</a></li>
+							</ul>
+						</li>
+						<li class="droplink"><a href="#"><p>Pengaturan</p> <span
+								class="arrow"></span></a>
+							<ul class="sub-menu">
+								<li><a href="${pageContext.servletContext.contextPath}/konversi_nilai/">Konversi Nilai</a></li>
 							</ul>
 						</li>
 					</ul>

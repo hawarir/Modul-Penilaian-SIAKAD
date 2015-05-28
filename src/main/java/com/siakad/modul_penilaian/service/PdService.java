@@ -9,4 +9,5 @@ import com.sia.main.domain.Pd;
 
 public interface PdService {
 	public List<Pd> ambilSemuaPd();
+	public Pd ambilPd(UUID idPd);
 }

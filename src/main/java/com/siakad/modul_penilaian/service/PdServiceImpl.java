@@ -20,4 +20,10 @@ public class PdServiceImpl implements PdService {
 		return repositoryPd.get("aPdTerhapus = FALSE", "", -1, -1);
 	}
 
+	@Override
+	public Pd ambilPd(UUID idPd) {
+		// TODO Auto-generated method stub
+		return repositoryPd.getById(idPd);
+	}
+
 }

@@ -69,15 +69,6 @@
 	<script
 		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery-ui/jquery-ui.min.js"></script>
 	
-	<!-- css dan js spesifik -->
-	<link
-		href="${pageContext.servletContext.contextPath}/resources/plugins/toastr/toastr.min.css"
-		rel="stylesheet" />
-	<script
-		src="${pageContext.servletContext.contextPath}/resources/plugins/toastr/toastr.min.js"></script>
-	<script
-		src="${pageContext.servletContext.contextPath}/resources/plugins/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -89,8 +80,8 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="row">
-		<div class="container">
+	<div class="container">
+		<div class="row">
 			<div class="col-md-8 col-md-offset-2">
 				<div class="panel panel-white">
 					<div class="panel-heading">

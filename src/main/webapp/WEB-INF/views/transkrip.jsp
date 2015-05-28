@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/resources/favicon_16.ico">
-	<title>Isi Kuisioner</title>
+	<title>Transkrip</title>
 	
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<meta charset="UTF-8">
@@ -75,9 +76,6 @@
 	        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	        <![endif]-->
-	<link
-		href="${pageContext.servletContext.contextPath}/resources/plugins/jquery-ui/jquery-ui.min.css"
-		rel="stylesheet" type="text/css" />
 </head>
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
@@ -85,98 +83,46 @@
 	<!-- content -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-10 col-md-offset-1">
+			<div class="col-md-12">
 				<div class="panel panel-white">
 					<div class="panel-heading">
-						<h4 class="panel-title"><c:out value="${kuisioner.getNmKuisioner()}"></c:out> </h4>
+						<h4 class="panel-title">Transkrip Nilai</h4>
 					</div>
 					<div class="panel-body">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>No</th>
-									<th>Pertanyaan</th>
-									<th>Skor</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="pertanyaan" varStatus="status" items="${daftarPertanyaan}">
-								<tr name="${pertanyaan.getIdPertanyaanKuisioner()}">
-									<td><c:out value="${status.index + 1}"></c:out></td>
-									<td><c:out value="${pertanyaan.getPertanyaan()}"></c:out></td>
-									<td><div class="slider"></div></td>
-								</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-						<button id="submitKuisioner" type="button" class="btn btn-primary pull-right">Submit</button>
+						<p>Nama : <c:out value="${pd.getNmPd()}"></c:out></p>
+						<p>NIM : <c:out value="${pd.getNimPd()}"></c:out></p>
+						<p>IPK : <fmt:formatNumber value="${ipk.getNilaiIpk()}" maxFractionDigits="2"></fmt:formatNumber></p>
+						
+						<div class="row">
+							<div class="col-md-8 col-md-offset-2">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Kode MK</th>
+											<th>Mata Kuliah</th>
+											<th>SKS</th>
+											<th>Nilai</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="krs" items="${daftarKrs}">
+											<tr>
+												<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
+												<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
+												<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
+												<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- end of content -->
-	
-	<script>
-	$(document).ready(function() {
-		var idKrs = "${idKrs}";
-		var idKuisioner = "${kuisioner.getIdKuisioner()}";
-		
-		toastr.options = {
-				  "closeButton": true,
-				  "debug": false,
-				  "newestOnTop": false,
-				  "progressBar": false,
-				  "positionClass": "toast-top-center",
-				  "preventDuplicates": true,
-				  "showDuration": "300",
-				  "hideDuration": "1000",
-				  "timeOut": 0,
-				  "extendedTimeOut": 0,
-				  "showEasing": "swing",
-				  "hideEasing": "linear",
-				  "showMethod": "fadeIn",
-				  "hideMethod": "fadeOut",
-				  "tapToDismiss": true
-				}
-		
-		$(".slider").slider({
-			min : 1,
-			max : "${kuisioner.getSkalaKuisioner()}"
-		});
-		
-		$("#submitKuisioner").click(function() {
-			var listNilai = new Array();
-			
-			$(".slider").each(function(index, element) {
-				var idPertanyaan = $(element).closest("tr").attr("name");
-				var nilaiPertanyaan = $(element).slider("value");
-				
-				var nilaiJSON = {
-					"idPertanyaan" : idPertanyaan,
-					"nilaiPertanyaan" : nilaiPertanyaan
-				};
-				
-				listNilai.push(nilaiJSON);
-			});
-			
-			$.ajax({
-				url : idKrs + "/" + idKuisioner + "/simpan_kuisioner/",
-				type : "POST",
-				contentType : "application/json",
-				data : JSON.stringify(listNilai),
-				success : function(data) {
-					if(data.status == "ok") {
-						toastr["success"](data.message, "Sukses");
-						setTimeout(function() {
-							location.replace("");
-						}, 3000);
-					}
-				}
-			});
-		});
-	});
-	</script>
 	
 	<%@include file="footer.jsp" %>
 </body>

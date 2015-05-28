@@ -1,5 +1,6 @@
 package com.siakad.modul_penilaian.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -22,6 +23,7 @@ import com.sia.main.domain.Krs;
 import com.sia.main.domain.Kuisioner;
 import com.sia.main.domain.NilaiKuisioner;
 import com.sia.main.domain.PertanyaanKuisioner;
+import com.sia.main.domain.StatusKuisioner;
 import com.sia.main.domain.TglSmt;
 import com.siakad.modul_penilaian.service.AjaxResponse;
 import com.siakad.modul_penilaian.service.JSONNilaiKuisioner;
@@ -30,6 +32,7 @@ import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.KuisionerService;
 import com.siakad.modul_penilaian.service.NilaiKuisionerService;
 import com.siakad.modul_penilaian.service.PertanyaanKuisionerService;
+import com.siakad.modul_penilaian.service.StatusKuisionerService;
 import com.siakad.modul_penilaian.service.TglSmtService;
 
 @Controller
@@ -47,19 +50,32 @@ public class ControllerKuisioner {
 	private KrsService serviceKrs;
 	
 	@Autowired
+	private StatusKuisionerService serviceStatus;
+	
+	@Autowired
 	private TglSmtService serviceTglSmt;
 	
 	@RequestMapping(value = "/isi_kuisioner/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarIsiKuisioner(Locale locale, Model model) {
+	public ModelAndView tampilkanDaftarIsiKuisioner() {
 		UUID idPd = UUID.fromString("56f893a7-8988-444d-9e03-aa94832c88b0"); // hardcode id_pd Hawari Rahman
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
 		List<Krs> daftarKrs = serviceKrs.ambilKrsAktifBerdasarkanPd(idPd, tglSmtAktif.getIdTglSmt());
 		List<Kuisioner> daftarKuisioner = serviceKuisioner.ambilSemuaKuisioner();
+		List<Boolean> daftarStatus = new ArrayList<Boolean>();
+		
+		for (Krs krs : daftarKrs) {
+			for (Kuisioner kuisioner : daftarKuisioner) {
+				daftarStatus.add(serviceStatus.apakahKuisionerTerisi(krs.getIdKrs(), kuisioner.getIdKuisioner()));
+			}
+		}
+		
+		System.out.println(daftarStatus);
 		
 		ModelAndView daftarIsiKuisioner = new ModelAndView();
 		daftarIsiKuisioner.setViewName("daftar_kuisioner");
 		daftarIsiKuisioner.addObject("daftarKrs", daftarKrs);
 		daftarIsiKuisioner.addObject("daftarKuisioner", daftarKuisioner);
+		daftarIsiKuisioner.addObject("daftarStatus", daftarStatus);
 		
 		return daftarIsiKuisioner;
 	}
@@ -78,8 +94,8 @@ public class ControllerKuisioner {
 		return isiKuisioner;
 	}
 	
-	@RequestMapping(value = "/isi_kuisioner/{idKrs}/simpan_kuisioner/", method = RequestMethod.POST)
-	public @ResponseBody AjaxResponse submitKuisioner(@RequestBody JSONNilaiKuisioner[] daftarNilai, @PathVariable UUID idKrs) {
+	@RequestMapping(value = "/isi_kuisioner/{idKrs}/{idKuisioner}/simpan_kuisioner/", method = RequestMethod.POST)
+	public @ResponseBody AjaxResponse submitKuisioner(@RequestBody JSONNilaiKuisioner[] daftarNilai, @PathVariable("idKrs") UUID idKrs, @PathVariable("idKuisioner") UUID idKuisioner) {
 		for (JSONNilaiKuisioner nilai : daftarNilai) {
 			NilaiKuisioner nilaiKuisioner = new NilaiKuisioner();
 			nilaiKuisioner.setKrs(serviceKrs.ambilKrs(idKrs));
@@ -88,6 +104,12 @@ public class ControllerKuisioner {
 			
 			serviceNilaiKuisioner.simpanNilaiKuisioner(nilaiKuisioner);
 		}
+		
+		StatusKuisioner status = new StatusKuisioner();
+		status.setaKuisionerTerisi(true);
+		status.setKrs(serviceKrs.ambilKrs(idKrs));
+		status.setKuisioner(serviceKuisioner.ambilKuisioner(idKuisioner));
+		serviceStatus.masukkanStatus(status);
 		
 		return new AjaxResponse("ok", "Kuisioner berhasil disimpan", null);
 	}

@@ -1,6 +1,7 @@
 package com.siakad.modul_penilaian.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,12 @@ public class IpkServiceImpl implements IpkService {
 			ipk.setIdIpk(existingIpk.getIdIpk());
 			repositoryIpk.update(ipk);
 		}
+	}
+
+	@Override
+	public Ipk ambilIpkBerdasarkanPd(UUID idPd) {
+		// TODO Auto-generated method stub
+		return repositoryIpk.find(idPd);
 	}
 
 }

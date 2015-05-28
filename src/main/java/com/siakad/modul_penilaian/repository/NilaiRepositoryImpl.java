@@ -95,7 +95,6 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 		for (Nilai nilai : listNilai) {
 			result += (nilai.getNilai()*nilai.getKomponenNilai().getPersentaseKomponen())/100;
 		}
-		//System.out.println(idKrs + ": " + result);
 		return result;
 	}
 

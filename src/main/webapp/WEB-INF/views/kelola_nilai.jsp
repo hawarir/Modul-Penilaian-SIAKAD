@@ -88,8 +88,29 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="row">
-		<div class="container">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<div class="panel panel-white">
+					<div class="panel-heading">
+						<h4 class="panel-title">Daftar Kelas</h4>
+					</div>
+					<div class="panel-body">						
+						<form method="post" action="">
+							<div class="form-group">
+								<select class="form-control" name="idPemb">
+									<c:forEach var="kelas" items="${listKelas}">
+									<option value="${kelas.getIdPemb()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
+									</c:forEach>
+								</select>
+							</div>
+							<button type="submit" class="btn btn-primary pull-right">Buka</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-white">
 					<div class="panel-heading">
