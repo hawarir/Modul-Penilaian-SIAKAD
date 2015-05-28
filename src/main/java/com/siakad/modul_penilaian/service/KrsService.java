@@ -11,5 +11,6 @@ public interface KrsService {
 	public double ambilNilaiMutu(UUID idKrs);
 	public Krs ambilKrs(UUID idKrs);
 	public List<Krs> ambilKrsAktifBerdasarkanPd(UUID idPd, UUID idTglSmt);
+	public List<Krs> ambilKrsTerakhirBerdasarkanPd(UUID idPd);
 	public List<Krs> ambilSemuaBerdasarkanPd(UUID idPd);
 }

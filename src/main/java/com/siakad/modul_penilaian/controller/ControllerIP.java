@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sia.main.domain.Ipk;
@@ -43,8 +44,8 @@ public class ControllerIP {
 	@Autowired
 	private IpkService serviceIpk;
 	
-	@RequestMapping("/lihat_ips/")
-	public ModelAndView tampilkanIPS(Locale locale, Model model) {
+	@RequestMapping(value = "/lihat_ips/", method = RequestMethod.GET)
+	public ModelAndView tampilkanIPS() {
 		List<Ips> listIps = serviceIps.ambilSemuaIps();
 		ModelAndView indeksPrestasi = new ModelAndView();
 		indeksPrestasi.setViewName("daftar_ips");
@@ -53,8 +54,8 @@ public class ControllerIP {
 		return indeksPrestasi;
 	}
 	
-	@RequestMapping("/lihat_ipk/")
-	public ModelAndView tampilkanIPK(Locale locale, Model model) {
+	@RequestMapping(value = "/lihat_ipk/", method = RequestMethod.GET)
+	public ModelAndView tampilkanIPK() {
 		List<Ipk> listIpk = serviceIpk.ambilSemuaIpk();
 		ModelAndView indeksPrestasi = new ModelAndView();
 		indeksPrestasi.setViewName("daftar_ipk");
@@ -63,8 +64,16 @@ public class ControllerIP {
 		return indeksPrestasi;
 	}
 	
-	@RequestMapping("/update_ips/")
-	public void updateIPS(Locale locale, Model model) {
+	@RequestMapping(value = "/update_ip/", method = RequestMethod.GET)
+	public ModelAndView tampilkanLamanUpdate() {
+		ModelAndView lamanUpdate = new ModelAndView();
+		lamanUpdate.setViewName("update_ip");
+		
+		return lamanUpdate;
+	}
+	
+	@RequestMapping(value = "/update_ips/", method = RequestMethod.GET)
+	public void updateIPS() {
 		List<Pd> listAllPd = servicePd.ambilSemuaPd();
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
 		
@@ -88,8 +97,8 @@ public class ControllerIP {
 		}
 	}
 	
-	@RequestMapping("/update_ipk/")
-	public void updateIPk(Locale locale, Model model) {
+	@RequestMapping(value = "/update_ipk/", method = RequestMethod.GET)
+	public void updateIPk() {
 		List<Pd> listAllPd = servicePd.ambilSemuaPd();
 		
 		for (Pd pd : listAllPd) {

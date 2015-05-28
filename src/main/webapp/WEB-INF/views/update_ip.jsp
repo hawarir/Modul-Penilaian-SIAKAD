@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/resources/favicon_16.ico">
-	<title>Lihat Nilai Per Periode</title>
+	<title>Update IP</title>
 	
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<meta charset="UTF-8">
@@ -83,50 +81,41 @@
 	<!-- content -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-6 col-md-offset-3">
 				<div class="panel panel-white">
 					<div class="panel-heading">
-						<h4 class="panel-title">Nilai Per Periode</h4>
+						<h4 class="panel-title">Perbaharui Indeks Prestasi</h4>
 					</div>
 					<div class="panel-body">
-						<p>Nama : <c:out value="${pd.getNmPd()}"></c:out></p>
-						<p>NIM : <c:out value="${pd.getNimPd()}"></c:out></p>
-						
-						<c:forEach var="ips" items="${daftarIps}">
-							<div class="row">
-								<div class="col-md-8 col-md-offset-2">
-									<p>Periode : <c:out value="${ips.getTglSmt().getSmt().getNmSmt()} ${ips.getTglSmt().getThnAjaran().getThnThnAjaran()}"></c:out></p>
-									<p>IPS : <fmt:formatNumber value="${ips.getNilaiIps()}" maxFractionDigits="2"></fmt:formatNumber></p>
-									<table class="table">
-										<thead>
-											<tr>
-												<th>Kode MK</th>
-												<th>Mata Kuliah</th>
-												<th>SKS</th>
-												<th>Nilai</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:forEach var="krs" items="${daftarKrs}">
-												<c:if test="${krs.getPemb().getTglSmt().getIdTglSmt() == ips.getTglSmt().getIdTglSmt()}"></c:if>
-												<tr>
-													<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
-													<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
-													<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
-													<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
-												</tr>
-											</c:forEach>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</c:forEach>
+						<button type="button" class="btn btn-primary" id="updateIPS">Update IPS</button>
+						<button type="button" class="btn btn-primary" id="updateIPK">Update IPK</button>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- end of content -->
+	
+	<!-- script -->
+	<script>
+	$(document).ready(function() {
+		var contextPath = "${pageContext.servletContext.contextPath}";
+		$("#updateIPS").click(function() {
+			$.ajax({
+				url : contextPath + "/update_ips/",
+				type : "GET"
+			});
+		});
+		
+		$("#updateIPK").click(function() {
+			$.ajax({
+				url : contextPath + "/update_ipk/",
+				type : "GET"
+			});
+		});
+	});
+	</script>
+	<!-- end of script -->
 	
 	<%@include file="footer.jsp" %>
 </body>

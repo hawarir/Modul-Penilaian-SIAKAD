@@ -197,6 +197,7 @@
 								class="arrow"></span></a>
 							<ul class="sub-menu">
 								<li><a href="${pageContext.servletContext.contextPath}/konversi_nilai/">Konversi Nilai</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/update_ip/">Perbaharui IP</a></li>
 							</ul>
 						</li>
 					</ul>

@@ -49,8 +49,14 @@ public class KrsServiceImpl implements KrsService {
 	}
 	
 	@Override
+	public List<Krs> ambilKrsTerakhirBerdasarkanPd(UUID idPd) {
+		// TODO Auto-generated method stub
+		return repositoryKrs.getAllByPd(idPd, " AND krs.aKrsDiulang = FALSE");
+	}
+	
+	@Override
 	public List<Krs> ambilSemuaBerdasarkanPd(UUID idPd) {
-		return repositoryKrs.getAllByPd(idPd);
+		return repositoryKrs.getAllByPd(idPd, "");
 	}
 	
 }

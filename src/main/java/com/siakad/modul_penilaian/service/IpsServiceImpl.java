@@ -1,6 +1,7 @@
 package com.siakad.modul_penilaian.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,12 @@ public class IpsServiceImpl implements IpsService {
 	public List<Ips> ambilSemuaIps() {
 		// TODO Auto-generated method stub
 		return repositoryIps.getAll();
+	}
+
+	@Override
+	public List<Ips> ambilBerdasarkanPd(UUID idPd) {
+		// TODO Auto-generated method stub
+		return repositoryIps.getByPd(idPd);
 	}
 
 }

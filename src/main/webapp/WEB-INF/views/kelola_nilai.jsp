@@ -212,8 +212,7 @@
 	<!-- end of modal -->
 	
 	<!-- script khusus-->
-	<script>
-		
+	<script>		
 		$(document).ready(function() {
 			var idPemb = "${idPemb}";
 			toastr.options = {
@@ -366,6 +365,7 @@
 			//submit nilai
 			$("#tombolSimpanNilai").click(function() {
 				var listNilai = new Array();
+				$.blockUI({message : '<p>Sedang menyimpan nilai...</p>'});
 				$("tr.mahasiswa").each(function(index, element) {
 					var idKrs = $(element).attr("name");
 					var komponens = $(element).find("td.komponen-nilai");
@@ -391,6 +391,7 @@
 					data : JSON.stringify(listNilai),
 					success : function(data) {
 						if(data.status == "ok") {
+							$.unblockUI();
 							toastr["success"](data.message, "Sukses");
 						}
 					}

@@ -56,9 +56,9 @@ public class KrsRepositoryImpl implements KrsRepository{
 
 	@Override
 	@Transactional
-	public List<Krs> getAllByPd(UUID idPd) {
+	public List<Krs> getAllByPd(UUID idPd, String specialCond) {
 		// TODO Auto-generated method stub
-		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs krs WHERE krs.pd.idPd = '" + idPd + "' AND krs.aKrsDiulang = FALSE AND " + kondisiKrsOke);
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs krs WHERE krs.pd.idPd = '" + idPd + "' AND " + kondisiKrsOke + specialCond);
 		return query.list();
 	}
 	

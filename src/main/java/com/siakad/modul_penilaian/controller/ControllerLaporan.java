@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sia.main.domain.Ipk;
+import com.sia.main.domain.Ips;
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Pd;
 import com.siakad.modul_penilaian.service.IpkService;
+import com.siakad.modul_penilaian.service.IpsService;
 import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.PdService;
 
@@ -27,10 +29,21 @@ public class ControllerLaporan {
 	@Autowired
 	private IpkService serviceIpk;
 	
+	@Autowired
+	private IpsService serviceIps;
+	
 	@RequestMapping(value="/lihat_nilai_periode/", method = RequestMethod.GET)
 	public ModelAndView tampilkanNilaiPerPeriode() {
+		UUID idPd = UUID.fromString("56f893a7-8988-444d-9e03-aa94832c88b0");
+		List<Krs> daftarKrs = serviceKrs.ambilSemuaBerdasarkanPd(idPd);
+		Pd pesertaDidik = servicePd.ambilPd(idPd);
+		List<Ips> daftarIps = serviceIps.ambilBerdasarkanPd(idPd);
+		
 		ModelAndView lamanNilaiPeriode = new ModelAndView();
 		lamanNilaiPeriode.setViewName("nilai_per_periode");
+		lamanNilaiPeriode.addObject("daftarKrs", daftarKrs);
+		lamanNilaiPeriode.addObject("pd", pesertaDidik);
+		lamanNilaiPeriode.addObject("daftarIps", daftarIps);
 		
 		return lamanNilaiPeriode;
 	}
@@ -38,7 +51,7 @@ public class ControllerLaporan {
 	@RequestMapping(value="/lihat_transkrip/", method = RequestMethod.GET)
 	public ModelAndView tampilkanTranskrip() {
 		UUID idPd = UUID.fromString("56f893a7-8988-444d-9e03-aa94832c88b0"); // hardcode id_pd Hawari Rahman
-		List<Krs> daftarKrs = serviceKrs.ambilSemuaBerdasarkanPd(idPd);
+		List<Krs> daftarKrs = serviceKrs.ambilKrsTerakhirBerdasarkanPd(idPd);
 		Pd pesertaDidik = servicePd.ambilPd(idPd);
 		Ipk ipk = serviceIpk.ambilIpkBerdasarkanPd(idPd);
 		

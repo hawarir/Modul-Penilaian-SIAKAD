@@ -25,6 +25,14 @@ public class IpsRepositoryImpl implements IpsRepository {
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM Ips");
 		return query.list();
 	}
+	
+	@Override
+	@Transactional
+	public List<Ips> getByPd(UUID idPd) {
+		// TODO Auto-generated method stub
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT ips FROM Ips as ips LEFT JOIN ips.tglSmt WHERE id_pd='" + idPd + "' ORDER BY tgl_awal_susun_krs ASC");
+		return query.list();
+	}
 
 	@Override
 	public UUID insert(Ips ips) {
