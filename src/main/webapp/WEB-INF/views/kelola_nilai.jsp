@@ -142,10 +142,10 @@
 															<c:set var="resultNilai" value="${nilai.getNilai()}" scope="page"></c:set>
 														</c:if>
 													</c:forEach>
-													<input type="text" class="form-control" value='${resultNilai}' />															
+													<input type="text" class="form-control nilai" value='${resultNilai}' />
 												</td>
 											</c:forEach>
-											<td></td>
+											<td><input type="text" class="form-control nilai-akhir" value="${krs.getNilaiAkhir()}" disabled/></td>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -186,10 +186,10 @@
 									</thead>
 									<tbody>
 										<c:forEach var="komp" items="${listKomponen }">
-										<tr class="komponen-modal">													
+										<tr class="komponen-modal" id="${komp.getIdKomponen()}" name="${komp.getIdKomponen()}">													
 											<td><input type="text" class="form-control nama-komponen" value="<c:out value="${komp.getNamaKomponen()}"></c:out>"/></td>
 											<td><input type="text" class="form-control persentase-komponen" value="<c:out value="${komp.getPersentaseKomponen()}"></c:out>"/></td>
-											<td><button type="button" class="btn btn-danger tombolHapusKomponen" name="${komp.getIdKomponen()}"><i class="glyphicon glyphicon-minus"></i></button></td>
+											<td><button type="button" class="btn btn-danger tombolHapusKomponen"><i class="glyphicon glyphicon-minus"></i></button></td>
 										</tr>
 										</c:forEach>
 										<tr id="newRowKomponen">
@@ -234,6 +234,23 @@
 					  "hideMethod": "fadeOut"
 					}
 			
+			//script merubah nilai akhir di tabel
+			$(".nilai").change(function() {
+				var baris = $(this).closest("tr");
+				var elemenNilai = $(baris).find("input.nilai");
+				var nilaiAkhir = 0;
+				
+				$(elemenNilai).each(function(index, element) {
+					var nilai = $(element).val();
+					var idKomp = $(element).closest("td").attr("name");
+					var persenKomp = $("#" + idKomp).find("input.persentase-komponen").val();
+					
+					nilaiAkhir += (nilai*persenKomp)/100;
+				});
+				
+				$(baris).find("input.nilai-akhir").val(nilaiAkhir);
+			});
+			
 			//script tambah komponen
 			$("#tombolTambahKomponen").click(function() {
 				if($("#namaKomponenNew").val() != "" && $("#persentaseKomponenNew").val() != "") {
@@ -264,10 +281,10 @@
 							data : JSON.stringify(komp),
 							success : function(data) {
 								if(data.status == "ok") {
-									$("#newRowKomponen").before('<tr>'
+									$("#newRowKomponen").before('<tr id="' + data.data + '"' + 'name="'+ data.data + '">'
 										+ '<td><input type="text" class="form-control nama-komponen" value="' + namaKomp + '"/></td>'
 										+ '<td><input type="text" class="form-control persentase-komponen" value="' + persenKomp +'"/></td>'
-										+ '<td><button type="button" class="btn btn-danger tombolHapusKomponen" name="'+ data.data +'"><i class="glyphicon glyphicon-minus"></i></button></td>'
+										+ '<td><button type="button" class="btn btn-danger tombolHapusKomponen"><i class="glyphicon glyphicon-minus"></i></button></td>'
 										+ '</tr>'
 									);
 									toastr["success"](data.message, "Sukses");
@@ -286,7 +303,7 @@
 			
 			//hapus komponen
 			$("body").on("click", ".tombolHapusKomponen", function() {
-				var idKomponen = $(this).attr('name');
+				var idKomponen = $(this).closest("tr").attr('name');
 				var button = $(this);
 				$.ajax({
 					url : "hapus_komponen/",
@@ -316,7 +333,7 @@
 				else {
 					var listKomponen = new Array();
 					$("tr.komponen-modal").each(function(index, element) {
-						var idKomponen = $(element).find("button").attr("name");
+						var idKomponen = $(element).attr("name");
 						var namaKomponen = $(element).find("input.nama-komponen").val();
 						var persentaseKomponen = $(element).find("input.persentase-komponen").val();
 						
