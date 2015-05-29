@@ -167,7 +167,7 @@
 						</form>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-primary pull-right" id="buttonSubmitPertanyaan">Selesai</button>
+						<button type="button" class="btn btn-primary pull-right" id="buttonSubmitPertanyaan" data-loading-text="Menyimpan...">Selesai</button>
 					</div>
 				</div>
 			</div>
@@ -236,11 +236,10 @@
 						success : function(data) {
 							if(data.status == "ok") {
 								idKuisioner = data.data;
+								$("#contentNamaKuisioner, #contentPertanyaanKuisioner").toggleClass("hide");
 							}
 						}
 					});
-					
-					$("#contentNamaKuisioner, #contentPertanyaanKuisioner").toggleClass("hide");
 				}
 			});
 			
@@ -267,7 +266,9 @@
 			
 			// tambah pertanyaan
 			$("#tombolTambahPertanyaan").click(function() {
+				var tombol = $(this);
 				if($("#pertanyaanBaru").val() != "") {
+					$(tombol).button("loading");
 					var pertanyaan = $("#pertanyaanBaru").val();
 					var jsonPertanyaan = {
 						"idPertanyaan" : null,
@@ -288,6 +289,7 @@
 									+ '</tr>'
 								);
 								$("#pertanyaanBaru").val("");
+								$(tombol).button("reset");
 							}
 						}
 					});
@@ -296,8 +298,10 @@
 			
 			// hapus pertanyaan
 			$("body").on("click", ".tombolHapusPertanyaan", function() {
+				var tombol = $(this);				
+				$(tombol).button("loading");
+				
 				var idPertanyaan = $(this).attr('name');
-				var tombol = $(this);
 				
 				$.ajax({
 					url : "hapus_pertanyaan/",
@@ -312,6 +316,7 @@
 			
 			//simpan pertanyaan
 			$("#buttonSubmitPertanyaan").click(function() {
+				$("#buttonSubmitPertanyaan").button("loading");
 				var listPertanyaan = new Array();
 				$("tr.pertanyaan").each(function(index, element) {
 					var idPertanyaan = $(element).find("button").attr("name");
@@ -332,6 +337,7 @@
 					contentType : "application/json",
 					data : JSON.stringify(listPertanyaan),
 					success : function(data) {
+						$("#buttonSubmitPertanyaan").button("reset");
 						location.reload();
 					}
 				});

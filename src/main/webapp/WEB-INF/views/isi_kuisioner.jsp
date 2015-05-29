@@ -109,7 +109,7 @@
 								</c:forEach>
 							</tbody>
 						</table>
-						<button id="submitKuisioner" type="button" class="btn btn-primary pull-right">Submit</button>
+						<button id="submitKuisioner" type="button" class="btn btn-primary pull-right" data-loading-text="Menyimpan...">Submit</button>
 					</div>
 				</div>
 			</div>
@@ -121,6 +121,7 @@
 	$(document).ready(function() {
 		var idKrs = "${idKrs}";
 		var idKuisioner = "${kuisioner.getIdKuisioner()}";
+		var max = "${kuisioner.getSkalaKuisioner()}";
 		
 		toastr.options = {
 				  "closeButton": true,
@@ -141,12 +142,16 @@
 				}
 		
 		$(".slider").slider({
+			value : max/2,
 			min : 1,
-			max : "${kuisioner.getSkalaKuisioner()}"
+			max : max
 		});
 		
 		$("#submitKuisioner").click(function() {
 			var listNilai = new Array();
+			var tombol = $(this);
+			
+			$(tombol).button("loading");
 			
 			$(".slider").each(function(index, element) {
 				var idPertanyaan = $(element).closest("tr").attr("name");
@@ -168,9 +173,8 @@
 				success : function(data) {
 					if(data.status == "ok") {
 						toastr["success"](data.message, "Sukses");
-						setTimeout(function() {
-							location.replace("");
-						}, 3000);
+						$(tombol).button("reset");
+						location.replace("");
 					}
 				}
 			});

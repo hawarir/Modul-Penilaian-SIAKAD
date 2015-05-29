@@ -45,6 +45,14 @@ public class KrsRepositoryImpl implements KrsRepository{
 		session.flush();
 		session.close();
 	}
+	
+	@Override
+	@Transactional
+	public List<Krs> getAktif(UUID idTglSmt) {
+		// TODO Auto-generated method stub
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs krs WHERE krs.pemb.tglSmt.idTglSmt = '" + idTglSmt + "' AND " + kondisiKrsOke);
+		return query.list();
+	}
 
 	@Override
 	@Transactional

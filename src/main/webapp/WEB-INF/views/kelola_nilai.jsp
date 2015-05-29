@@ -199,7 +199,7 @@
 										</tr>
 									</tbody>
 								</table>
-								<button type="button" class="btn btn-primary pull-right" id="tombolSimpanKomponen">Simpan</button>
+								<button type="button" class="btn btn-primary pull-right" id="tombolSimpanKomponen" data-loading-text="Menyimpan...">Simpan</button>
 							</form>
 						</div>
 					</div>
@@ -330,6 +330,7 @@
 					toastr["warning"]("Total persentase tidak boleh di bawah 100", "Peringatan");
 				}
 				else {
+					$("#tombolSimpanKomponen").button("loading");
 					var listKomponen = new Array();
 					$("tr.komponen-modal").each(function(index, element) {
 						var idKomponen = $(element).attr("name");
@@ -354,6 +355,7 @@
 						data : JSON.stringify(listKomponen),
 						success : function(data) {
 							if(data.status == "ok") {
+								$("#tombolSimpanKomponen").button("reset");
 								toastr["success"](data.message, "Sukses");
 								location.reload();
 							}

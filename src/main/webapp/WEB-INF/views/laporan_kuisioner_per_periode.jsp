@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+    <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/resources/favicon_16.ico">
-	<title>Indeks Prestasi Kumulatif</title>
+	<title>Kuisioner Per Periode</title>
 	
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<meta charset="UTF-8">
@@ -70,13 +70,6 @@
 	<script
 		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery-ui/jquery-ui.min.js"></script>
 	
-	<!-- css dan js spesifik -->
-	<link
-		href="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/css/jquery.dataTables.min.css"
-		rel="stylesheet" type="text/css" />
-	<script
-		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/js/jquery.dataTables.min.js"></script>
-	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -86,77 +79,31 @@
 </head>
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
-	
 	<!-- content -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
+			<div class="col-md-12">
 				<div class="panel panel-white">
 					<div class="panel-heading">
-						<h4 class="panel-title">Ranking IPK</h4>
+						<h4 class="panel-title">Laporan Kuisioner Per Periode</h4>
 					</div>
 					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12">
-								<div class="form-group pull-right">
-									<div class="form-inline">
-										<label for="filterAngkatan">Angkatan</label>
-										<select class="form-control" id="filterAngkatan">
-											<option value=""></option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<table class="table" id="tabel_ipk">
-									<thead>
-										<tr>
-											<th>NRP</th>
-											<th>Nama</th>
-											<th>IPK</th>
-											<th>Angkatan</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach var="ipk" items="${listIpk}">
-										<tr>
-											<td><c:out value="${ipk.getPd().getNimPd()}"></c:out></td>
-											<td><c:out value="${ipk.getPd().getNmPd()}"></c:out></td>
-											<td><fmt:formatNumber value="${ipk.getNilaiIpk()}" maxFractionDigits="2"></fmt:formatNumber></td>
-											<td><c:out value="${ipk.getPd().getAngkatanPd()}"></c:out></td>
-										</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-							</div>
-						</div>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Nama Kelas</th>
+									<th>Nama Dosen</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- end of content -->
-	
-	<!-- script custom -->
-	<script>
-		$(document).ready(function() {
-			var tabel = $("#tabel_ipk").DataTable({
-				"columnDefs" : [{"targets" : [3], "visible" : false}]
-			});
-			
-			tabel.column(3).cache("search").sort().unique().each(function(d) {
-				$("#filterAngkatan").append($('<option value="'+d+'">'+d+'</option>'));
-			});
-			
-			$("#filterAngkatan").on("change", function() {
-				tabel.column(3).search($(this).val()).draw();
-			});
-		});
-	</script>
-	<!-- end of script -->
-	
 	<%@include file="footer.jsp" %>
 </body>
 </html>

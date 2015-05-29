@@ -41,6 +41,12 @@ public class KrsServiceImpl implements KrsService {
 		else
 			return 0;
 	}
+	
+	@Override
+	public List<Krs> ambilKrsAktif(UUID idTglSmt) {
+		// TODO Auto-generated method stub
+		return repositoryKrs.getAktif(idTglSmt);
+	}
 
 	@Override
 	public List<Krs> ambilKrsAktifBerdasarkanPd(UUID idPd, UUID idTglSmt) {

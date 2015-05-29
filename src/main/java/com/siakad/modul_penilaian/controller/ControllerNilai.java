@@ -85,7 +85,7 @@ public class ControllerNilai {
 		String namaKelas = pemb.getMk().getNamaMK() + " " + pemb.getNmPemb();
 		
 		ModelAndView lihatNilai = new ModelAndView();
-		lihatNilai.setViewName("lihat_nilai");
+		lihatNilai.setViewName("laporan_nilai_per_kelas");
 		lihatNilai.addObject("krsInfo", krsInfo);
 		lihatNilai.addObject("namaKelas", namaKelas);
 		lihatNilai.addObject("listKelas", kelas);

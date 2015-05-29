@@ -40,7 +40,7 @@ public class ControllerLaporan {
 		List<Ips> daftarIps = serviceIps.ambilBerdasarkanPd(idPd);
 		
 		ModelAndView lamanNilaiPeriode = new ModelAndView();
-		lamanNilaiPeriode.setViewName("nilai_per_periode");
+		lamanNilaiPeriode.setViewName("laporan_nilai_per_periode");
 		lamanNilaiPeriode.addObject("daftarKrs", daftarKrs);
 		lamanNilaiPeriode.addObject("pd", pesertaDidik);
 		lamanNilaiPeriode.addObject("daftarIps", daftarIps);
@@ -56,7 +56,7 @@ public class ControllerLaporan {
 		Ipk ipk = serviceIpk.ambilIpkBerdasarkanPd(idPd);
 		
 		ModelAndView lamanTranskrip = new ModelAndView();
-		lamanTranskrip.setViewName("transkrip");
+		lamanTranskrip.setViewName("laporan_transkrip");
 		lamanTranskrip.addObject("daftarKrs", daftarKrs);
 		lamanTranskrip.addObject("pd", pesertaDidik);
 		lamanTranskrip.addObject("ipk", ipk);

@@ -96,19 +96,24 @@ public class ControllerKuisioner {
 	
 	@RequestMapping(value = "/isi_kuisioner/{idKrs}/{idKuisioner}/simpan_kuisioner/", method = RequestMethod.POST)
 	public @ResponseBody AjaxResponse submitKuisioner(@RequestBody JSONNilaiKuisioner[] daftarNilai, @PathVariable("idKrs") UUID idKrs, @PathVariable("idKuisioner") UUID idKuisioner) {
+		double totalNilai = 0;
 		for (JSONNilaiKuisioner nilai : daftarNilai) {
 			NilaiKuisioner nilaiKuisioner = new NilaiKuisioner();
 			nilaiKuisioner.setKrs(serviceKrs.ambilKrs(idKrs));
 			nilaiKuisioner.setPertanyaanKuisioner(servicePertanyaan.getById(nilai.getIdPertanyaan()));
 			nilaiKuisioner.setNilaiPertanyaan(nilai.getNilaiPertanyaan());
 			
+			totalNilai += nilai.getNilaiPertanyaan();
 			serviceNilaiKuisioner.simpanNilaiKuisioner(nilaiKuisioner);
 		}
+		
+		double nilaiAkhir = totalNilai / (double) daftarNilai.length;
 		
 		StatusKuisioner status = new StatusKuisioner();
 		status.setaKuisionerTerisi(true);
 		status.setKrs(serviceKrs.ambilKrs(idKrs));
 		status.setKuisioner(serviceKuisioner.ambilKuisioner(idKuisioner));
+		status.setNilaiKuisioner(nilaiAkhir);
 		serviceStatus.masukkanStatus(status);
 		
 		return new AjaxResponse("ok", "Kuisioner berhasil disimpan", null);
@@ -173,5 +178,15 @@ public class ControllerKuisioner {
 		}
 		
 		return new AjaxResponse("ok", "Pertanyaan berhasil disimpan", null);
+	}
+	
+	@RequestMapping(value = "/update_kuisioner/", method = RequestMethod.GET)
+	public void updateRekapKuisioner() {
+		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
+		List<Krs> daftarKrsAktif = serviceKrs.ambilKrsAktif(tglSmtAktif.getIdTglSmt());
+		
+		for (Krs krs : daftarKrsAktif) {
+			
+		}
 	}
 }
