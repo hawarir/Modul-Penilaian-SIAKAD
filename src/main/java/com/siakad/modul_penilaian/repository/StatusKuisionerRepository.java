@@ -7,5 +7,6 @@ import com.sia.main.domain.StatusKuisioner;
 
 public interface StatusKuisionerRepository {
 	public List<StatusKuisioner> getByKrsKuisioner(UUID idKrs, UUID idKuisioner);
+	public List<StatusKuisioner> getByKrs(UUID idKrs);
 	public UUID insert(StatusKuisioner status);
 }

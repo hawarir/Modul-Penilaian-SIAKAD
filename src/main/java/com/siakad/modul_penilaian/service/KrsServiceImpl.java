@@ -15,7 +15,7 @@ public class KrsServiceImpl implements KrsService {
 	private KrsRepository repositoryKrs;
 
 	@Override
-	public List<Krs> ambilPesertaKelas(UUID idPemb) {
+	public List<Krs> ambilKrsBerdasarkanPemb(UUID idPemb) {
 		// TODO Auto-generated method stub
 		return repositoryKrs.getByPemb(idPemb);
 	}

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Kuisioner;
 import com.sia.main.domain.NilaiKuisioner;
+import com.sia.main.domain.Pemb;
 import com.sia.main.domain.PertanyaanKuisioner;
 import com.sia.main.domain.StatusKuisioner;
 import com.sia.main.domain.TglSmt;
@@ -31,6 +32,8 @@ import com.siakad.modul_penilaian.service.JSONPertanyaan;
 import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.KuisionerService;
 import com.siakad.modul_penilaian.service.NilaiKuisionerService;
+import com.siakad.modul_penilaian.service.PembService;
+import com.siakad.modul_penilaian.service.PendidikPengajarService;
 import com.siakad.modul_penilaian.service.PertanyaanKuisionerService;
 import com.siakad.modul_penilaian.service.StatusKuisionerService;
 import com.siakad.modul_penilaian.service.TglSmtService;
@@ -48,6 +51,12 @@ public class ControllerKuisioner {
 	
 	@Autowired
 	private KrsService serviceKrs;
+	
+	@Autowired
+	private PembService servicePemb;
+	
+	@Autowired
+	private PendidikPengajarService servicePendidikPengajar;
 	
 	@Autowired
 	private StatusKuisionerService serviceStatus;
@@ -180,13 +189,57 @@ public class ControllerKuisioner {
 		return new AjaxResponse("ok", "Pertanyaan berhasil disimpan", null);
 	}
 	
-	@RequestMapping(value = "/update_kuisioner/", method = RequestMethod.GET)
+	@RequestMapping(value = "/laporan_kuisioner_periode/", method = RequestMethod.GET)
+	public ModelAndView tampilkanDaftarPeriode() {
+		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
+		
+		ModelAndView daftarPeriode = new ModelAndView();
+		daftarPeriode.setViewName("daftar_laporan_kuisioner_periode");
+		daftarPeriode.addObject("daftarTglSmt", daftarTglSmt);
+		
+		return daftarPeriode;
+	}
+	
+	@RequestMapping(value = "/laporan_kuisioner_periode/", method = RequestMethod.POST)
+	public ModelAndView tampilkanLaporanKuisionerPeriode(@RequestParam("idTglSmt") UUID idTglSmt) {
+		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
+		
+		ModelAndView laporanPerPeriode = new ModelAndView();
+		laporanPerPeriode.setViewName("laporan_kuisioner_per_periode");
+		laporanPerPeriode.addObject("daftarTglSmt", daftarTglSmt);
+		
+		return laporanPerPeriode;
+	}
+	
+	@RequestMapping(value = "/update_nilai_dosen/", method = RequestMethod.GET)
 	public void updateRekapKuisioner() {
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
-		List<Krs> daftarKrsAktif = serviceKrs.ambilKrsAktif(tglSmtAktif.getIdTglSmt());
+		List<Pemb> pembAktif = servicePemb.ambilPembAktif(tglSmtAktif.getIdTglSmt());
 		
-		for (Krs krs : daftarKrsAktif) {
+		for (Pemb pemb : pembAktif) {
+			List<Krs> daftarKrs = serviceKrs.ambilKrsBerdasarkanPemb(pemb.getIdPemb());
+			double totalNilai = 0;
+			double hitung = 0;
+			boolean kuisionerKosong = false;
+			for (Krs krs : daftarKrs) {
+				List<StatusKuisioner> kuisionerKrs = serviceStatus.ambilBerdasarkanKrs(krs.getIdKrs());
+				for (StatusKuisioner statusKuisioner : kuisionerKrs) {
+					totalNilai += statusKuisioner.getNilaiKuisioner();
+					hitung++;
+				}
+			}
 			
+			if(hitung == 0)
+				kuisionerKosong = true;
+			
+			double nilaiAkhir;
+			
+			if(kuisionerKosong)
+				nilaiAkhir = 0;
+			else
+				nilaiAkhir = totalNilai/hitung;
+			
+			servicePendidikPengajar.masukkanNilaiIpd(pemb.getIdPemb(), nilaiAkhir);
 		}
 	}
 }

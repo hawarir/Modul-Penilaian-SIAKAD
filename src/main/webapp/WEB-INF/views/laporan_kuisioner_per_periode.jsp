@@ -82,6 +82,27 @@
 	<!-- content -->
 	<div class="container">
 		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-white">
+					<div class="panel-heading">
+						<h4 class="panel-title">Laporan Kuisioner Per Periode</h4>
+					</div>
+					<div class="panel-body">
+						<form method="post" action="">
+							<div class="form-group">
+								<select class="form-control" name="idTglSmt">
+									<c:forEach var="tglSmt" items="${daftarTglSmt}">
+										<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
+									</c:forEach>
+								</select>
+							</div>
+							<button type="submit" class="btn btn-primary pull-right">Buka</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-white">
 					<div class="panel-heading">
@@ -93,6 +114,7 @@
 								<tr>
 									<th>Nama Kelas</th>
 									<th>Nama Dosen</th>
+									<th>Nilai IPD</th>
 								</tr>
 							</thead>
 							<tbody>

@@ -1,5 +1,7 @@
 package com.siakad.modul_penilaian.repository;
 
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,16 @@ public class TglSmtRepositoryImpl implements TglSmtRepository {
 	@Transactional
 	public TglSmt getAktif() {
 		// TODO Auto-generated method stub
-		Query query = sessionFactory.getCurrentSession().createQuery("FROM TglSmt WHERE aTglSmtAktif = TRUE");
+		Query query = sessionFactory.getCurrentSession().createQuery("FROM TglSmt WHERE aTglSmtAktif = TRUE AND aTglSmtTerhapus = FALSE");
 		return (TglSmt) query.list().get(0);
+	}
+
+	@Override
+	@Transactional
+	public List<TglSmt> getAll() {
+		// TODO Auto-generated method stub
+		Query query = sessionFactory.getCurrentSession().createQuery("FROM TglSmt WHERE aTglSmtTerhapus = FALSE ORDER BY tglAwalSusunKrs DESC");
+		return query.list();
 	}
 
 }

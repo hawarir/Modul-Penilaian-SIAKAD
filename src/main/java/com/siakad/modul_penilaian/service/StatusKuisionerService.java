@@ -1,5 +1,6 @@
 package com.siakad.modul_penilaian.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.sia.main.domain.StatusKuisioner;
@@ -7,4 +8,5 @@ import com.sia.main.domain.StatusKuisioner;
 public interface StatusKuisionerService {
 	public boolean apakahKuisionerTerisi(UUID idKrs, UUID idKuisioner);
 	public UUID masukkanStatus(StatusKuisioner status);
+	public List<StatusKuisioner> ambilBerdasarkanKrs(UUID idKrs);
 }

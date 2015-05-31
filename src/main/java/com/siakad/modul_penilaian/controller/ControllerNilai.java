@@ -22,6 +22,7 @@ import com.sia.main.domain.KonversiNilai;
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Nilai;
 import com.sia.main.domain.Pemb;
+import com.sia.main.domain.TglSmt;
 import com.siakad.modul_penilaian.service.AjaxResponse;
 import com.siakad.modul_penilaian.service.JSONNilai;
 import com.siakad.modul_penilaian.service.KomponenNilaiService;
@@ -29,6 +30,7 @@ import com.siakad.modul_penilaian.service.KonversiNilaiService;
 import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.NilaiService;
 import com.siakad.modul_penilaian.service.PembService;
+import com.siakad.modul_penilaian.service.TglSmtService;
 
 @Controller
 public class ControllerNilai {
@@ -47,19 +49,36 @@ public class ControllerNilai {
 	@Autowired
 	private KonversiNilaiService serviceKonversi;
 	
-	@RequestMapping(value = {"/kelola_nilai/", "/lihat_nilai/"}, method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarKelas(Locale locale, Model model) {
-		List<Pemb> kelas = servicePemb.ambilSemuaPemb();
+	@Autowired
+	private TglSmtService serviceTglSmt;
+	
+	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.GET)
+	public ModelAndView tampilkanDaftarKelas() {
+		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
+		List<Pemb> kelas = servicePemb.ambilPembAktif(tglSmtAktif.getIdTglSmt());
+		
 		ModelAndView daftarKelas = new ModelAndView();
 		daftarKelas.setViewName("daftar_kelas");
 		daftarKelas.addObject("listKelas", kelas);
+		return daftarKelas;
+	}
+	
+	@RequestMapping(value = "/lihat_nilai/", method = RequestMethod.GET)
+	public ModelAndView tampilkanDaftarKelasPeriode() {
+		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
+		List<Pemb> kelas = servicePemb.ambilSemuaPemb();
+		
+		ModelAndView daftarKelas = new ModelAndView();
+		daftarKelas.setViewName("daftar_kelas_periode");
+		daftarKelas.addObject("listKelas", kelas);
+		daftarKelas.addObject("listTglSmt", daftarTglSmt);
 		return daftarKelas;
 	}
 
 	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.POST)
 	public ModelAndView tampilkanKelolaNilai(@RequestParam("idPemb") UUID idPemb) {
 		List<Pemb> kelas = servicePemb.ambilSemuaPemb();
-		List<Krs> krsInfo = serviceKrs.ambilPesertaKelas(idPemb);
+		List<Krs> krsInfo = serviceKrs.ambilKrsBerdasarkanPemb(idPemb);
 		List<KomponenNilai> komp = serviceKomp.ambilSemuaKomponen(idPemb);
 		List<Nilai> listNilai = serviceNilai.ambilNilaiKelas(krsInfo);
 		Pemb pemb = servicePemb.ambilPemb(idPemb);
@@ -79,8 +98,9 @@ public class ControllerNilai {
 	
 	@RequestMapping(value = "/lihat_nilai/", method = RequestMethod.POST)
 	public ModelAndView tampilkanLihatNilai(@RequestParam("idPemb") UUID idPemb, Locale locale, Model model) {
+		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
 		List<Pemb> kelas = servicePemb.ambilSemuaPemb();
-		List<Krs> krsInfo = serviceKrs.ambilPesertaKelas(idPemb);
+		List<Krs> krsInfo = serviceKrs.ambilKrsBerdasarkanPemb(idPemb);
 		Pemb pemb = servicePemb.ambilPemb(idPemb);
 		String namaKelas = pemb.getMk().getNamaMK() + " " + pemb.getNmPemb();
 		
@@ -89,6 +109,7 @@ public class ControllerNilai {
 		lihatNilai.addObject("krsInfo", krsInfo);
 		lihatNilai.addObject("namaKelas", namaKelas);
 		lihatNilai.addObject("listKelas", kelas);
+		lihatNilai.addObject("listTglSmt", daftarTglSmt);
 		
 		return lihatNilai;
 	}
@@ -132,7 +153,7 @@ public class ControllerNilai {
 			listNilai.add(nilai);
 		}
 		serviceNilai.masukkanNilai(listNilai);
-		List<Krs> listKrs = serviceKrs.ambilPesertaKelas(idPemb);
+		List<Krs> listKrs = serviceKrs.ambilKrsBerdasarkanPemb(idPemb);
 		for (Krs krs : listKrs) {
 			krs.setNilaiAkhir(serviceNilai.ambilNilaiAkhir(krs));
 			krs.setKonversiNilai(serviceKonversi.ambilBerdasarkanBatas(krs.getNilaiAkhir()));

@@ -25,6 +25,14 @@ public class StatusKuisionerRepositoryImpl implements StatusKuisionerRepository 
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM StatusKuisioner WHERE id_krs='" + idKrs + "' AND id_kuisioner='" + idKuisioner + "'");
 		return query.list();
 	}
+	
+	@Override
+	@Transactional
+	public List<StatusKuisioner> getByKrs(UUID idKrs) {
+		// TODO Auto-generated method stub
+		Query query = sessionFactory.getCurrentSession().createQuery("FROM StatusKuisioner WHERE id_krs='" + idKrs + "'");
+		return query.list();
+	}
 
 	@Override
 	public UUID insert(StatusKuisioner status) {

@@ -90,9 +90,20 @@
 					<div class="panel-body">						
 						<form method="post" action="">
 							<div class="form-group">
-								<select class="form-control" name="idPemb">
+								<label for="pilihanTglSmt">Periode</label>
+								<select id="pilihanTglSmt" class="form-control">
+									<option value=""></option>
+									<c:forEach var="tglSmt" items="${listTglSmt}">
+										<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="pilihanKelas">Kelas</label>
+								<select id="pilihanKelas" class="form-control" name="idPemb">
+									<option value=""></option>
 									<c:forEach var="kelas" items="${listKelas}">
-									<option value="${kelas.getIdPemb()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
+										<option value="${kelas.getIdPemb()}" class="${kelas.getTglSmt().getIdTglSmt()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
 									</c:forEach>
 								</select>
 							</div>
@@ -133,6 +144,26 @@
 		</div>
 	</div>
 	<!-- end of content -->
+	
+	<script>
+	$(document).ready(function() {
+		$("#pilihanKelas").children().hide();
+		
+		$("#pilihanTglSmt").on("change", function() {
+			var idTglSmt = $("#pilihanTglSmt option:selected").val();
+			
+			$("#pilihanKelas").children().hide();
+			$("option." + idTglSmt).show();
+		});
+		
+		$("form").submit(function(e) {
+			if($("#pilihanTglSmt option:selected").val() == "") {
+				e.preventDefault();
+			}
+		});
+	});
+	</script>
+	
 	<%@include file="footer.jsp" %>
 </body>
 </html>

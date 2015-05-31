@@ -32,4 +32,10 @@ public class StatusKuisionerServiceImpl implements StatusKuisionerService {
 		return repositoryStatus.insert(status);
 	}
 
+	@Override
+	public List<StatusKuisioner> ambilBerdasarkanKrs(UUID idKrs) {
+		// TODO Auto-generated method stub
+		return repositoryStatus.getByKrs(idKrs);
+	}
+
 }

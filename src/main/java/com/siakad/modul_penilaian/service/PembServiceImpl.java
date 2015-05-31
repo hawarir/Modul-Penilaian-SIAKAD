@@ -17,7 +17,7 @@ public class PembServiceImpl implements PembService {
 	@Override
 	public List<Pemb> ambilSemuaPemb() {
 		// TODO Auto-generated method stub
-		return repositoryPemb.leftJoinMk();
+		return repositoryPemb.getAll();
 	}
 	
 	@Override

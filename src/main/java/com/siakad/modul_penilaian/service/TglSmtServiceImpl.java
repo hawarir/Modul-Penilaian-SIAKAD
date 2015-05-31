@@ -1,5 +1,7 @@
 package com.siakad.modul_penilaian.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,12 @@ public class TglSmtServiceImpl implements TglSmtService {
 	public TglSmt ambilTglSmtAktif() {
 		// TODO Auto-generated method stub
 		return repositoryTglSmt.getAktif();
+	}
+
+	@Override
+	public List<TglSmt> ambilSemuaTglSmt() {
+		// TODO Auto-generated method stub
+		return repositoryTglSmt.getAll();
 	}
 
 }
