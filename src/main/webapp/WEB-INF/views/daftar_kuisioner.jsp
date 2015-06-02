@@ -94,7 +94,7 @@
 									<c:set var="count" value="0" scope="page"/>
 									<option value=""></option>
 									<c:forEach var="krs" varStatus="status" items="${daftarKrs}">
-										<optgroup name="${krs.getIdKrs()}" label="${krs.getPemb().getMk().getNamaMK()}">
+										<optgroup name="${krs.getIdKrs()}" label="${krs.getPemb().getMk().getNamaMK()} ${krs.getPemb().getNmPemb()}">
 											<c:forEach var="kuisioner" items="${daftarKuisioner}">
 											
 												<c:choose>

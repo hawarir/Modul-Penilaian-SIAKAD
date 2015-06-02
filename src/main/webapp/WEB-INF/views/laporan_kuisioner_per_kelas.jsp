@@ -82,19 +82,98 @@
 	<!-- content -->
 	<div class="container">
 		<div class="row">
-			<div class="col-md-12">
+			<div class="col-md-6 col-md-offset-3">
 				<div class="panel panel-white">
 					<div class="panel-heading">
 						<h4 class="panel-title">Laporan Kuisioner Per Periode</h4>
 					</div>
 					<div class="panel-body">
-					
+						<form method="post" action="">
+							<div class="form-group">
+								<label for="pilihanTglSmt">Periode</label>
+								<select id="pilihanTglSmt" class="form-control">
+									<option value=""></option>
+									<c:forEach var="tglSmt" items="${daftarTglSmt}">
+										<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="pilihanKelas">Kelas</label>
+								<select id="pilihanKelas" class="form-control" name="idPemb">
+									<option value=""></option>
+									<c:forEach var="pemb" items="${daftarPemb}">
+										<option value="${pemb.getIdPemb()}" class="${pemb.getTglSmt().getIdTglSmt()}"><c:out value="${pemb.getMk().getNamaMK()} ${pemb.getNmPemb()}"></c:out></option>
+									</c:forEach>
+								</select>
+							</div>
+							<button type="submit" class="btn btn-primary pull-right">Buka</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-white">
+					<div class="panel-heading">
+						<h4 class="panel-title">Laporan Kuisioner Kelas <c:out value="${infoPemb.getMk().getNamaMK()} ${infoPemb.getNmPemb()}"></c:out></h4>
+					</div>
+					<div class="panel-body">
+						<p>Daftar Pendidik Pengajar:</p>
+						<ul>
+							<c:forEach var="pendidik" items="${daftarPendidik}">
+								<li><c:out value="${pendidik.getPtk().getNmPtk()}"></c:out></li>
+							</c:forEach>
+						</ul>
+						<c:forEach var="kuisioner" items="${daftarKuisioner}">
+							<h4><c:out value="${kuisioner.getNmKuisioner()}"></c:out></h4>
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Pertanyaan</th>
+										<th>Skor</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach var="pertanyaan" items="${daftarPertanyaan}">
+										<c:if test="${pertanyaan.getKuisioner().getIdKuisioner() == kuisioner.getIdKuisioner()}">
+											<tr>
+												<c:set var="key" scope="page" value="${pertanyaan.getIdPertanyaanKuisioner()}"></c:set>
+												<td><c:out value="${pertanyaan.getPertanyaan()}"></c:out></td>
+												<td><c:out value="${daftarNilai[key]}"></c:out></td>
+											</tr>
+										</c:if>
+									</c:forEach>
+								</tbody>
+							</table>							
+						</c:forEach>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- end of content -->
+	
+	<script>
+	$(document).ready(function() {
+		$("#pilihanKelas").children().hide();
+		
+		$("#pilihanTglSmt").on("change", function() {
+			var idTglSmt = $("#pilihanTglSmt option:selected").val();
+			
+			$("#pilihanKelas").children().hide();
+			$("option." + idTglSmt).show();
+		});
+		
+		$("form").submit(function(e) {
+			if($("#pilihanTglSmt option:selected").val() == "") {
+				e.preventDefault();
+			}
+		});
+	});
+	</script>
+	
 	<%@include file="footer.jsp" %>
 </body>
 </html>

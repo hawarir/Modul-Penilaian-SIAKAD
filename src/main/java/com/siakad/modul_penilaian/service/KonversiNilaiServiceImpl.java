@@ -45,7 +45,7 @@ public class KonversiNilaiServiceImpl implements KonversiNilaiService {
 		// TODO Auto-generated method stub
 		List<KonversiNilai> listKonversi = repositoryKonversiNilai.getAll();
 		for (KonversiNilai konversiNilai : listKonversi) {
-			if(batas > konversiNilai.getBatasBawah())
+			if(batas >= konversiNilai.getBatasBawah())
 				return konversiNilai;
 		}
 		return null;

@@ -87,8 +87,9 @@
 						<h4 class="panel-title">Perbaharui Indeks Prestasi</h4>
 					</div>
 					<div class="panel-body">
-						<button type="button" class="btn btn-primary" id="updateIPS">Update IPS</button>
-						<button type="button" class="btn btn-primary" id="updateIPK">Update IPK</button>
+						<button type="button" class="btn btn-primary" id="updateIPS" data-loading-text="Memperbaharui IPS...">Update IPS</button>
+						<button type="button" class="btn btn-primary" id="updateIPK" data-loading-text="Memperbaharui IPK...">Update IPK</button>
+						<button type="button" class="btn btn-primary" id="updateIPD" data-loading-text="Memperbaharui IPD...">Update IPD</button>
 					</div>
 				</div>
 			</div>
@@ -100,17 +101,63 @@
 	<script>
 	$(document).ready(function() {
 		var contextPath = "${pageContext.servletContext.contextPath}";
+		toastr.options = {
+				  "closeButton": true,
+				  "debug": false,
+				  "newestOnTop": false,
+				  "progressBar": false,
+				  "positionClass": "toast-top-right",
+				  "preventDuplicates": true,
+				  "showDuration": "300",
+				  "hideDuration": "1000",
+				  "timeOut": 0,
+				  "extendedTimeOut": 0,
+				  "showEasing": "swing",
+				  "hideEasing": "linear",
+				  "showMethod": "fadeIn",
+				  "hideMethod": "fadeOut",
+				  "tapToDismiss": true
+				};
+		
 		$("#updateIPS").click(function() {
+			$("#updateIPS").button("loading");
 			$.ajax({
 				url : contextPath + "/update_ips/",
-				type : "GET"
+				type : "GET",
+				success : function(data) {
+					if(data.status=="ok") {
+						toastr["success"](data.message, "Sukses");
+					}
+					$("#updateIPS").button("reset");
+				}
 			});
 		});
 		
 		$("#updateIPK").click(function() {
+			$("#updateIPK").button("loading");
 			$.ajax({
 				url : contextPath + "/update_ipk/",
-				type : "GET"
+				type : "GET",
+				success : function(data) {
+					if(data.status=="ok") {
+						toastr["success"](data.message, "Sukses");
+					}
+					$("#updateIPK").button("reset");
+				}
+			});
+		});
+		
+		$("#updateIPD").click(function() {
+			$("#updateIPD").button("loading");
+			$.ajax({
+				url : contextPath + "/update_nilai_dosen/",
+				type : "GET",
+				success : function(data) {
+					if(data.status=="ok") {
+						toastr["success"](data.message, "Sukses");
+					}
+					$("#updateIPD").button("reset");
+				}
 			});
 		});
 	});

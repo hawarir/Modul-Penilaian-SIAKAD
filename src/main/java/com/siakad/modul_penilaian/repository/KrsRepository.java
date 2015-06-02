@@ -7,7 +7,7 @@ import com.sia.main.domain.Krs;
 
 public interface KrsRepository {
 	public List<Krs> getByPemb(UUID idPemb);
-	public List<Krs> getAktif(UUID idTglSmt);
+	public List<Krs> getByTglSmt(UUID idTglSmt);
 	public List<Krs> getAktifByPd(UUID idPd, UUID idTglSmt);
 	public List<Krs> getAllByPd(UUID idPd, String specialCond);
 	public Krs getById(UUID idKrs);

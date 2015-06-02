@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sia.main.domain.Ipk;
@@ -17,6 +18,7 @@ import com.sia.main.domain.Ips;
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Pd;
 import com.sia.main.domain.TglSmt;
+import com.siakad.modul_penilaian.service.AjaxResponse;
 import com.siakad.modul_penilaian.service.IpkService;
 import com.siakad.modul_penilaian.service.IpsService;
 import com.siakad.modul_penilaian.service.KrsService;
@@ -73,32 +75,41 @@ public class ControllerIP {
 	}
 	
 	@RequestMapping(value = "/update_ips/", method = RequestMethod.GET)
-	public void updateIPS() {
+	public @ResponseBody AjaxResponse updateIPS() {
 		List<Pd> listAllPd = servicePd.ambilSemuaPd();
-		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
+		List<TglSmt> daftartglSmt = serviceTglSmt.ambilSemuaTglSmt();
 		
 		for (Pd pd : listAllPd) {
-			double jumlahMutu = 0.0;
-			int jumlahSks = 0;
-			List<Krs> listKrsAktif = serviceKrs.ambilKrsAktifBerdasarkanPd(pd.getIdPd(), tglSmtAktif.getIdTglSmt());
-			for (Krs krs : listKrsAktif) {
-				jumlahMutu += serviceKrs.ambilNilaiMutu(krs.getIdKrs());
-				jumlahSks += krs.getPemb().getMk().getJumlahSKS();
-			}
-			double nilaiIps = jumlahMutu/jumlahSks;
-			
-			Ips ips = new Ips();
-			ips.setNilaiIps(nilaiIps);
-			ips.setPd(pd);
-			ips.setTglSmt(tglSmtAktif);
-			ips.setTglBuatIps(LocalDateTime.now());
-			
-			serviceIps.masukkanIps(ips);
+			for (TglSmt tglSmt : daftartglSmt) {
+				double jumlahMutu = 0.0;
+				int jumlahSks = 0;
+				List<Krs> listKrsAktif = serviceKrs.ambilKrsAktifBerdasarkanPd(pd.getIdPd(), tglSmt.getIdTglSmt());
+				for (Krs krs : listKrsAktif) {
+					jumlahMutu += serviceKrs.ambilNilaiMutu(krs.getIdKrs());
+					jumlahSks += krs.getPemb().getMk().getJumlahSKS();
+				}
+				
+				double nilaiIps;
+				if(jumlahMutu > 0)
+					nilaiIps = jumlahMutu/jumlahSks;
+				else
+					nilaiIps = 0;
+				
+				Ips ips = new Ips();
+				ips.setNilaiIps(nilaiIps);
+				ips.setPd(pd);
+				ips.setTglSmt(tglSmt);
+				ips.setTglBuatIps(LocalDateTime.now());
+				
+				serviceIps.masukkanIps(ips);
+			}			
 		}
+		
+		return new AjaxResponse("ok", "IPS berhasil diperbaharui", null);
 	}
 	
 	@RequestMapping(value = "/update_ipk/", method = RequestMethod.GET)
-	public void updateIPk() {
+	public @ResponseBody AjaxResponse updateIPk() {
 		List<Pd> listAllPd = servicePd.ambilSemuaPd();
 		
 		for (Pd pd : listAllPd) {
@@ -109,7 +120,12 @@ public class ControllerIP {
 				jumlahMutu += serviceKrs.ambilNilaiMutu(krs.getIdKrs());
 				jumlahSks += krs.getPemb().getMk().getJumlahSKS();
 			}
-			double nilaiIpk = jumlahMutu/jumlahSks;
+			
+			double nilaiIpk;
+			if(jumlahMutu > 0)
+				nilaiIpk = jumlahMutu/jumlahSks;
+			else
+				nilaiIpk = 0;
 			
 			Ipk ipk = new Ipk();
 			ipk.setNilaiIpk(nilaiIpk);
@@ -117,5 +133,7 @@ public class ControllerIP {
 			
 			serviceIpk.masukkanIpk(ipk);
 		}
+		
+		return new AjaxResponse("ok", "IPK berhasil diperbaharui", null);
 	}
 }

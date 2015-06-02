@@ -192,6 +192,7 @@
 								<li><a href="${pageContext.servletContext.contextPath}/kelola_kuisioner/">Kelola Kuisioner</a></li>
 								<li><a href="${pageContext.servletContext.contextPath}/isi_kuisioner/">Isi Kuisioner</a></li>
 								<li><a href="${pageContext.servletContext.contextPath}/laporan_kuisioner_periode/">Laporan Kuisioner Periodik</a></li>
+								<li><a href="${pageContext.servletContext.contextPath}/laporan_kuisioner_kelas/">Laporan Kuisioner Per Kelas</a></li>
 							</ul>
 						</li>
 						<li class="droplink"><a href="#"><p>Pengaturan</p> <span

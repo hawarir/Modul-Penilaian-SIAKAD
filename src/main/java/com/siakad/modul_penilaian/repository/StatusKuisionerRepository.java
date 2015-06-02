@@ -9,4 +9,6 @@ public interface StatusKuisionerRepository {
 	public List<StatusKuisioner> getByKrsKuisioner(UUID idKrs, UUID idKuisioner);
 	public List<StatusKuisioner> getByKrs(UUID idKrs);
 	public UUID insert(StatusKuisioner status);
+	public List<StatusKuisioner> getByPemb(UUID idPemb);
+	public List<StatusKuisioner> getByPembKuisioner(UUID idPemb, UUID idKuisioner);
 }

@@ -9,7 +9,7 @@ public interface KrsService {
 	public void perbaruiNilaiAkhir(Krs krs);
 	public double ambilNilaiMutu(UUID idKrs);
 	public Krs ambilKrs(UUID idKrs);
-	public List<Krs> ambilKrsAktif(UUID idTglSmt);
+	public List<Krs> ambilKrsBerdasarkanTglSmt(UUID idTglSmt);
 	public List<Krs> ambilKrsBerdasarkanPemb(UUID idPemb);
 	public List<Krs> ambilKrsAktifBerdasarkanPd(UUID idPd, UUID idTglSmt);
 	public List<Krs> ambilKrsTerakhirBerdasarkanPd(UUID idPd);

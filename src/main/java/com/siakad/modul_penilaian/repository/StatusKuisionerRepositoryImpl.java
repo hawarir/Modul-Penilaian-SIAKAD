@@ -46,4 +46,23 @@ public class StatusKuisionerRepositoryImpl implements StatusKuisionerRepository 
 		return insertId;
 	}
 
+	@Override
+	@Transactional
+	public List<StatusKuisioner> getByPemb(UUID idPemb) {
+		// TODO Auto-generated method stub
+		String queryString = "SELECT sk FROM StatusKuisioner sk WHERE sk.krs.pemb.idPemb='" + idPemb + "'";
+		Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+		return query.list();
+	}
+
+	@Override
+	@Transactional
+	public List<StatusKuisioner> getByPembKuisioner(UUID idPemb,
+			UUID idKuisioner) {
+		// TODO Auto-generated method stub
+		String queryString = "SELECT sk FROM StatusKuisioner sk WHERE sk.krs.pemb.idPemb='" + idPemb + "' AND sk.kuisioner.idKuisioner='" + idKuisioner + "'";
+		Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+		return query.list();
+	}
+
 }

@@ -24,7 +24,7 @@ public class KrsRepositoryImpl implements KrsRepository{
 	@Transactional
 	public List<Krs> getByPemb(UUID idPemb) {
 		// TODO Auto-generated method stub
-		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs as krs LEFT JOIN krs.pd LEFT JOIN krs.konversiNilai WHERE id_pemb='" + idPemb + "' AND " + kondisiKrsOke + " ORDER BY nim_pd ASC");
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs as krs LEFT JOIN krs.pd LEFT JOIN krs.konversiNilai WHERE id_pemb='" + idPemb + "' AND " + kondisiKrsOke);
 		return query.list();
 	}
 
@@ -48,7 +48,7 @@ public class KrsRepositoryImpl implements KrsRepository{
 	
 	@Override
 	@Transactional
-	public List<Krs> getAktif(UUID idTglSmt) {
+	public List<Krs> getByTglSmt(UUID idTglSmt) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs krs WHERE krs.pemb.tglSmt.idTglSmt = '" + idTglSmt + "' AND " + kondisiKrsOke);
 		return query.list();

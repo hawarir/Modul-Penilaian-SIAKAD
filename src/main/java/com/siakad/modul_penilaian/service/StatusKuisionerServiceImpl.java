@@ -25,6 +25,18 @@ public class StatusKuisionerServiceImpl implements StatusKuisionerService {
 			return daftarStatus.get(0).isaKuisionerTerisi();
 		}
 	}
+	
+	@Override
+	public List<StatusKuisioner> ambilBerdasarkanPembKuisioner(UUID idPemb, UUID idKuisioner) {
+		// TODO Auto-generated method stub
+		return repositoryStatus.getByPembKuisioner(idPemb, idKuisioner);
+	}
+	
+	@Override
+	public List<StatusKuisioner> ambilBerdasarkanPemb(UUID idPemb) {
+		// TODO Auto-generated method stub
+		return repositoryStatus.getByPemb(idPemb);
+	}
 
 	@Override
 	public UUID masukkanStatus(StatusKuisioner status) {

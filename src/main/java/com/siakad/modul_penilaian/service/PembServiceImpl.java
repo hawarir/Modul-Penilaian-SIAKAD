@@ -21,9 +21,9 @@ public class PembServiceImpl implements PembService {
 	}
 	
 	@Override
-	public List<Pemb> ambilPembAktif(UUID idTglSmt) {
+	public List<Pemb> ambilBerdasarkanTglSmt(UUID idTglSmt) {
 		// TODO Auto-generated method stub
-		return repositoryPemb.get("id_tgl_smt = '" + idTglSmt + "'", "", -1, -1);
+		return repositoryPemb.getByTglSmt(idTglSmt);
 	}
 
 	@Override

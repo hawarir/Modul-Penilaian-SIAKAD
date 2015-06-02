@@ -55,7 +55,7 @@ public class ControllerNilai {
 	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.GET)
 	public ModelAndView tampilkanDaftarKelas() {
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
-		List<Pemb> kelas = servicePemb.ambilPembAktif(tglSmtAktif.getIdTglSmt());
+		List<Pemb> kelas = servicePemb.ambilBerdasarkanTglSmt(tglSmtAktif.getIdTglSmt());
 		
 		ModelAndView daftarKelas = new ModelAndView();
 		daftarKelas.setViewName("daftar_kelas");
@@ -77,7 +77,8 @@ public class ControllerNilai {
 
 	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.POST)
 	public ModelAndView tampilkanKelolaNilai(@RequestParam("idPemb") UUID idPemb) {
-		List<Pemb> kelas = servicePemb.ambilSemuaPemb();
+		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
+		List<Pemb> kelas = servicePemb.ambilBerdasarkanTglSmt(tglSmtAktif.getIdTglSmt());
 		List<Krs> krsInfo = serviceKrs.ambilKrsBerdasarkanPemb(idPemb);
 		List<KomponenNilai> komp = serviceKomp.ambilSemuaKomponen(idPemb);
 		List<Nilai> listNilai = serviceNilai.ambilNilaiKelas(krsInfo);
@@ -157,6 +158,10 @@ public class ControllerNilai {
 		for (Krs krs : listKrs) {
 			krs.setNilaiAkhir(serviceNilai.ambilNilaiAkhir(krs));
 			krs.setKonversiNilai(serviceKonversi.ambilBerdasarkanBatas(krs.getNilaiAkhir()));
+			if(krs.getKonversiNilai().getBatasBawah() < krs.getPemb().getMk().getKonversiNilai().getBatasBawah())
+				krs.setaKrsLulus(false);
+			else
+				krs.setaKrsLulus(true);
 			serviceKrs.perbaruiNilaiAkhir(krs);
 		}
 		return new AjaxResponse("ok", "Nilai berhasil disimpan", null);

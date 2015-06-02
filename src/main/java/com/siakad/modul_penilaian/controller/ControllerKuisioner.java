@@ -1,6 +1,7 @@
 package com.siakad.modul_penilaian.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -23,6 +24,7 @@ import com.sia.main.domain.Krs;
 import com.sia.main.domain.Kuisioner;
 import com.sia.main.domain.NilaiKuisioner;
 import com.sia.main.domain.Pemb;
+import com.sia.main.domain.PendidikPengajar;
 import com.sia.main.domain.PertanyaanKuisioner;
 import com.sia.main.domain.StatusKuisioner;
 import com.sia.main.domain.TglSmt;
@@ -31,6 +33,7 @@ import com.siakad.modul_penilaian.service.JSONNilaiKuisioner;
 import com.siakad.modul_penilaian.service.JSONPertanyaan;
 import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.KuisionerService;
+import com.siakad.modul_penilaian.service.NilaiKuisionerPerPemb;
 import com.siakad.modul_penilaian.service.NilaiKuisionerService;
 import com.siakad.modul_penilaian.service.PembService;
 import com.siakad.modul_penilaian.service.PendidikPengajarService;
@@ -66,7 +69,7 @@ public class ControllerKuisioner {
 	
 	@RequestMapping(value = "/isi_kuisioner/", method = RequestMethod.GET)
 	public ModelAndView tampilkanDaftarIsiKuisioner() {
-		UUID idPd = UUID.fromString("56f893a7-8988-444d-9e03-aa94832c88b0"); // hardcode id_pd Hawari Rahman
+		UUID idPd = UUID.fromString("6bb49f6a-db8e-4032-b5e6-9c10f21e1783"); // hardcode id_pd Yoga
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
 		List<Krs> daftarKrs = serviceKrs.ambilKrsAktifBerdasarkanPd(idPd, tglSmtAktif.getIdTglSmt());
 		List<Kuisioner> daftarKuisioner = serviceKuisioner.ambilSemuaKuisioner();
@@ -77,8 +80,6 @@ public class ControllerKuisioner {
 				daftarStatus.add(serviceStatus.apakahKuisionerTerisi(krs.getIdKrs(), kuisioner.getIdKuisioner()));
 			}
 		}
-		
-		System.out.println(daftarStatus);
 		
 		ModelAndView daftarIsiKuisioner = new ModelAndView();
 		daftarIsiKuisioner.setViewName("daftar_kuisioner");
@@ -190,56 +191,129 @@ public class ControllerKuisioner {
 	}
 	
 	@RequestMapping(value = "/laporan_kuisioner_periode/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarPeriode() {
+	public ModelAndView tampilkanDaftarPeriodeKuisioner() {
 		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
 		
-		ModelAndView daftarPeriode = new ModelAndView();
-		daftarPeriode.setViewName("daftar_laporan_kuisioner_periode");
-		daftarPeriode.addObject("daftarTglSmt", daftarTglSmt);
+		ModelAndView daftarPeriodeKuisioner = new ModelAndView();
+		daftarPeriodeKuisioner.setViewName("daftar_laporan_kuisioner_periode");
+		daftarPeriodeKuisioner.addObject("daftarTglSmt", daftarTglSmt);
 		
-		return daftarPeriode;
+		return daftarPeriodeKuisioner;
 	}
 	
 	@RequestMapping(value = "/laporan_kuisioner_periode/", method = RequestMethod.POST)
 	public ModelAndView tampilkanLaporanKuisionerPeriode(@RequestParam("idTglSmt") UUID idTglSmt) {
 		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
+		List<Pemb> daftarPemb = servicePemb.ambilBerdasarkanTglSmt(idTglSmt);
+		List<Kuisioner> daftarKuisioner = serviceKuisioner.ambilSemuaKuisioner();
+		List<PendidikPengajar> daftarKetuaPendidik = new ArrayList<PendidikPengajar>();
+		List<NilaiKuisionerPerPemb> daftarNilai = new ArrayList<NilaiKuisionerPerPemb>();
+		
+		for (Pemb pemb : daftarPemb) {
+			if(servicePendidikPengajar.ambilKetuaPemb(pemb.getIdPemb()) != null)
+				daftarKetuaPendidik.add(servicePendidikPengajar.ambilKetuaPemb(pemb.getIdPemb()));
+			
+			for (Kuisioner kuisioner : daftarKuisioner) {
+				List<StatusKuisioner> daftarStatus = serviceStatus.ambilBerdasarkanPembKuisioner(pemb.getIdPemb(), kuisioner.getIdKuisioner());
+				double totalNilai = 0;
+				double count = 0;
+				for (StatusKuisioner status : daftarStatus) {
+					totalNilai += status.getNilaiKuisioner();
+					count++;
+				}
+				
+				double nilaiAkhir;
+				if(count>0) {
+					nilaiAkhir = totalNilai/count;
+				}
+				else {
+					nilaiAkhir = 0;
+				}
+				
+				daftarNilai.add(new NilaiKuisionerPerPemb(pemb.getIdPemb(), kuisioner.getIdKuisioner(), nilaiAkhir));
+			}
+		}
 		
 		ModelAndView laporanPerPeriode = new ModelAndView();
 		laporanPerPeriode.setViewName("laporan_kuisioner_per_periode");
 		laporanPerPeriode.addObject("daftarTglSmt", daftarTglSmt);
+		laporanPerPeriode.addObject("daftarPemb", daftarPemb);
+		laporanPerPeriode.addObject("daftarKuisioner", daftarKuisioner);
+		laporanPerPeriode.addObject("daftarKetuaPendidik", daftarKetuaPendidik);
+		laporanPerPeriode.addObject("daftarNilai", daftarNilai);
 		
 		return laporanPerPeriode;
 	}
 	
+	@RequestMapping(value = "/laporan_kuisioner_kelas/", method = RequestMethod.GET)
+	public ModelAndView tampilkanDaftarKelasKuisioner() {
+		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
+		List<Pemb> daftarPemb = servicePemb.ambilSemuaPemb();
+		
+		ModelAndView daftarKelasKuisioner = new ModelAndView();
+		daftarKelasKuisioner.setViewName("daftar_laporan_kuisioner_kelas");
+		daftarKelasKuisioner.addObject("daftarTglSmt", daftarTglSmt);
+		daftarKelasKuisioner.addObject("daftarPemb", daftarPemb);
+		
+		return daftarKelasKuisioner;
+	}
+	
+	@RequestMapping(value = "/laporan_kuisioner_kelas/", method = RequestMethod.POST)
+	public ModelAndView tampilkanLaporanKuisionerKelas(@RequestParam("idPemb") UUID idPemb) {
+		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
+		List<Pemb> daftarPemb = servicePemb.ambilSemuaPemb();
+		
+		List<Kuisioner> daftarKuisioner = serviceKuisioner.ambilSemuaKuisioner();
+		List<PertanyaanKuisioner> daftarPertanyaan = new ArrayList<PertanyaanKuisioner>();
+		for (Kuisioner kuisioner : daftarKuisioner) {
+			daftarPertanyaan.addAll(servicePertanyaan.ambilBerdasarKuisioner(kuisioner.getIdKuisioner()));
+		}
+		HashMap<UUID, Double> daftarNilai = new HashMap<UUID, Double>();
+		for (PertanyaanKuisioner pertanyaan : daftarPertanyaan) {
+			daftarNilai.put(pertanyaan.getIdPertanyaanKuisioner(), serviceNilaiKuisioner.ambilBerdasarkanPembPertanyaan(idPemb, pertanyaan.getIdPertanyaanKuisioner()));
+		}
+		List<PendidikPengajar> daftarPendidik = servicePendidikPengajar.ambilBerdasarkanPemb(idPemb);
+		Pemb pemb = servicePemb.ambilPemb(idPemb);
+		
+		ModelAndView laporanKuisionerKelas = new ModelAndView();
+		laporanKuisionerKelas.setViewName("laporan_kuisioner_per_kelas");
+		laporanKuisionerKelas.addObject("daftarTglSmt", daftarTglSmt);
+		laporanKuisionerKelas.addObject("daftarPemb", daftarPemb);
+		laporanKuisionerKelas.addObject("daftarKuisioner", daftarKuisioner);
+		laporanKuisionerKelas.addObject("daftarPertanyaan", daftarPertanyaan);
+		laporanKuisionerKelas.addObject("daftarNilai", daftarNilai);
+		laporanKuisionerKelas.addObject("daftarPendidik", daftarPendidik);
+		laporanKuisionerKelas.addObject("infoPemb", pemb);
+		
+		return laporanKuisionerKelas;
+	}
+	
 	@RequestMapping(value = "/update_nilai_dosen/", method = RequestMethod.GET)
-	public void updateRekapKuisioner() {
+	public @ResponseBody AjaxResponse updateRekapKuisioner() {
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
-		List<Pemb> pembAktif = servicePemb.ambilPembAktif(tglSmtAktif.getIdTglSmt());
+		List<Pemb> pembAktif = servicePemb.ambilBerdasarkanTglSmt(tglSmtAktif.getIdTglSmt());
 		
 		for (Pemb pemb : pembAktif) {
-			List<Krs> daftarKrs = serviceKrs.ambilKrsBerdasarkanPemb(pemb.getIdPemb());
+			System.out.println(pemb.getMk().getNamaMK() + " " + pemb.getNmPemb());
+			List<StatusKuisioner> statusPemb = serviceStatus.ambilBerdasarkanPemb(pemb.getIdPemb());
 			double totalNilai = 0;
-			double hitung = 0;
-			boolean kuisionerKosong = false;
-			for (Krs krs : daftarKrs) {
-				List<StatusKuisioner> kuisionerKrs = serviceStatus.ambilBerdasarkanKrs(krs.getIdKrs());
-				for (StatusKuisioner statusKuisioner : kuisionerKrs) {
-					totalNilai += statusKuisioner.getNilaiKuisioner();
-					hitung++;
-				}
+			double count = 0;
+			for (StatusKuisioner status : statusPemb) {
+				totalNilai += status.getNilaiKuisioner();
+				count++;
 			}
 			
-			if(hitung == 0)
-				kuisionerKosong = true;
-			
 			double nilaiAkhir;
-			
-			if(kuisionerKosong)
+			if(count>0) {
+				nilaiAkhir = totalNilai/statusPemb.size();
+			}
+			else {
 				nilaiAkhir = 0;
-			else
-				nilaiAkhir = totalNilai/hitung;
+			}
 			
 			servicePendidikPengajar.masukkanNilaiIpd(pemb.getIdPemb(), nilaiAkhir);
 		}
+		
+		return new AjaxResponse("ok", "Nilai dosen berhasil diperbaharui", null);
 	}
 }

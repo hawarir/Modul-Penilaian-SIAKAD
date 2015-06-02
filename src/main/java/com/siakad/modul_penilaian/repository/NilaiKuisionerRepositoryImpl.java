@@ -1,12 +1,15 @@
 package com.siakad.modul_penilaian.repository;
 
+import java.util.List;
 import java.util.UUID;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sia.main.domain.NilaiKuisioner;
 
@@ -25,6 +28,16 @@ public class NilaiKuisionerRepositoryImpl implements NilaiKuisionerRepository {
 		session.flush();
 		session.close();
 		return insertId;
+	}
+
+	@Override
+	@Transactional
+	public List<NilaiKuisioner> getByPembPertanyaan(UUID idPemb,
+			UUID idPertanyaan) {
+		// TODO Auto-generated method stub
+		String queryString = "SELECT nk FROM NilaiKuisioner nk WHERE nk.krs.pemb.idPemb = '" + idPemb + "' AND nk.pertanyaanKuisioner.idPertanyaanKuisioner = '" + idPertanyaan + "'";
+		Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+		return query.list();
 	}
 
 }

@@ -6,7 +6,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<link rel="shortcut icon" href="${pageContext.servletContext.contextPath}/resources/favicon_16.ico">
-	<title>Kelola Nilai Mahasiswa</title>
+	<title>Kelola Nilai Kelas - ${namaKelas}</title>
 	
 	<meta content="width=device-width, initial-scale=1" name="viewport" />
 	<meta charset="UTF-8">
@@ -75,6 +75,17 @@
 		rel="stylesheet" />
 	<script
 		src="${pageContext.servletContext.contextPath}/resources/plugins/toastr/toastr.min.js"></script>
+	
+	<link
+		href="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/css/jquery.dataTables.min.css"
+		rel="stylesheet" type="text/css" />
+	<script
+		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/js/jquery.dataTables.min.js"></script>
+	<link
+		href="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/extensions/TableTools/css/dataTables.tableTools.min.css"
+		rel="stylesheet" type="text/css" />
+	<script
+		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/extensions/TableTools/js/dataTables.tableTools.min.js"></script>
 	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -150,6 +161,7 @@
 									</c:forEach>
 								</tbody>
 							</table>
+							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload"><span class="glyphicon glyphicon-upload"></span> Unggah File</button>
 							<div class="pull-right">
 								<button type="button" class="btn btn-primary" id="tombolSimpanNilai">Simpan</button>
 								<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalKomponen">Atur Komponen</button>
@@ -162,13 +174,13 @@
 	</div>
 	<!-- end of content -->
 	
-	<!-- modal -->
-	<div class="modal fade" id="modalKomponen" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+	<!-- modal komponen -->
+	<div class="modal fade" id="modalKomponen" tabindex="-1" role="dialog" aria-labelledby="modalKomponenTitle" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title" id="modalTitle">Atur Komponen Nilai</h4>
+					<h4 class="modal-title" id="modalKomponenTitle">Atur Komponen Nilai</h4>
 				</div>
 				<div class="modal-body">
 					<p>Silahkan atur nama komponen penilaian dan persentase setiap komponen di bawah. 
@@ -211,10 +223,35 @@
 	</div>
 	<!-- end of modal -->
 	
+	<!-- modal -->
+	<div class="modal fade" id="modalUpload" tabindex="-1" role="dialog" aria-labelledby="modalUploadTitle" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h4 class="modal-title" id="modalUploadTitle">Unggah File Excel</h4>
+				</div>
+				<div class="modal-body">
+					<form method="post" action="unggah_file/">
+						<div class="form-group">
+							<input type="file" class="form-control" name="file" />
+						</div>
+						<button type="submit" class="btn btn-primary">Unggah</button>
+					</form>
+				</div>
+				<div class="modal-footer">
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end of modal -->
+	
 	<!-- script khusus-->
 	<script>		
 		$(document).ready(function() {
 			var idPemb = "${idPemb}";
+			var context_path = "${pageContext.servletContext.contextPath}/";
+			
 			toastr.options = {
 					  "closeButton": true,
 					  "debug": false,
@@ -232,6 +269,13 @@
 					  "showMethod": "fadeIn",
 					  "hideMethod": "fadeOut"
 					}
+			
+			$("#tabelNilai").DataTable({
+				"sDom": "<'row'<'dataTables_header clearfix'<'col-md-3'<l>><'col-md-9'f<'pull-right'CT>>r>>t<'row-fluid'<'dataTables_footer clearfix'<'col-md-6'i><'col-md-6'p>>>",
+				tableTools: {
+					"sSwfPath": context_path+"resources/plugins/jquery.datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+				}
+			});
 			
 			//script merubah nilai akhir di tabel
 			$(".nilai").change(function() {

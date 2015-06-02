@@ -18,23 +18,17 @@ public class PembRepositoryImpl implements PembRepository {
 	
 	@Override
 	@Transactional
-	public List<Pemb> get(String where, String order, int limit, int offset) {
+	public Pemb getById(UUID idPemb) {
 		// TODO Auto-generated method stub
-		String dbWhere = "";
-		String dbOrder = "";
-		if(where != "")
-			dbWhere += " WHERE " + where;
-		if(order != "")
-			dbOrder += " ORDER BY " + order;
-		Query query = sessionFactory.getCurrentSession().createQuery("FROM Pemb" + dbWhere + dbOrder);
-		return query.list();
+		return (Pemb) sessionFactory.getCurrentSession().get(Pemb.class, idPemb);
 	}
 	
 	@Override
 	@Transactional
-	public Pemb getById(UUID idPemb) {
+	public List<Pemb> getByTglSmt(UUID idTglSmt) {
 		// TODO Auto-generated method stub
-		return (Pemb) sessionFactory.getCurrentSession().get(Pemb.class, idPemb);
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT pemb FROM Pemb pemb WHERE pemb.tglSmt.idTglSmt = '" + idTglSmt + "'");
+		return query.list();
 	}
 	
 	@Override
