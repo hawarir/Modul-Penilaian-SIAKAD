@@ -132,10 +132,10 @@
 							<table class="table" id="tabelNilai">
 								<thead>
 									<tr>
-										<th>NRP</th>
-										<th>Nama Mahasiswa</th>
+										<th style="width:10%">NRP</th>
+										<th style="width:40%">Nama Mahasiswa</th>
 										<c:forEach var="komponen" items="${listKomponen}">
-											<th style="width:10%"><c:out value="${komponen.getNamaKomponen()}"></c:out></th>
+											<th class="kolom-komponen"><c:out value="${komponen.getNamaKomponen()}"></c:out></th>
 										</c:forEach>
 										<th>Nilai Akhir</th>
 									</tr>
@@ -223,7 +223,7 @@
 	</div>
 	<!-- end of modal -->
 	
-	<!-- modal -->
+	<!-- modal upload file -->
 	<div class="modal fade" id="modalUpload" tabindex="-1" role="dialog" aria-labelledby="modalUploadTitle" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -232,11 +232,11 @@
 					<h4 class="modal-title" id="modalUploadTitle">Unggah File Excel</h4>
 				</div>
 				<div class="modal-body">
-					<form method="post" action="unggah_file/">
+					<form method="post" action="unggah_file/" enctype="multipart/form-data" id="formUpload">
 						<div class="form-group">
-							<input type="file" class="form-control" name="file" />
+							<input type="file" class="form-control" name="file" id="inputFile" />
 						</div>
-						<button type="submit" class="btn btn-primary">Unggah</button>
+						<button type="submit" class="btn btn-primary" id="buttonUploadFile" data-loading-text="Mengunggah...">Unggah</button>
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -440,6 +440,55 @@
 							$.unblockUI();
 							toastr["success"](data.message, "Sukses");
 						}
+					}
+				});
+			});
+			
+			//upload file
+			$("#formUpload").submit(function(e) {
+				e.preventDefault();
+				$("#buttonUploadFile").button("loading");
+				
+				var daftarKomponen = new Array();
+				$("th.kolom-komponen").each(function(index, element) {
+					var namaKomponen = $(element).text();
+					daftarKomponen.push(namaKomponen);
+				});
+				
+				var formData = new FormData();
+				var input = $("#inputFile");
+				formData.append("file", input[0].files[0]);
+				formData.append("daftarKomponen", daftarKomponen);
+				$.ajax({
+					url : "unggah_file/",
+					type : "POST",
+					data : formData,
+					processData: false,
+					contentType: false,
+					success : function(data) {
+						if(data.status == "ok") {
+							toastr["success"](data.message, "Sukses");
+							var daftarNilai = data.data;
+							
+							for(var i=0; i<daftarNilai.length; i++) {
+								var row = $("td").filter(function() {
+									return $(this).text() == daftarNilai[i][0]
+								}).closest("tr");
+								
+								var komponens = $(row).find("td.komponen-nilai");
+								$(komponens).each(function(index, element) {
+									$(element).find("input").val(daftarNilai[i][index+2]);
+								});
+							}
+						}
+						else if(data.status == "warning") {
+							toastr["warning"](data.message, "Peringatan");
+						}
+						else if(data.status == "fail") {
+							toastr["error"](data.message, "Error");
+						}
+						
+						$("#buttonUploadFile").button("reset");
 					}
 				});
 			});
