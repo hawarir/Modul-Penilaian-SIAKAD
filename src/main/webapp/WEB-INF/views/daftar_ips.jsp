@@ -88,67 +88,81 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Ranking IPS</h4>
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-6">
-								<div class="form-group">
-									<div class="form-inline">
-										<label for="filterPeriode">Periode</label>
-										<select class="form-control" id="filterPeriode">
-											<option value=""></option>
-										</select>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Ranking IPS</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li class="active">Ranking IPS</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Ranking IPS</h4>
+							</div>
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<div class="form-inline">
+												<label for="filterPeriode">Periode</label>
+												<select class="form-control" id="filterPeriode">
+													<option value=""></option>
+													<c:forEach var="tglSmt" items="${listTglSmt}">
+														<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
+													</c:forEach>
+												</select>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group pull-right">
+											<div class="form-inline">
+												<label for="filterAngkatan">Angkatan</label>
+												<select class="form-control" id="filterAngkatan">
+													<option value=""></option>
+												</select>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-							<div class="col-md-6">
-								<div class="form-group pull-right">
-									<div class="form-inline">
-										<label for="filterAngkatan">Angkatan</label>
-										<select class="form-control" id="filterAngkatan">
-											<option value=""></option>
-										</select>
+								<div class="row">
+									<div class="col-md-12">
+										<table class="table" id="tabel_ips">
+											<thead>
+												<tr>
+													<th>NRP</th>
+													<th>Nama</th>
+													<th>IPS</th>
+													<th>Angkatan</th>
+													<th>Periode</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach var="ips" items="${listIps}">
+												<tr>
+													<td><c:out value="${ips.getPd().getNimPd()}"></c:out></td>
+													<td><c:out value="${ips.getPd().getNmPd()}"></c:out></td>
+													<td><fmt:formatNumber value="${ips.getNilaiIps()}" maxFractionDigits="2"></fmt:formatNumber></td>
+													<td><c:out value="${ips.getPd().getAngkatanPd()}"></c:out></td>
+													<td><c:out value="${ips.getTglSmt().getIdTglSmt()}"></c:out></td>
+												</tr>
+												</c:forEach>
+											</tbody>
+										</table>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="row">
-							<div class="col-md-12">
-								<table class="table" id="tabel_ips">
-									<thead>
-										<tr>
-											<th>NRP</th>
-											<th>Nama</th>
-											<th>IPS</th>
-											<th>Angkatan</th>
-											<th>Periode</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach var="ips" items="${listIps}">
-										<tr>
-											<td><c:out value="${ips.getPd().getNimPd()}"></c:out></td>
-											<td><c:out value="${ips.getPd().getNmPd()}"></c:out></td>
-											<td><fmt:formatNumber value="${ips.getNilaiIps()}" maxFractionDigits="2"></fmt:formatNumber></td>
-											<td><c:out value="${ips.getPd().getAngkatanPd()}"></c:out></td>
-											<td><c:out value="${ips.getTglSmt().getSmt().getNmSmt()} ${ips.getTglSmt().getThnAjaran().getThnThnAjaran()}"></c:out></td>
-										</tr>
-										</c:forEach>
-									</tbody>
-								</table>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<!-- script custom -->
@@ -160,10 +174,6 @@
 			
 			tabel.column(3).cache("search").sort().unique().each(function(d) {
 				$("#filterAngkatan").append($('<option value="'+d+'">'+d+'</option>'));
-			});
-			
-			tabel.column(4).cache("search").sort().unique().each(function(d) {
-				$("#filterPeriode").append($('<option value="'+d+'">'+d+'</option>'));
 			});
 			
 			$("#filterAngkatan").on("change", function() {

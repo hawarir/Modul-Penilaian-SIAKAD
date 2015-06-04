@@ -9,8 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.KonversiNilai;
 
 @Repository
@@ -19,7 +17,6 @@ public class KonversiNilaiRepositoryImpl implements KonversiNilaiRepository {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public List<KonversiNilai> getAll() {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM KonversiNilai WHERE aStatusKonversiAktif = TRUE ORDER BY nilaiHuruf DESC");

@@ -9,8 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.Kuisioner;
 
 @Repository
@@ -19,7 +17,6 @@ public class KuisionerRepositoryImpl implements KuisionerRepository {
 	private SessionFactory sessionFactory;
 
 	@Override
-	@Transactional
 	public List<Kuisioner> get(String where, String order, int limit, int offset) {
 		// TODO Auto-generated method stub
 		String dbWhere = "";
@@ -70,7 +67,6 @@ public class KuisionerRepositoryImpl implements KuisionerRepository {
 	}
 
 	@Override
-	@Transactional
 	public Kuisioner getById(UUID idKuisioner) {
 		// TODO Auto-generated method stub
 		return (Kuisioner) sessionFactory.getCurrentSession().get(Kuisioner.class, idKuisioner);

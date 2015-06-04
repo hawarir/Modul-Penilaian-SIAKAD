@@ -49,9 +49,11 @@ public class ControllerIP {
 	@RequestMapping(value = "/lihat_ips/", method = RequestMethod.GET)
 	public ModelAndView tampilkanIPS() {
 		List<Ips> listIps = serviceIps.ambilSemuaIps();
+		List<TglSmt> listTglSmt = serviceTglSmt.ambilSemuaTglSmt();
 		ModelAndView indeksPrestasi = new ModelAndView();
 		indeksPrestasi.setViewName("daftar_ips");
 		indeksPrestasi.addObject("listIps", listIps);
+		indeksPrestasi.addObject("listTglSmt", listTglSmt);
 		
 		return indeksPrestasi;
 	}

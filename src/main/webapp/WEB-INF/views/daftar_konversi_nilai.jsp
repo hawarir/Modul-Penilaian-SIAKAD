@@ -80,46 +80,57 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Atur Konversi Nilai</h4>
-					</div>
-					<div class="panel-body">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>Indeks Huruf</th>
-									<th>Indeks Nilai</th>
-									<th>Batas Nilai</th>
-									<th>Action</th>
-								</tr>
-							<thead>
-							<tbody>
-								<c:forEach var="konversi" items="${listKonversi}">
-								<tr class="row-konversi">
-									<td><input type="text" class="form-control hurufKonversi" value="${konversi.getHuruf()}" /></td>
-									<td><input type="text" class="form-control nilaiKonversi" value="${konversi.getNilaiHuruf()}" /></td>
-									<td><input type="text" class="form-control batasKonversi" value="${konversi.getBatasBawah()}" /></td>
-									<td><button type="button" class="btn btn-danger tombolHapusKonversi" name="${konversi.getIdKonversi()}"><i class="glyphicon glyphicon-minus"></i></button></td>
-								</tr>
-								</c:forEach>
-								<tr id="newKonversi">
-									<td><input type="text" class="form-control" id="hurufKonversiNew" value="" /></td>
-									<td><input type="text" class="form-control" id="nilaiKonversiNew" value="" /></td>
-									<td><input type="text" class="form-control" id="batasKonversiNew" value="" /></td>
-									<td><button type="button" class="btn btn-success" id="tombolTambahKonversi"><i class="glyphicon glyphicon-plus"></i></button></td>
-								</tr>
-							</tbody>
-						</table>
-						<button type="button" class="btn btn-primary pull-right" id="tombolSimpanKonversi">Simpan</button>
-					</div>
-				</div>
-			</div>							
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Pengaturan Konversi Nilai</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li class="active">Pengaturan Konversi Nilai</li>
+				</ol>
+			</div>
 		</div>
-	</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Daftar Konversi Nilai</h4>
+							</div>
+							<div class="panel-body">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Indeks Huruf</th>
+											<th>Indeks Nilai</th>
+											<th>Batas Nilai</th>
+											<th>Action</th>
+										</tr>
+									<thead>
+									<tbody>
+										<c:forEach var="konversi" items="${listKonversi}">
+										<tr class="row-konversi">
+											<td><input type="text" class="form-control hurufKonversi" value="${konversi.getHuruf()}" /></td>
+											<td><input type="text" class="form-control nilaiKonversi" value="${konversi.getNilaiHuruf()}" /></td>
+											<td><input type="text" class="form-control batasKonversi" value="${konversi.getBatasBawah()}" /></td>
+											<td><button type="button" class="btn btn-danger tombolHapusKonversi" name="${konversi.getIdKonversi()}"><i class="glyphicon glyphicon-minus"></i></button></td>
+										</tr>
+										</c:forEach>
+										<tr id="newKonversi">
+											<td><input type="text" class="form-control" id="hurufKonversiNew" value="" /></td>
+											<td><input type="text" class="form-control" id="nilaiKonversiNew" value="" /></td>
+											<td><input type="text" class="form-control" id="batasKonversiNew" value="" /></td>
+											<td><button type="button" class="btn btn-success" id="tombolTambahKonversi"><i class="glyphicon glyphicon-plus"></i></button></td>
+										</tr>
+									</tbody>
+								</table>
+								<button type="button" class="btn btn-primary pull-right" id="tombolSimpanKonversi">Simpan</button>
+							</div>
+						</div>
+					</div>							
+				</div>
+			</div>
 	<!-- end of content -->
 	
 	<!-- script ajax -->

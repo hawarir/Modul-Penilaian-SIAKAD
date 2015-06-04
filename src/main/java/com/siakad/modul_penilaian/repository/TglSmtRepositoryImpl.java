@@ -6,8 +6,6 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.TglSmt;
 
 @Repository
@@ -16,7 +14,6 @@ public class TglSmtRepositoryImpl implements TglSmtRepository {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public TglSmt getAktif() {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM TglSmt WHERE aTglSmtAktif = TRUE AND aTglSmtTerhapus = FALSE");
@@ -24,7 +21,6 @@ public class TglSmtRepositoryImpl implements TglSmtRepository {
 	}
 
 	@Override
-	@Transactional
 	public List<TglSmt> getAll() {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM TglSmt WHERE aTglSmtTerhapus = FALSE ORDER BY tglAwalSusunKrs DESC");

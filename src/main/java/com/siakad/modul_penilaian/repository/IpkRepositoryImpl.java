@@ -9,10 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.Ipk;
-import com.sia.main.domain.Ips;
 
 @Repository
 public class IpkRepositoryImpl implements IpkRepository {
@@ -20,7 +17,6 @@ public class IpkRepositoryImpl implements IpkRepository {
 	private SessionFactory sessionFactory;
 
 	@Override
-	@Transactional
 	public List<Ipk> getAll() {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM Ipk");
@@ -51,7 +47,6 @@ public class IpkRepositoryImpl implements IpkRepository {
 	}
 
 	@Override
-	@Transactional
 	public Ipk find(UUID idPd) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT ipk FROM Ipk as ipk WHERE id_pd = '" + idPd + "'");

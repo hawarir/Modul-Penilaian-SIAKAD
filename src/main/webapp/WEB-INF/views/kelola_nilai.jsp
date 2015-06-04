@@ -99,79 +99,91 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Daftar Kelas</h4>
-					</div>
-					<div class="panel-body">						
-						<form method="post" action="">
-							<div class="form-group">
-								<select class="form-control" name="idPemb">
-									<c:forEach var="kelas" items="${listKelas}">
-									<option value="${kelas.getIdPemb()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
-									</c:forEach>
-								</select>
-							</div>
-							<button type="submit" class="btn btn-primary pull-right">Buka</button>
-						</form>
-					</div>
-				</div>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Kelola Nilai Kelas ${namaKelas}</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li><a href="${pageContext.servletContext.contextPath}/kelola_nilai/">Kelola Nilai Kelas</a></li>
+					<li class="active">${namaKelas}</li>
+				</ol>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Kelola Nilai Kelas ${namaKelas}</h4>
-					</div>
-					<div class="panel-body">
-						<form action="simpan_nilai/">					
-							<table class="table" id="tabelNilai">
-								<thead>
-									<tr>
-										<th style="width:10%">NRP</th>
-										<th style="width:40%">Nama Mahasiswa</th>
-										<c:forEach var="komponen" items="${listKomponen}">
-											<th class="kolom-komponen"><c:out value="${komponen.getNamaKomponen()}"></c:out></th>
-										</c:forEach>
-										<th>Nilai Akhir</th>
-									</tr>
-								</thead>
-								<tbody>
-									<c:forEach var="krs" items="${krsInfo}">
-										<tr class="mahasiswa" name="${krs.getIdKrs()}">
-											<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
-											<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
-											<c:forEach var="komponen" items="${listKomponen}">
-												<td class="komponen-nilai" name="${komponen.getIdKomponen()}">
-													<c:set var="resultNilai" value="0" scope="page"></c:set>
-													<c:forEach var="nilai" items="${listNilai}">
-														<c:if test="${nilai.getKrs().getIdKrs() == krs.getIdKrs() && nilai.getKomponenNilai().getIdKomponen() ==  komponen.getIdKomponen()}">
-															<c:set var="resultNilai" value="${nilai.getNilai()}" scope="page"></c:set>
-														</c:if>
-													</c:forEach>
-													<input type="text" class="form-control nilai" value='${resultNilai}' />
-												</td>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Daftar Kelas</h4>
+							</div>
+							<div class="panel-body">						
+								<form method="post" action="">
+									<div class="form-group">
+										<select class="form-control" name="idPemb">
+											<c:forEach var="kelas" items="${listKelas}">
+											<option value="${kelas.getIdPemb()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
 											</c:forEach>
-											<td><input type="text" class="form-control nilai-akhir" value="${krs.getNilaiAkhir()}" disabled/></td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload"><span class="glyphicon glyphicon-upload"></span> Unggah File</button>
-							<div class="pull-right">
-								<button type="button" class="btn btn-primary" id="tombolSimpanNilai">Simpan</button>
-								<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalKomponen">Atur Komponen</button>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-primary pull-right">Buka</button>
+								</form>
 							</div>
-						</form>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Kelola Nilai</h4>
+							</div>
+							<div class="panel-body">
+								<form action="simpan_nilai/">					
+									<table class="table" id="tabelNilai">
+										<thead>
+											<tr>
+												<th style="width:10%">NRP</th>
+												<th style="width:40%">Nama Mahasiswa</th>
+												<c:forEach var="komponen" items="${listKomponen}">
+													<th class="kolom-komponen"><c:out value="${komponen.getNamaKomponen()}"></c:out></th>
+												</c:forEach>
+												<th>Nilai Akhir</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach var="krs" items="${krsInfo}">
+												<tr class="mahasiswa" name="${krs.getIdKrs()}">
+													<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
+													<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
+													<c:forEach var="komponen" items="${listKomponen}">
+														<td class="komponen-nilai" name="${komponen.getIdKomponen()}">
+															<c:set var="resultNilai" value="0" scope="page"></c:set>
+															<c:forEach var="nilai" items="${listNilai}">
+																<c:if test="${nilai.getKrs().getIdKrs() == krs.getIdKrs() && nilai.getKomponenNilai().getIdKomponen() ==  komponen.getIdKomponen()}">
+																	<c:set var="resultNilai" value="${nilai.getNilai()}" scope="page"></c:set>
+																</c:if>
+															</c:forEach>
+															<input type="text" class="form-control nilai" value='${resultNilai}' />
+														</td>
+													</c:forEach>
+													<td><input type="text" class="form-control nilai-akhir" value="${krs.getNilaiAkhir()}" disabled/></td>
+												</tr>
+											</c:forEach>
+										</tbody>
+									</table>
+									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload"><span class="glyphicon glyphicon-upload"></span> Unggah File</button>
+									<div class="pull-right">
+										<button type="button" class="btn btn-primary" id="tombolSimpanNilai">Simpan</button>
+										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalKomponen">Atur Komponen</button>
+									</div>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<!-- modal komponen -->
@@ -273,7 +285,8 @@
 			$("#tabelNilai").DataTable({
 				"sDom": "<'row'<'dataTables_header clearfix'<'col-md-3'<l>><'col-md-9'f<'pull-right'CT>>r>>t<'row-fluid'<'dataTables_footer clearfix'<'col-md-6'i><'col-md-6'p>>>",
 				tableTools: {
-					"sSwfPath": context_path+"resources/plugins/jquery.datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf"
+					"sSwfPath": context_path+"resources/plugins/jquery.datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+					"aButtons" : ["csv", "pdf"]
 				}
 			});
 			

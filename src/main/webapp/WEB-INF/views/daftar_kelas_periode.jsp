@@ -80,40 +80,51 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3" class="content">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Daftar Kelas</h4>
-					</div>
-					<div class="panel-body">						
-						<form method="post" action="">
-							<div class="form-group">
-								<label for="pilihanTglSmt">Periode</label>
-								<select id="pilihanTglSmt" class="form-control">
-									<option value=""></option>
-									<c:forEach var="tglSmt" items="${listTglSmt}">
-										<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
-									</c:forEach>
-								</select>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Lihat Nilai Kelas</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li class="active">Lihat Nilai Kelas</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3" class="content">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Daftar Kelas</h4>
 							</div>
-							<div class="form-group">
-								<label for="pilihanKelas">Kelas</label>
-								<select id="pilihanKelas" class="form-control" name="idPemb">
-									<option value=""></option>
-									<c:forEach var="kelas" items="${listKelas}">
-										<option value="${kelas.getIdPemb()}" class="${kelas.getTglSmt().getIdTglSmt()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
-									</c:forEach>
-								</select>
+							<div class="panel-body">						
+								<form method="post" action="">
+									<div class="form-group">
+										<label for="pilihanTglSmt">Periode</label>
+										<select id="pilihanTglSmt" class="form-control">
+											<option value=""></option>
+											<c:forEach var="tglSmt" items="${listTglSmt}">
+												<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
+											</c:forEach>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="pilihanKelas">Kelas</label>
+										<select id="pilihanKelas" class="form-control" name="idPemb">
+											<option value=""></option>
+											<c:forEach var="kelas" items="${listKelas}">
+												<option value="${kelas.getIdPemb()}" class="${kelas.getTglSmt().getIdTglSmt()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
+											</c:forEach>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-primary pull-right">Buka</button>
+								</form>
 							</div>
-							<button type="submit" class="btn btn-primary pull-right">Buka</button>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<script>

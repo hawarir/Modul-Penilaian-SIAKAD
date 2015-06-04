@@ -9,8 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.PertanyaanKuisioner;
 
 @Repository
@@ -20,7 +18,6 @@ public class PertanyaanKuisionerRepositoryImpl implements
 	private SessionFactory sessionFactory;
 
 	@Override
-	@Transactional
 	public List<PertanyaanKuisioner> getByIdKuisioner(UUID idKuisioner) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM PertanyaanKuisioner WHERE id_kuisioner='" + idKuisioner + "' AND aPertanyaanAktif = TRUE");
@@ -28,7 +25,6 @@ public class PertanyaanKuisionerRepositoryImpl implements
 	}
 	
 	@Override
-	@Transactional
 	public PertanyaanKuisioner getById(UUID idPertanyaan) {
 		// TODO Auto-generated method stub
 		return (PertanyaanKuisioner) sessionFactory.getCurrentSession().get(PertanyaanKuisioner.class, idPertanyaan);

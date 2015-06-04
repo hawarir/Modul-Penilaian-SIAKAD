@@ -70,6 +70,13 @@
 	<script
 		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery-ui/jquery-ui.min.js"></script>
 	
+	<!-- script dan css spesifik -->
+	<link
+		href="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/css/jquery.dataTables.min.css"
+		rel="stylesheet" type="text/css" />
+	<script
+		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/js/jquery.dataTables.min.js"></script>
+	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -80,73 +87,86 @@
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Daftar Kelas</h4>
-					</div>
-					<div class="panel-body">						
-						<form method="post" action="">
-							<div class="form-group">
-								<label for="pilihanTglSmt">Periode</label>
-								<select id="pilihanTglSmt" class="form-control">
-									<option value=""></option>
-									<c:forEach var="tglSmt" items="${listTglSmt}">
-										<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
-									</c:forEach>
-								</select>
-							</div>
-							<div class="form-group">
-								<label for="pilihanKelas">Kelas</label>
-								<select id="pilihanKelas" class="form-control" name="idPemb">
-									<option value=""></option>
-									<c:forEach var="kelas" items="${listKelas}">
-										<option value="${kelas.getIdPemb()}" class="${kelas.getTglSmt().getIdTglSmt()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
-									</c:forEach>
-								</select>
-							</div>
-							<button type="submit" class="btn btn-primary pull-right">Buka</button>
-						</form>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Lihat Nilai Kelas ${namaKelas}</h4>
-					</div>
-					<div class="panel-body">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>NRP</th>
-									<th>Nama Mahasiswa</th>
-									<th>Nilai Akhir</th>
-									<th>Nilai Huruf</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="krs" items="${krsInfo}">
-								<tr>
-									<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
-									<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
-									<td><fmt:formatNumber value="${krs.getNilaiAkhir()}" maxFractionDigits="2"></fmt:formatNumber></td>
-									<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
-								</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-					</div>
-				</div>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Laporan Nilai Kelas ${namaKelas}</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li><a href="${pageContext.servletContext.contextPath}/lihat_nilai/">Lihat Nilai Kelas</a></li>
+					<li class="active">${namaKelas}</li>
+				</ol>
 			</div>
 		</div>
-	</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Daftar Kelas</h4>
+							</div>
+							<div class="panel-body">						
+								<form method="post" action="">
+									<div class="form-group">
+										<label for="pilihanTglSmt">Periode</label>
+										<select id="pilihanTglSmt" class="form-control">
+											<option value=""></option>
+											<c:forEach var="tglSmt" items="${listTglSmt}">
+												<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
+											</c:forEach>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="pilihanKelas">Kelas</label>
+										<select id="pilihanKelas" class="form-control" name="idPemb">
+											<option value=""></option>
+											<c:forEach var="kelas" items="${listKelas}">
+												<option value="${kelas.getIdPemb()}" class="${kelas.getTglSmt().getIdTglSmt()}"><c:out value="${kelas.getMk().getNamaMK()} ${kelas.getNmPemb()}"></c:out></option>
+											</c:forEach>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-primary pull-right">Buka</button>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Laporan Nilai</h4>
+							</div>
+							<div class="panel-body">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>NRP</th>
+											<th>Nama Mahasiswa</th>
+											<th>Nilai Akhir</th>
+											<th>Nilai Huruf</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="krs" items="${krsInfo}">
+										<tr>
+											<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
+											<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
+											<td><fmt:formatNumber value="${krs.getNilaiAkhir()}" maxFractionDigits="2"></fmt:formatNumber></td>
+											<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
+										</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 	<!-- end of content -->
 	
 	<script>
 	$(document).ready(function() {
+		$("table").DataTable();
 		$("#pilihanKelas").children().hide();
 		
 		$("#pilihanTglSmt").on("change", function() {

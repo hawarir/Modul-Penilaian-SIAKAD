@@ -88,75 +88,87 @@
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Laporan Kuisioner Per Periode</h4>
-					</div>
-					<div class="panel-body">
-						<form method="post" action="">
-							<div class="form-group">
-								<select class="form-control" name="idTglSmt">
-									<c:forEach var="tglSmt" items="${daftarTglSmt}">
-										<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
-									</c:forEach>
-								</select>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Laporan Kuisioner Per Periode</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li><a href="${pageContext.servletContext.contextPath}/laporan_kuisioner_periode/">Daftar Laporan Kuisioner</a></li>
+					<li class="active">Laporan Kuisioner Per Periode</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Laporan Kuisioner Per Periode</h4>
 							</div>
-							<button type="submit" class="btn btn-primary pull-right">Buka</button>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Laporan Kuisioner Per Periode</h4>
-					</div>
-					<div class="panel-body">
-						<table class="table">
-							<thead>
-								<tr>
-									<th rowspan="2">Nama Kelas</th>
-									<th rowspan="2">Nama Dosen</th>
-									<th rowspan="2">Nilai IPD</th>
-									<th colspan="${fn:length(daftarKuisioner)}">Kuisioner</th>									
-								</tr>
-								<tr>
-									<c:forEach var="kuisioner" items="${daftarKuisioner}">
-										<th><c:out value="${kuisioner.getNmKuisioner()}"></c:out></th>
-									</c:forEach>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="pemb" items="${daftarPemb}">
-									<tr id="${pemb.getIdPemb()}">
-										<td><c:out value="${pemb.getMk().getNamaMK()} ${pemb.getNmPemb()}"></c:out></td>
-										<c:forEach var="dosen" items="${daftarKetuaPendidik}">
-											<c:if test="${dosen.getPemb().getIdPemb() == pemb.getIdPemb()}">
-												<td><c:out value="${dosen.getPtk().getNmPtk()}"></c:out></td>
-												<td><fmt:formatNumber value="${dosen.getNilaiIpd()}" maxFractionDigits="2"></fmt:formatNumber></td>
-											</c:if>
-										</c:forEach>
-										<c:forEach var="kuisioner" items="${daftarKuisioner}">
-											<c:forEach var="nilai" items="${daftarNilai}">
-												<c:if test="${nilai.getIdPemb() == pemb.getIdPemb() && nilai.getIdKuisioner() == kuisioner.getIdKuisioner()}">
-													<td><fmt:formatNumber value="${nilai.getNilai()}" maxFractionDigits="2"></fmt:formatNumber></td>
-												</c:if>
+							<div class="panel-body">
+								<form method="post" action="">
+									<div class="form-group">
+										<select class="form-control" name="idTglSmt">
+											<c:forEach var="tglSmt" items="${daftarTglSmt}">
+												<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
 											</c:forEach>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-primary pull-right">Buka</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Laporan Kuisioner</h4>
+							</div>
+							<div class="panel-body">
+								<table class="table">
+									<thead>
+										<tr>
+											<th rowspan="2">Nama Kelas</th>
+											<th rowspan="2">Nama Dosen</th>
+											<th rowspan="2">Nilai IPD</th>
+											<th colspan="${fn:length(daftarKuisioner)}">Kuisioner</th>									
+										</tr>
+										<tr>
+											<c:forEach var="kuisioner" items="${daftarKuisioner}">
+												<th><c:out value="${kuisioner.getNmKuisioner()}"></c:out></th>
+											</c:forEach>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="pemb" items="${daftarPemb}">
+											<tr id="${pemb.getIdPemb()}">
+												<td><c:out value="${pemb.getMk().getNamaMK()} ${pemb.getNmPemb()}"></c:out></td>
+												<c:forEach var="dosen" items="${daftarKetuaPendidik}">
+													<c:if test="${dosen.getPemb().getIdPemb() == pemb.getIdPemb()}">
+														<td><c:out value="${dosen.getPtk().getNmPtk()}"></c:out></td>
+														<td><fmt:formatNumber value="${dosen.getNilaiIpd()}" maxFractionDigits="2"></fmt:formatNumber></td>
+													</c:if>
+												</c:forEach>
+												<c:forEach var="kuisioner" items="${daftarKuisioner}">
+													<c:forEach var="nilai" items="${daftarNilai}">
+														<c:if test="${nilai.getIdPemb() == pemb.getIdPemb() && nilai.getIdKuisioner() == kuisioner.getIdKuisioner()}">
+															<td><fmt:formatNumber value="${nilai.getNilai()}" maxFractionDigits="2"></fmt:formatNumber></td>
+														</c:if>
+													</c:forEach>
+												</c:forEach>
+											</tr>
 										</c:forEach>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<script>

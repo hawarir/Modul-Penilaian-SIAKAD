@@ -9,8 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.KomponenNilai;
 
 @Repository
@@ -19,7 +17,6 @@ public class KomponenNilaiRepositoryImpl implements KomponenNilaiRepository {
 	private SessionFactory sessionFactory;
 
 	@Override
-	@Transactional
 	public List<KomponenNilai> get(String where, String order, int limit, int offset) {
 		// TODO Auto-generated method stub
 		String dbWhere = "";
@@ -33,7 +30,6 @@ public class KomponenNilaiRepositoryImpl implements KomponenNilaiRepository {
 	}
 	
 	@Override
-	@Transactional
 	public List<KomponenNilai> leftJoin(UUID idPemb) {
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT komp FROM KomponenNilai as komp LEFT JOIN komp.pemb WHERE id_pemb='" + idPemb +"'");
 		return query.list();
@@ -77,7 +73,6 @@ public class KomponenNilaiRepositoryImpl implements KomponenNilaiRepository {
 	}
 	
 	@Override
-	@Transactional
 	public double totalPresentase(UUID idPemb) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT sum(k.persentase_komponen) as res "
@@ -91,7 +86,6 @@ public class KomponenNilaiRepositoryImpl implements KomponenNilaiRepository {
 	}
 
 	@Override
-	@Transactional
 	public KomponenNilai getById(UUID idKomp) {
 		// TODO Auto-generated method stub
 		return (KomponenNilai) sessionFactory.getCurrentSession().get(KomponenNilai.class, idKomp);

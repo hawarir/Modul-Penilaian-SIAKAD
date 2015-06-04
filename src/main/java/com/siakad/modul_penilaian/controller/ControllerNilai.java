@@ -58,7 +58,7 @@ public class ControllerNilai {
 		List<Pemb> kelas = servicePemb.ambilBerdasarkanTglSmt(tglSmtAktif.getIdTglSmt());
 		
 		ModelAndView daftarKelas = new ModelAndView();
-		daftarKelas.setViewName("daftar_kelas");
+		daftarKelas.setViewName("daftar_kelas_aktif");
 		daftarKelas.addObject("listKelas", kelas);
 		return daftarKelas;
 	}

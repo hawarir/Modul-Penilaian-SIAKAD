@@ -77,6 +77,18 @@
 </head>
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
+	<!-- content -->
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Beranda</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li class="active">Beranda</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+	<!-- end of content -->
 	<%@include file="footer.jsp" %>
 </body>
 </html>

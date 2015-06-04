@@ -80,43 +80,54 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8 col-md-offset-2">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Kelola Kuisioner</h4>
-					</div>
-					<div class="panel-body">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>Nama Kuisioner</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="kuisioner" items="${listKuisioner}">
-								<tr id="${kuisioner.getIdKuisioner()}" name="${kuisioner.getIdKuisioner()}">
-									<td><c:out value="${kuisioner.getNmKuisioner()}"></c:out></td>
-									<td>
-										<button type="button" class="btn btn-primary tombolUbahKuisioner" data-toggle="modal" data-target="#modalKuisioner">
-											<i class="glyphicon glyphicon-pencil"></i>
-										</button>
-										<button type="button" class="btn btn-danger tombolHapusKuisioner">
-											<i class="glyphicon glyphicon-minus"></i>
-										</button>
-									</td>
-								</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-						<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalKuisioner">Buat Kuisioner Baru</button>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Pengaturan Kuisioner</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li class="active">Pengaturan Kuisioner</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8 col-md-offset-2">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Kelola Kuisioner</h4>
+							</div>
+							<div class="panel-body">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Nama Kuisioner</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="kuisioner" items="${listKuisioner}">
+										<tr id="${kuisioner.getIdKuisioner()}" name="${kuisioner.getIdKuisioner()}">
+											<td><c:out value="${kuisioner.getNmKuisioner()}"></c:out></td>
+											<td>
+												<button type="button" class="btn btn-primary tombolUbahKuisioner" data-toggle="modal" data-target="#modalKuisioner">
+													<i class="glyphicon glyphicon-pencil"></i>
+												</button>
+												<button type="button" class="btn btn-danger tombolHapusKuisioner">
+													<i class="glyphicon glyphicon-minus"></i>
+												</button>
+											</td>
+										</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+								<button type="button" class="btn btn-primary pull-right" data-toggle="modal" data-target="#modalKuisioner">Buat Kuisioner Baru</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<!-- modal nama kuisioner -->

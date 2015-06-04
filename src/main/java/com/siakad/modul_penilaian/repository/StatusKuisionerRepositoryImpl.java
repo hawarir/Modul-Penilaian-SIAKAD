@@ -9,8 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.StatusKuisioner;
 
 @Repository
@@ -19,7 +17,6 @@ public class StatusKuisionerRepositoryImpl implements StatusKuisionerRepository 
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public List<StatusKuisioner> getByKrsKuisioner(UUID idKrs, UUID idKuisioner) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM StatusKuisioner WHERE id_krs='" + idKrs + "' AND id_kuisioner='" + idKuisioner + "'");
@@ -27,7 +24,6 @@ public class StatusKuisionerRepositoryImpl implements StatusKuisionerRepository 
 	}
 	
 	@Override
-	@Transactional
 	public List<StatusKuisioner> getByKrs(UUID idKrs) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM StatusKuisioner WHERE id_krs='" + idKrs + "'");
@@ -47,7 +43,6 @@ public class StatusKuisionerRepositoryImpl implements StatusKuisionerRepository 
 	}
 
 	@Override
-	@Transactional
 	public List<StatusKuisioner> getByPemb(UUID idPemb) {
 		// TODO Auto-generated method stub
 		String queryString = "SELECT sk FROM StatusKuisioner sk WHERE sk.krs.pemb.idPemb='" + idPemb + "'";
@@ -56,7 +51,6 @@ public class StatusKuisionerRepositoryImpl implements StatusKuisionerRepository 
 	}
 
 	@Override
-	@Transactional
 	public List<StatusKuisioner> getByPembKuisioner(UUID idPemb,
 			UUID idKuisioner) {
 		// TODO Auto-generated method stub

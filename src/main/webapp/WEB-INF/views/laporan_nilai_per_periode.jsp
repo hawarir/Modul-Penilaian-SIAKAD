@@ -81,51 +81,66 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Nilai Per Periode</h4>
-					</div>
-					<div class="panel-body">
-						<p>Nama : <c:out value="${pd.getNmPd()}"></c:out></p>
-						<p>NIM : <c:out value="${pd.getNimPd()}"></c:out></p>
-						
-						<c:forEach var="ips" items="${daftarIps}">
-							<div class="row">
-								<div class="col-md-8 col-md-offset-2">
-									<p>Periode : <c:out value="${ips.getTglSmt().getSmt().getNmSmt()} ${ips.getTglSmt().getThnAjaran().getThnThnAjaran()}"></c:out></p>
-									<p>IPS : <fmt:formatNumber value="${ips.getNilaiIps()}" maxFractionDigits="2"></fmt:formatNumber></p>
-									<table class="table">
-										<thead>
-											<tr>
-												<th>Kode MK</th>
-												<th>Mata Kuliah</th>
-												<th>SKS</th>
-												<th>Nilai</th>
-											</tr>
-										</thead>
-										<tbody>
-											<c:forEach var="krs" items="${daftarKrs}">
-												<c:if test="${krs.getPemb().getTglSmt().getIdTglSmt() == ips.getTglSmt().getIdTglSmt()}"></c:if>
-												<tr>
-													<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
-													<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
-													<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
-													<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
-												</tr>
-											</c:forEach>
-										</tbody>
-									</table>
-								</div>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Laporan Nilai Per Periode</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li class="active">Laporan Nilai Per Periode</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Daftar Nilai</h4>
 							</div>
-						</c:forEach>
+							<div class="panel-body">
+								<p>Nama : <c:out value="${pd.getNmPd()}"></c:out></p>
+								<p>NIM : <c:out value="${pd.getNimPd()}"></c:out></p>
+								
+								<c:forEach var="ips" items="${daftarIps}">
+									<div class="row">
+										<div class="col-md-8 col-md-offset-2">
+											<table class="table">
+												<thead>
+													<tr>
+														<th colspan="4">
+															Periode : <c:out value="${ips.getTglSmt().getSmt().getNmSmt()} ${ips.getTglSmt().getThnAjaran().getThnThnAjaran()}"></c:out><br />
+															IPS : <fmt:formatNumber value="${ips.getNilaiIps()}" maxFractionDigits="2"></fmt:formatNumber>
+														</th>
+													</tr>
+													<tr>
+														<th>Kode MK</th>
+														<th>Mata Kuliah</th>
+														<th>SKS</th>
+														<th>Nilai</th>
+													</tr>
+												</thead>
+												<tbody>
+													<c:forEach var="krs" items="${daftarKrs}">
+														<c:if test="${krs.getPemb().getTglSmt().getIdTglSmt() == ips.getTglSmt().getIdTglSmt()}"></c:if>
+														<tr>
+															<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
+															<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
+															<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
+															<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</c:forEach>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<%@include file="footer.jsp" %>

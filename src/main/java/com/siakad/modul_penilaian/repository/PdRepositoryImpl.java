@@ -7,8 +7,6 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.Pd;
 
 @Repository
@@ -17,7 +15,6 @@ public class PdRepositoryImpl implements PdRepository {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public List<Pd> get(String where, String order, int limit, int offset) {
 		// TODO Auto-generated method stub
 		String dbWhere = "";
@@ -31,7 +28,6 @@ public class PdRepositoryImpl implements PdRepository {
 	}
 
 	@Override
-	@Transactional
 	public Pd getById(UUID idPd) {
 		// TODO Auto-generated method stub
 		return (Pd) sessionFactory.getCurrentSession().get(Pd.class, idPd);

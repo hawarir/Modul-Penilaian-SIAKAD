@@ -10,8 +10,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.Nilai;
 
 @Repository
@@ -20,7 +18,6 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public void insertBulk(List<Nilai> listNilai) {
 		// TODO Auto-generated method stub
 		for (Nilai nilai : listNilai) {
@@ -58,7 +55,6 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 	}
 
 	@Override
-	@Transactional
 	public Nilai getId(Nilai nilai) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM Nilai WHERE id_krs = '" + nilai.getKrs().getIdKrs() 
@@ -73,7 +69,6 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 	}
 
 	@Override
-	@Transactional
 	public List<Nilai> getByKrs(List<UUID> listIdKrs) {
 		// TODO Auto-generated method stub
 		List<Nilai> listNilai = new ArrayList<Nilai>();
@@ -86,7 +81,6 @@ public class NilaiRepositoryImpl implements NilaiRepository {
 	}
 
 	@Override
-	@Transactional
 	public double getNilaiAkhir(UUID idKrs) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT nilai FROM Nilai as nilai LEFT JOIN nilai.komponenNilai WHERE id_krs='" + idKrs + "' AND a_komp_aktif = TRUE");

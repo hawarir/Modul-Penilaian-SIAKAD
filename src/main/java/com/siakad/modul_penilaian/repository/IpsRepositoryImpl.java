@@ -9,8 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.Ips;
 
 @Repository
@@ -19,7 +17,6 @@ public class IpsRepositoryImpl implements IpsRepository {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public List<Ips> getAll() {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM Ips");
@@ -27,7 +24,6 @@ public class IpsRepositoryImpl implements IpsRepository {
 	}
 	
 	@Override
-	@Transactional
 	public List<Ips> getByPd(UUID idPd) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT ips FROM Ips as ips LEFT JOIN ips.tglSmt WHERE id_pd='" + idPd + "' ORDER BY tgl_awal_susun_krs ASC");
@@ -58,7 +54,6 @@ public class IpsRepositoryImpl implements IpsRepository {
 	}
 
 	@Override
-	@Transactional
 	public Ips find(UUID idPd, UUID idTglSmt) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT ips FROM Ips as ips WHERE id_pd = '" + idPd + "' AND id_tgl_smt = '" + idTglSmt + "'");

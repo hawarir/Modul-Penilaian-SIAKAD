@@ -80,46 +80,57 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Daftar Kuisioner</h4>
-					</div>
-					<div class="panel-body">
-						<form id="formKuisioner" method="post" action="">
-							<div class="form-group">
-								<select class="form-control" name="idKuisioner">
-									<c:set var="count" value="0" scope="page"/>
-									<option value=""></option>
-									<c:forEach var="krs" varStatus="status" items="${daftarKrs}">
-										<optgroup name="${krs.getIdKrs()}" label="${krs.getPemb().getMk().getNamaMK()} ${krs.getPemb().getNmPemb()}">
-											<c:forEach var="kuisioner" items="${daftarKuisioner}">
-											
-												<c:choose>
-													<c:when test="${daftarStatus[count]}">
-														<c:set var="disabled" value="disabled" scope="page"/>
-													</c:when>
-													<c:otherwise>
-														<c:set var="disabled" value="" scope="page"/>
-													</c:otherwise>
-												</c:choose>
-												
-												<option value="${kuisioner.getIdKuisioner()}" ${empty disabled ? '' : 'disabled'}><c:out value="${kuisioner.getNmKuisioner()}"></c:out></option>
-												<c:set var="count" value="${count + 1}" scope="page"/>
-											</c:forEach>
-										</optgroup>
-									</c:forEach>
-								</select>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Pengisian Kuisioner</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li class="active">Pengisian Kuisioner</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Daftar Kuisioner</h4>
 							</div>
-							<button type="submit" class="btn btn-primary pull-right">Buka</button>
-						</form>
+							<div class="panel-body">
+								<form id="formKuisioner" method="post" action="">
+									<div class="form-group">
+										<select class="form-control" name="idKuisioner">
+											<c:set var="count" value="0" scope="page"/>
+											<option value=""></option>
+											<c:forEach var="krs" varStatus="status" items="${daftarKrs}">
+												<optgroup name="${krs.getIdKrs()}" label="${krs.getPemb().getMk().getNamaMK()} ${krs.getPemb().getNmPemb()}">
+													<c:forEach var="kuisioner" items="${daftarKuisioner}">
+													
+														<c:choose>
+															<c:when test="${daftarStatus[count]}">
+																<c:set var="disabled" value="disabled" scope="page"/>
+															</c:when>
+															<c:otherwise>
+																<c:set var="disabled" value="" scope="page"/>
+															</c:otherwise>
+														</c:choose>
+														
+														<option value="${kuisioner.getIdKuisioner()}" ${empty disabled ? '' : 'disabled'}><c:out value="${kuisioner.getNmKuisioner()}"></c:out></option>
+														<c:set var="count" value="${count + 1}" scope="page"/>
+													</c:forEach>
+												</optgroup>
+											</c:forEach>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-primary pull-right">Buka</button>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<script>

@@ -80,29 +80,40 @@
 <body style="page-header-fixed page-horizontal-bar">
 	<%@include file="header.jsp" %>
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Laporan Kuisioner Per Periode</h4>
-					</div>
-					<div class="panel-body">
-						<form method="post" action="">
-							<div class="form-group">
-								<select class="form-control" name="idTglSmt">
-									<c:forEach var="tglSmt" items="${daftarTglSmt}">
-										<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
-									</c:forEach>
-								</select>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Lihat Laporan Kuisoner Per Periode</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li class="active">Lihat Laporan Kuisoner Per Periode</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Laporan Kuisioner Per Periode</h4>
 							</div>
-							<button type="submit" class="btn btn-primary pull-right">Buka</button>
-						</form>
+							<div class="panel-body">
+								<form method="post" action="">
+									<div class="form-group">
+										<select class="form-control" name="idTglSmt">
+											<c:forEach var="tglSmt" items="${daftarTglSmt}">
+												<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
+											</c:forEach>
+										</select>
+									</div>
+									<button type="submit" class="btn btn-primary pull-right">Buka</button>
+								</form>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	<%@include file="footer.jsp" %>
 </body>

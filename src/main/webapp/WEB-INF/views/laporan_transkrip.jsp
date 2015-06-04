@@ -81,47 +81,58 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Transkrip Nilai</h4>
-					</div>
-					<div class="panel-body">
-						<p>Nama : <c:out value="${pd.getNmPd()}"></c:out></p>
-						<p>NIM : <c:out value="${pd.getNimPd()}"></c:out></p>
-						<p>IPK : <fmt:formatNumber value="${ipk.getNilaiIpk()}" maxFractionDigits="2"></fmt:formatNumber></p>
-						
-						<div class="row">
-							<div class="col-md-8 col-md-offset-2">
-								<table class="table">
-									<thead>
-										<tr>
-											<th>Kode MK</th>
-											<th>Mata Kuliah</th>
-											<th>SKS</th>
-											<th>Nilai</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach var="krs" items="${daftarKrs}">
-											<tr>
-												<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
-												<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
-												<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
-												<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Laporan Transkrip Nilai</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li class="active">Laporan Transkrip Nilai</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Transkrip Nilai</h4>
+							</div>
+							<div class="panel-body">
+								<p>Nama : <c:out value="${pd.getNmPd()}"></c:out></p>
+								<p>NIM : <c:out value="${pd.getNimPd()}"></c:out></p>
+								<p>IPK : <fmt:formatNumber value="${ipk.getNilaiIpk()}" maxFractionDigits="2"></fmt:formatNumber></p>
+								
+								<div class="row">
+									<div class="col-md-8 col-md-offset-2">
+										<table class="table">
+											<thead>
+												<tr>
+													<th>Kode MK</th>
+													<th>Mata Kuliah</th>
+													<th>SKS</th>
+													<th>Nilai</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach var="krs" items="${daftarKrs}">
+													<tr>
+														<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
+														<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
+														<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
+														<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<%@include file="footer.jsp" %>

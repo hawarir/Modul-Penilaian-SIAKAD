@@ -79,22 +79,33 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-md-offset-3">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title">Perbaharui Indeks Prestasi</h4>
-					</div>
-					<div class="panel-body">
-						<button type="button" class="btn btn-primary" id="updateIPS" data-loading-text="Memperbaharui IPS...">Update IPS</button>
-						<button type="button" class="btn btn-primary" id="updateIPK" data-loading-text="Memperbaharui IPK...">Update IPK</button>
-						<button type="button" class="btn btn-primary" id="updateIPD" data-loading-text="Memperbaharui IPD...">Update IPD</button>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Pengaturan Indeks Prestasi</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li class="active">Pengaturan Indeks Prestasi</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-3">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title">Daftar Perintah</h4>
+							</div>
+							<div class="panel-body">
+								<button type="button" class="btn btn-primary" id="updateIPS" data-loading-text="Memperbaharui IPS...">Update IPS</button>
+								<button type="button" class="btn btn-primary" id="updateIPK" data-loading-text="Memperbaharui IPK...">Update IPK</button>
+								<button type="button" class="btn btn-primary" id="updateIPD" data-loading-text="Memperbaharui IPD...">Update IPD</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<!-- script -->

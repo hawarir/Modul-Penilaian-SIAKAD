@@ -83,38 +83,50 @@
 	<%@include file="header.jsp" %>
 	
 	<!-- content -->
-	<div class="container">
-		<div class="row">
-			<div class="col-md-10 col-md-offset-1">
-				<div class="panel panel-white">
-					<div class="panel-heading">
-						<h4 class="panel-title"><c:out value="${kuisioner.getNmKuisioner()}"></c:out> </h4>
-					</div>
-					<div class="panel-body">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>No</th>
-									<th>Pertanyaan</th>
-									<th>Skor</th>
-								</tr>
-							</thead>
-							<tbody>
-								<c:forEach var="pertanyaan" varStatus="status" items="${daftarPertanyaan}">
-								<tr name="${pertanyaan.getIdPertanyaanKuisioner()}">
-									<td><c:out value="${status.index + 1}"></c:out></td>
-									<td><c:out value="${pertanyaan.getPertanyaan()}"></c:out></td>
-									<td><div class="slider"></div></td>
-								</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-						<button id="submitKuisioner" type="button" class="btn btn-primary pull-right" data-loading-text="Menyimpan...">Submit</button>
+	<div class="page-inner">
+		<div class="page-title">
+			<h3>Isi Kuisioner</h3>
+			<div class="page-breadcrumb">
+				<ol class="breadcrumb">
+					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
+					<li><a href="${pageContext.servletContext.contextPath}/isi_kuisioner/">Daftar Kuisioner</a></li>
+					<li class="active">Isi Kuisioner</li>
+				</ol>
+			</div>
+		</div>
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-10 col-md-offset-1">
+						<div class="panel panel-white">
+							<div class="panel-heading">
+								<h4 class="panel-title"><c:out value="${kuisioner.getNmKuisioner()}"></c:out></h4>
+							</div>
+							<div class="panel-body">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>No</th>
+											<th>Pertanyaan</th>
+											<th>Skor</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="pertanyaan" varStatus="status" items="${daftarPertanyaan}">
+										<tr name="${pertanyaan.getIdPertanyaanKuisioner()}">
+											<td><c:out value="${status.index + 1}"></c:out></td>
+											<td><c:out value="${pertanyaan.getPertanyaan()}"></c:out></td>
+											<td><div class="slider"></div></td>
+										</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+								<button id="submitKuisioner" type="button" class="btn btn-primary pull-right" data-loading-text="Menyimpan...">Submit</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</div>
 	<!-- end of content -->
 	
 	<script>

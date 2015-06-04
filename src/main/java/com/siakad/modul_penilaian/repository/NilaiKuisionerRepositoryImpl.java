@@ -9,8 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.NilaiKuisioner;
 
 @Repository
@@ -31,7 +29,6 @@ public class NilaiKuisionerRepositoryImpl implements NilaiKuisionerRepository {
 	}
 
 	@Override
-	@Transactional
 	public List<NilaiKuisioner> getByPembPertanyaan(UUID idPemb,
 			UUID idPertanyaan) {
 		// TODO Auto-generated method stub

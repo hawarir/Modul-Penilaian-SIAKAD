@@ -7,8 +7,6 @@ import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.sia.main.domain.PendidikPengajar;
 
 @Repository
@@ -18,7 +16,6 @@ public class PendidikPengajarRepositoryImpl implements
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public void updateNilaiIpd(UUID idPemb, double nilai) {
 		// TODO Auto-generated method stub
 		String queryString = "UPDATE PendidikPengajar SET nilaiIpd = " + nilai + " WHERE id_pemb = '" + idPemb + "'";
@@ -27,7 +24,6 @@ public class PendidikPengajarRepositoryImpl implements
 	}
 
 	@Override
-	@Transactional
 	public PendidikPengajar getKetuaByPemb(UUID idPemb) {
 		// TODO Auto-generated method stub
 		String queryString = "SELECT pp FROM PendidikPengajar pp WHERE pp.pemb.idPemb='" + idPemb + "' AND aPendidikPengajarKetua = TRUE";
@@ -36,7 +32,6 @@ public class PendidikPengajarRepositoryImpl implements
 	}
 
 	@Override
-	@Transactional
 	public List<PendidikPengajar> getByPemb(UUID idPemb) {
 		// TODO Auto-generated method stub
 		String queryString = "SELECT pp FROM PendidikPengajar pp WHERE pp.pemb.idPemb='" + idPemb + "'";

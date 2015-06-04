@@ -209,17 +209,3 @@
 		<!-- Page Sidebar Inner -->
 	</div>
 	<!-- Page Sidebar --> <!-- Content -->
-
-	<div class="page-inner">
-		<div class="page-title">
-			<h3>Horizontal Menu</h3>
-			<div class="page-breadcrumb">
-				<ol class="breadcrumb">
-					<li><a href="index.html">Home</a></li>
-					<li><a href="#">Layouts</a></li>
-					<li class="active">Horizontal Menu</li>
-				</ol>
-			</div>
-		</div>
-		<div id="main-wrapper">
-		<!-- akhir dari header -->
