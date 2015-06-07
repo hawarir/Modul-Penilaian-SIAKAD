@@ -8,5 +8,6 @@ import com.sia.main.domain.Pemb;
 public interface PembService {
 	public List<Pemb> ambilSemuaPemb();
 	public List<Pemb> ambilBerdasarkanTglSmt(UUID idTglSmt);
+	public List<Pemb> ambilBerdasarkanTglSmtPtk(UUID idTglSmt, UUID idPtk);
 	public Pemb ambilPemb(UUID idPemb);
 }

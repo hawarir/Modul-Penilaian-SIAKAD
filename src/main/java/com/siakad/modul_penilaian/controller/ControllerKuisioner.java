@@ -7,6 +7,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import javax.management.ServiceNotFoundException;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Kuisioner;
 import com.sia.main.domain.NilaiKuisioner;
+import com.sia.main.domain.Pd;
 import com.sia.main.domain.Pemb;
 import com.sia.main.domain.PendidikPengajar;
 import com.sia.main.domain.PertanyaanKuisioner;
@@ -42,7 +44,7 @@ import com.siakad.modul_penilaian.service.StatusKuisionerService;
 import com.siakad.modul_penilaian.service.TglSmtService;
 
 @Controller
-public class ControllerKuisioner {
+public class ControllerKuisioner extends ControllerSession{
 	@Autowired
 	private KuisionerService serviceKuisioner;
 	
@@ -68,10 +70,16 @@ public class ControllerKuisioner {
 	private TglSmtService serviceTglSmt;
 	
 	@RequestMapping(value = "/isi_kuisioner/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarIsiKuisioner() {
-		UUID idPd = UUID.fromString("6bb49f6a-db8e-4032-b5e6-9c10f21e1783"); // hardcode id_pd Yoga
+	public ModelAndView tampilkanDaftarIsiKuisioner(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Isi Kuisioner"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
+		Pd pd = (Pd) session.getAttribute("pd");
+		
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
-		List<Krs> daftarKrs = serviceKrs.ambilKrsAktifBerdasarkanPd(idPd, tglSmtAktif.getIdTglSmt());
+		List<Krs> daftarKrs = serviceKrs.ambilKrsAktifBerdasarkanPd(pd.getIdPd(), tglSmtAktif.getIdTglSmt());
 		List<Kuisioner> daftarKuisioner = serviceKuisioner.ambilSemuaKuisioner();
 		List<Boolean> daftarStatus = new ArrayList<Boolean>();
 		
@@ -81,13 +89,12 @@ public class ControllerKuisioner {
 			}
 		}
 		
-		ModelAndView daftarIsiKuisioner = new ModelAndView();
-		daftarIsiKuisioner.setViewName("daftar_kuisioner");
-		daftarIsiKuisioner.addObject("daftarKrs", daftarKrs);
-		daftarIsiKuisioner.addObject("daftarKuisioner", daftarKuisioner);
-		daftarIsiKuisioner.addObject("daftarStatus", daftarStatus);
+		mav.setViewName("daftar_kuisioner");
+		mav.addObject("daftarKrs", daftarKrs);
+		mav.addObject("daftarKuisioner", daftarKuisioner);
+		mav.addObject("daftarStatus", daftarStatus);
 		
-		return daftarIsiKuisioner;
+		return mav;
 	}
 	
 	@RequestMapping(value = "/isi_kuisioner/", method = RequestMethod.POST)
@@ -130,14 +137,18 @@ public class ControllerKuisioner {
 	}
 	
 	@RequestMapping(value = "/kelola_kuisioner/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarKelolaKuisioner(Locale locale, Model model) {
+	public ModelAndView tampilkanDaftarKelolaKuisioner(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Kelola Kuisioner"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
 		List<Kuisioner> listKuisionerAktif = serviceKuisioner.ambilSemuaKuisioner();
 		
-		ModelAndView daftarKuisioner = new ModelAndView();
-		daftarKuisioner.setViewName("kelola_kuisioner");
-		daftarKuisioner.addObject("listKuisioner", listKuisionerAktif);
+		mav.setViewName("kelola_kuisioner");
+		mav.addObject("listKuisioner", listKuisionerAktif);
 		
-		return daftarKuisioner;
+		return mav;
 	}
 	
 	@RequestMapping(value = "/kelola_kuisioner/tambah_kuisioner/", method = RequestMethod.POST)
@@ -191,14 +202,18 @@ public class ControllerKuisioner {
 	}
 	
 	@RequestMapping(value = "/laporan_kuisioner_periode/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarPeriodeKuisioner() {
+	public ModelAndView tampilkanDaftarPeriodeKuisioner(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Laporan Kuisioner Periodik"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
 		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
 		
-		ModelAndView daftarPeriodeKuisioner = new ModelAndView();
-		daftarPeriodeKuisioner.setViewName("daftar_laporan_kuisioner_periode");
-		daftarPeriodeKuisioner.addObject("daftarTglSmt", daftarTglSmt);
+		mav.setViewName("daftar_laporan_kuisioner_periode");
+		mav.addObject("daftarTglSmt", daftarTglSmt);
 		
-		return daftarPeriodeKuisioner;
+		return mav;
 	}
 	
 	@RequestMapping(value = "/laporan_kuisioner_periode/", method = RequestMethod.POST)
@@ -246,16 +261,20 @@ public class ControllerKuisioner {
 	}
 	
 	@RequestMapping(value = "/laporan_kuisioner_kelas/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarKelasKuisioner() {
+	public ModelAndView tampilkanDaftarKelasKuisioner(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Laporan Kuisioner Per Kelas"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
 		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
 		List<Pemb> daftarPemb = servicePemb.ambilSemuaPemb();
 		
-		ModelAndView daftarKelasKuisioner = new ModelAndView();
-		daftarKelasKuisioner.setViewName("daftar_laporan_kuisioner_kelas");
-		daftarKelasKuisioner.addObject("daftarTglSmt", daftarTglSmt);
-		daftarKelasKuisioner.addObject("daftarPemb", daftarPemb);
+		mav.setViewName("daftar_laporan_kuisioner_kelas");
+		mav.addObject("daftarTglSmt", daftarTglSmt);
+		mav.addObject("daftarPemb", daftarPemb);
 		
-		return daftarKelasKuisioner;
+		return mav;
 	}
 	
 	@RequestMapping(value = "/laporan_kuisioner_kelas/", method = RequestMethod.POST)
@@ -288,7 +307,7 @@ public class ControllerKuisioner {
 		return laporanKuisionerKelas;
 	}
 	
-	@RequestMapping(value = "/update_nilai_dosen/", method = RequestMethod.GET)
+	@RequestMapping(value = "/update_nilai_dosen/", method = RequestMethod.POST)
 	public @ResponseBody AjaxResponse updateRekapKuisioner() {
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
 		List<Pemb> pembAktif = servicePemb.ambilBerdasarkanTglSmt(tglSmtAktif.getIdTglSmt());

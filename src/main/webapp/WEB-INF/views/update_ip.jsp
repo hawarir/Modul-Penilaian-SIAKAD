@@ -134,7 +134,7 @@
 			$("#updateIPS").button("loading");
 			$.ajax({
 				url : contextPath + "/update_ips/",
-				type : "GET",
+				type : "POST",
 				success : function(data) {
 					if(data.status=="ok") {
 						toastr["success"](data.message, "Sukses");
@@ -148,7 +148,7 @@
 			$("#updateIPK").button("loading");
 			$.ajax({
 				url : contextPath + "/update_ipk/",
-				type : "GET",
+				type : "POST",
 				success : function(data) {
 					if(data.status=="ok") {
 						toastr["success"](data.message, "Sukses");
@@ -162,7 +162,7 @@
 			$("#updateIPD").button("loading");
 			$.ajax({
 				url : contextPath + "/update_nilai_dosen/",
-				type : "GET",
+				type : "POST",
 				success : function(data) {
 					if(data.status=="ok") {
 						toastr["success"](data.message, "Sukses");

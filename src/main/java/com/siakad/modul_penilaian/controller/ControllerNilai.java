@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +24,7 @@ import com.sia.main.domain.KonversiNilai;
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Nilai;
 import com.sia.main.domain.Pemb;
+import com.sia.main.domain.Ptk;
 import com.sia.main.domain.TglSmt;
 import com.siakad.modul_penilaian.service.AjaxResponse;
 import com.siakad.modul_penilaian.service.JSONNilai;
@@ -33,7 +36,7 @@ import com.siakad.modul_penilaian.service.PembService;
 import com.siakad.modul_penilaian.service.TglSmtService;
 
 @Controller
-public class ControllerNilai {
+public class ControllerNilai extends ControllerSession{
 	@Autowired
 	private PembService servicePemb;
 	
@@ -53,26 +56,36 @@ public class ControllerNilai {
 	private TglSmtService serviceTglSmt;
 	
 	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarKelas() {
-		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
-		List<Pemb> kelas = servicePemb.ambilBerdasarkanTglSmt(tglSmtAktif.getIdTglSmt());
+	public ModelAndView tampilkanDaftarKelas(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
 		
-		ModelAndView daftarKelas = new ModelAndView();
-		daftarKelas.setViewName("daftar_kelas_aktif");
-		daftarKelas.addObject("listKelas", kelas);
-		return daftarKelas;
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Kelola Nilai"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
+		Ptk ptk = (Ptk) session.getAttribute("ptk");
+		
+		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
+		List<Pemb> kelas = servicePemb.ambilBerdasarkanTglSmtPtk(tglSmtAktif.getIdTglSmt(), ptk.getIdPtk());	
+		
+		mav.setViewName("daftar_kelas_aktif");
+		mav.addObject("listKelas", kelas);
+		return mav;
 	}
 	
 	@RequestMapping(value = "/lihat_nilai/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarKelasPeriode() {
-		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
-		List<Pemb> kelas = servicePemb.ambilSemuaPemb();
+	public ModelAndView tampilkanDaftarKelasPeriode(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
 		
-		ModelAndView daftarKelas = new ModelAndView();
-		daftarKelas.setViewName("daftar_kelas_periode");
-		daftarKelas.addObject("listKelas", kelas);
-		daftarKelas.addObject("listTglSmt", daftarTglSmt);
-		return daftarKelas;
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Lihat Nilai Per Kelas"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
+		List<TglSmt> daftarTglSmt = serviceTglSmt.ambilSemuaTglSmt();
+		List<Pemb> kelas = servicePemb.ambilSemuaPemb();		
+		
+		mav.setViewName("daftar_kelas_periode");
+		mav.addObject("listKelas", kelas);
+		mav.addObject("listTglSmt", daftarTglSmt);
+		return mav;
 	}
 
 	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.POST)
@@ -168,13 +181,17 @@ public class ControllerNilai {
 	}
 	
 	@RequestMapping(value = "/konversi_nilai/", method = RequestMethod.GET)
-	public ModelAndView tampilkanKonversiNilai() {
-		List<KonversiNilai> listKonversi = serviceKonversi.ambilSemuaKonversiNilai();
-		ModelAndView daftarKonversi = new ModelAndView();
-		daftarKonversi.setViewName("daftar_konversi_nilai");
-		daftarKonversi.addObject("listKonversi", listKonversi);
+	public ModelAndView tampilkanKonversiNilai(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
 		
-		return daftarKonversi;
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Konversi Nilai"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
+		List<KonversiNilai> listKonversi = serviceKonversi.ambilSemuaKonversiNilai();
+		mav.setViewName("daftar_konversi_nilai");
+		mav.addObject("listKonversi", listKonversi);
+		
+		return mav;
 	}
 	
 	@RequestMapping(value = "/konversi_nilai/tambah_konversi/", method = RequestMethod.POST)
@@ -230,7 +247,7 @@ public class ControllerNilai {
 	}
 	
 	@RequestMapping(value = "/konversi_nilai/hapus_konversi/", method = RequestMethod.POST)
-	public @ResponseBody AjaxResponse hapusKonversiNilai(@RequestParam("idKuisioner") UUID idKonversi) {
+	public @ResponseBody AjaxResponse hapusKonversiNilai(@RequestParam("idKonversi") UUID idKonversi) {
 		serviceKonversi.hapusKonversiNilai(idKonversi);
 		return new AjaxResponse("ok", "Konversi berhasil dihapus", null);
 	}

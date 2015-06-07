@@ -136,6 +136,25 @@
 	<!-- script ajax -->
 	<script>
 		$(document).ready(function() {
+			
+			toastr.options = {
+					  "closeButton": true,
+					  "debug": false,
+					  "newestOnTop": false,
+					  "progressBar": false,
+					  "positionClass": "toast-top-right",
+					  "preventDuplicates": true,
+					  "onclick": null,
+					  "showDuration": "300",
+					  "hideDuration": "1000",
+					  "timeOut": "5000",
+					  "extendedTimeOut": "1000",
+					  "showEasing": "swing",
+					  "hideEasing": "linear",
+					  "showMethod": "fadeIn",
+					  "hideMethod": "fadeOut"
+					}
+			
 			//script tambah konversi
 			$("#tombolTambahKonversi").click(function() {
 				if($("#hurufKonversiNew").val() != "" && $("#nilaiKonversiNew").val() != "" && $("#batasKonversiNew").val() != "") {
@@ -168,20 +187,10 @@
 								$("#hurufKonversiNew").val("");
 								$("#nilaiKonversiNew").val("");
 								$("#batasKonversiNew").val("");
-								$.gritter.add({
-									title : 'Notifikasi',
-									text : data.message,
-									sticky : false,
-									time : 200
-								});
+								toastr["success"](data.message, "Sukses");
 							}
 							else if(data.status == "fail") {
-								$.gritter.add({
-									title : 'Notifikasi',
-									text : data.message,
-									sticky : true,
-									time : 200
-								});
+								toastr["error"](data.message, "Error");
 							}
 						}
 					});
@@ -189,7 +198,7 @@
 			});
 			
 			//script hapus konversi
-			$(".tombolHapusKonversi").click(function() {
+			$(".tombolHapusKonversi").on("click", function() {
 				var idKonversi = $(this).attr("name");
 				var button = $(this);
 				$.ajax({
@@ -199,12 +208,7 @@
 					success : function(data) {
 						if(data.status == "ok") {
 							$(button).closest("tr").remove();
-							$.gritter.add({
-								title : 'Notifikasi',
-								text : data.message,
-								sticky : false,
-								time : 200
-							});
+							toastr["success"](data.message, "Sukses");
 						}
 					},
 					dataType : "json"
@@ -245,31 +249,16 @@
 						data : JSON.stringify(listKonversi),
 						success : function(data) {
 							if(data.status == "ok") {
-								$.gritter.add({
-									title : 'Notifikasi',
-									text : data.message,
-									sticky : false,
-									time : 200
-								});
+								toastr["success"](data.message, "Sukses");
 							}
 							else if(data.status == "fail") {
-								$.gritter.add({
-									title : 'Notifikasi',
-									text : data.message,
-									sticky : true,
-									time : 200
-								});
+								toastr["error"](data.message, "Error");
 							}
 						}
 					});
 				}
 				else {
-					$.gritter.add({
-						title : 'Notifikasi',
-						text : 'Harus terdapat konversi nilai dengan batas bawah nol',
-						sticky : true,
-						time : 200
-					});
+					toastr["warning"](data.message, "Peringatan");
 				}
 			});
 		});

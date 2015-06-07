@@ -28,6 +28,14 @@ public class PembRepositoryImpl implements PembRepository {
 	}
 	
 	@Override
+	public List<Pemb> getByTglSmtPtk(UUID idTglSmt, UUID idPtk) {
+		// TODO Auto-generated method stub
+		String queryString = "SELECT pp.pemb FROM PendidikPengajar pp WHERE pp.pemb.tglSmt.idTglSmt = '" + idTglSmt + "' AND pp.ptk.idPtk = '" + idPtk + "'";
+		Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+		return query.list();
+	}
+	
+	@Override
 	public List<Pemb> getAll() {
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM Pemb");
 		return query.list();

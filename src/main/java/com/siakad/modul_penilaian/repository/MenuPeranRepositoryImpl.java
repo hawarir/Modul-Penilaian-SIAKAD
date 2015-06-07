@@ -26,7 +26,7 @@ public class MenuPeranRepositoryImpl implements MenuPeranRepository {
 		if(order != "") dbOrder = " ORDER BY "+order;
 		
 		Query query = sessionFactory.getCurrentSession().createQuery("select menuPeran from MenuPeran "
-				+ "menuPeran join menuPeran.menu menu join menuPeran.peran peran "
+				+ "menuPeran join menuPeran.menu menu join menu.modul modul join menuPeran.peran peran "
 				+dbWhere+dbOrder);
 		
 		if(limit != -1 && limit>0) {
@@ -83,7 +83,7 @@ public class MenuPeranRepositoryImpl implements MenuPeranRepository {
 		if(where != "") dbWhere = " WHERE "+where;
 		Query query = sessionFactory.getCurrentSession().createQuery(
 				"select count(*) from MenuPeran "
-				+ "menuPeran join menuPeran.menu menu join menuPeran.peran peran "
+				+ "menuPeran join menuPeran.menu menu join menu.modul modul join menuPeran.peran peran "
 				+ dbWhere);
 		Long count = (Long)query.uniqueResult();
 		return count;

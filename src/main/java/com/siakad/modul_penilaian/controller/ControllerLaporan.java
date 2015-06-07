@@ -3,6 +3,8 @@ package com.siakad.modul_penilaian.controller;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +21,7 @@ import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.PdService;
 
 @Controller
-public class ControllerLaporan {
+public class ControllerLaporan extends ControllerSession{
 	@Autowired
 	private KrsService serviceKrs;
 	
@@ -33,34 +35,44 @@ public class ControllerLaporan {
 	private IpsService serviceIps;
 	
 	@RequestMapping(value="/lihat_nilai_periode/", method = RequestMethod.GET)
-	public ModelAndView tampilkanNilaiPerPeriode() {
-		UUID idPd = UUID.fromString("56f893a7-8988-444d-9e03-aa94832c88b0");
-		List<Krs> daftarKrs = serviceKrs.ambilSemuaBerdasarkanPd(idPd);
-		Pd pesertaDidik = servicePd.ambilPd(idPd);
-		List<Ips> daftarIps = serviceIps.ambilBerdasarkanPd(idPd);
+	public ModelAndView tampilkanNilaiPerPeriode(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
 		
-		ModelAndView lamanNilaiPeriode = new ModelAndView();
-		lamanNilaiPeriode.setViewName("laporan_nilai_per_periode");
-		lamanNilaiPeriode.addObject("daftarKrs", daftarKrs);
-		lamanNilaiPeriode.addObject("pd", pesertaDidik);
-		lamanNilaiPeriode.addObject("daftarIps", daftarIps);
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Nilai Per Periode"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
 		
-		return lamanNilaiPeriode;
+		Pd pd = (Pd) session.getAttribute("pd");
+		
+		List<Krs> daftarKrs = serviceKrs.ambilSemuaBerdasarkanPd(pd.getIdPd());
+		Pd pesertaDidik = servicePd.ambilPd(pd.getIdPd());
+		List<Ips> daftarIps = serviceIps.ambilBerdasarkanPd(pd.getIdPd());		
+		
+		mav.setViewName("laporan_nilai_per_periode");
+		mav.addObject("daftarKrs", daftarKrs);
+		mav.addObject("pd", pesertaDidik);
+		mav.addObject("daftarIps", daftarIps);
+		
+		return mav;
 	}
 	
 	@RequestMapping(value="/lihat_transkrip/", method = RequestMethod.GET)
-	public ModelAndView tampilkanTranskrip() {
-		UUID idPd = UUID.fromString("56f893a7-8988-444d-9e03-aa94832c88b0"); // hardcode id_pd Hawari Rahman
-		List<Krs> daftarKrs = serviceKrs.ambilKrsTerakhirBerdasarkanPd(idPd);
-		Pd pesertaDidik = servicePd.ambilPd(idPd);
-		Ipk ipk = serviceIpk.ambilIpkBerdasarkanPd(idPd);
+	public ModelAndView tampilkanTranskrip(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
 		
-		ModelAndView lamanTranskrip = new ModelAndView();
-		lamanTranskrip.setViewName("laporan_transkrip");
-		lamanTranskrip.addObject("daftarKrs", daftarKrs);
-		lamanTranskrip.addObject("pd", pesertaDidik);
-		lamanTranskrip.addObject("ipk", ipk);
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Transkrip Nilai"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
 		
-		return lamanTranskrip;
+		Pd pd = (Pd) session.getAttribute("pd");
+		
+		List<Krs> daftarKrs = serviceKrs.ambilKrsTerakhirBerdasarkanPd(pd.getIdPd());
+		Pd pesertaDidik = servicePd.ambilPd(pd.getIdPd());
+		Ipk ipk = serviceIpk.ambilIpkBerdasarkanPd(pd.getIdPd());
+		
+		mav.setViewName("laporan_transkrip");
+		mav.addObject("daftarKrs", daftarKrs);
+		mav.addObject("pd", pesertaDidik);
+		mav.addObject("ipk", ipk);
+		
+		return mav;
 	}
 }

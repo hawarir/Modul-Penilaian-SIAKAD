@@ -3,6 +3,8 @@ package com.siakad.modul_penilaian.controller;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +29,7 @@ import com.siakad.modul_penilaian.service.PembService;
 import com.siakad.modul_penilaian.service.TglSmtService;
 
 @Controller
-public class ControllerIP {
+public class ControllerIP extends ControllerSession {
 	@Autowired
 	private PdService servicePd;
 	
@@ -47,36 +49,50 @@ public class ControllerIP {
 	private IpkService serviceIpk;
 	
 	@RequestMapping(value = "/lihat_ips/", method = RequestMethod.GET)
-	public ModelAndView tampilkanIPS() {
+	public ModelAndView tampilkanIPS(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Peringkat IPS"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
 		List<Ips> listIps = serviceIps.ambilSemuaIps();
 		List<TglSmt> listTglSmt = serviceTglSmt.ambilSemuaTglSmt();
-		ModelAndView indeksPrestasi = new ModelAndView();
-		indeksPrestasi.setViewName("daftar_ips");
-		indeksPrestasi.addObject("listIps", listIps);
-		indeksPrestasi.addObject("listTglSmt", listTglSmt);
 		
-		return indeksPrestasi;
+		mav.setViewName("daftar_ips");
+		mav.addObject("listIps", listIps);
+		mav.addObject("listTglSmt", listTglSmt);
+		
+		return mav;
 	}
 	
 	@RequestMapping(value = "/lihat_ipk/", method = RequestMethod.GET)
-	public ModelAndView tampilkanIPK() {
-		List<Ipk> listIpk = serviceIpk.ambilSemuaIpk();
-		ModelAndView indeksPrestasi = new ModelAndView();
-		indeksPrestasi.setViewName("daftar_ipk");
-		indeksPrestasi.addObject("listIpk", listIpk);
+	public ModelAndView tampilkanIPK(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
 		
-		return indeksPrestasi;
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Peringkat IPK"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
+		List<Ipk> listIpk = serviceIpk.ambilSemuaIpk();
+		
+		mav.setViewName("daftar_ipk");
+		mav.addObject("listIpk", listIpk);
+		
+		return mav;
 	}
 	
 	@RequestMapping(value = "/update_ip/", method = RequestMethod.GET)
-	public ModelAndView tampilkanLamanUpdate() {
-		ModelAndView lamanUpdate = new ModelAndView();
-		lamanUpdate.setViewName("update_ip");
+	public ModelAndView tampilkanLamanUpdate(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
 		
-		return lamanUpdate;
+		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
+		if(!hasMenu(session, "Perbaharui IP"))	{ mav.setViewName("redirect:/");return mav;}else{mav = addNavbar(session,mav);}
+		
+		mav.setViewName("update_ip");
+		
+		return mav;
 	}
 	
-	@RequestMapping(value = "/update_ips/", method = RequestMethod.GET)
+	@RequestMapping(value = "/update_ips/", method = RequestMethod.POST)
 	public @ResponseBody AjaxResponse updateIPS() {
 		List<Pd> listAllPd = servicePd.ambilSemuaPd();
 		List<TglSmt> daftartglSmt = serviceTglSmt.ambilSemuaTglSmt();
@@ -110,7 +126,7 @@ public class ControllerIP {
 		return new AjaxResponse("ok", "IPS berhasil diperbaharui", null);
 	}
 	
-	@RequestMapping(value = "/update_ipk/", method = RequestMethod.GET)
+	@RequestMapping(value = "/update_ipk/", method = RequestMethod.POST)
 	public @ResponseBody AjaxResponse updateIPk() {
 		List<Pd> listAllPd = servicePd.ambilSemuaPd();
 		

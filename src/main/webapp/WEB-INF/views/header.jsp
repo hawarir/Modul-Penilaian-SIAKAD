@@ -158,7 +158,6 @@
 				</div>
 			</div>
 			<ul class="menu accordion-menu">
-
 				<li><a href="index.html" class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-home"></span>
 						<p>Dashboard</p></a></li>

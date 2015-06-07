@@ -70,11 +70,6 @@
 		src="${pageContext.servletContext.contextPath}/resources/plugins/jquery-ui/jquery-ui.min.js"></script>
 	
 	<!-- css dan js spesifik -->
-	<link
-		href="${pageContext.servletContext.contextPath}/resources/plugins/toastr/toastr.min.css"
-		rel="stylesheet" />
-	<script
-		src="${pageContext.servletContext.contextPath}/resources/plugins/toastr/toastr.min.js"></script>
 	
 	<link
 		href="${pageContext.servletContext.contextPath}/resources/plugins/jquery.datatables/media/css/jquery.dataTables.min.css"
