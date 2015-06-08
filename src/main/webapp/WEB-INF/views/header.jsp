@@ -110,7 +110,7 @@
 								class="fa fa-search"></i></a></li>
 						<li class="dropdown"><a href="#"
 							class="dropdown-toggle waves-effect waves-button waves-classic"
-							data-toggle="dropdown"> <span class="user-name">David<i
+							data-toggle="dropdown"> <span class="user-name">${userPd.nmPd}${userPtk.nmPtk}<i
 									class="fa fa-angle-down"></i></span> <img class="img-circle avatar"
 								src="${pageContext.servletContext.contextPath}/resources/images/avatar1.png"
 								width="40" height="40" alt="">
@@ -126,10 +126,10 @@
 								<li role="presentation" class="divider"></li>
 								<li role="presentation"><a href="lock-screen.html"><i
 										class="fa fa-lock"></i>Lock screen</a></li>
-								<li role="presentation"><a href="login.html"><i
+								<li role="presentation"><a href="${pageContext.servletContext.contextPath}/logout/"><i
 										class="fa fa-sign-out m-r-xs"></i>Log out</a></li>
 							</ul></li>
-						<li><a href="login.html"
+						<li><a href="${pageContext.servletContext.contextPath}/logout/"
 							class="log-out waves-effect waves-button waves-classic"> <span><i
 									class="fa fa-sign-out m-r-xs"></i>Log out</span>
 						</a></li>
@@ -158,6 +158,20 @@
 				</div>
 			</div>
 			<ul class="menu accordion-menu">
+				<c:forEach items="${listModul}" var="modul" varStatus="status">
+					<li class="droplink">
+						<a href="javascript:void(0)" class="waves-effect waves-button">
+							<span class="menu-icon glyphicon glyphicon-education"></span>
+							<p>${modul.namaModul}</p>
+							<span class="arrow"></span>
+						</a>
+							<ul class="sub-menu">
+								<c:forEach items="${listListMenu[status.index]}" var="listMenu">
+									<li><a href="${pageContext.servletContext.contextPath}/${listMenu.urlMenu}">${listMenu.namaMenu}</a></li>
+								</c:forEach>
+							</ul>
+					</li>
+				</c:forEach>
 				<li><a href="index.html" class="waves-effect waves-button"><span
 						class="menu-icon glyphicon glyphicon-home"></span>
 						<p>Dashboard</p></a></li>

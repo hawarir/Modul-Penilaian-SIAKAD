@@ -98,7 +98,12 @@
 							<div class="panel-heading">
 								<h4 class="panel-title">Daftar Kelas</h4>
 							</div>
-							<div class="panel-body">						
+							<div class="panel-body">
+								<c:if test="${pesan != null}">
+									<div class="alert alert-danger" role="alert">
+										<c:out value="${pesan}"></c:out>
+									</div>
+								</c:if>
 								<form method="post" action="">
 									<div class="form-group">
 										<select class="form-control" name="idPemb">
@@ -115,6 +120,16 @@
 				</div>
 			</div>
 	<!-- end of content -->
+	
+	<script>
+	$(document).ready(function() {
+		$("form").submit(function(e) {
+			if($("#pilihanTglSmt option:selected").val() == "") {
+				e.preventDefault();
+			}
+		});
+	});
+	</script>
 	
 	<%@include file="footer.jsp" %>
 </body>

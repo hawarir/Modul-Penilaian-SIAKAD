@@ -1,6 +1,9 @@
 package com.siakad.modul_penilaian.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -8,6 +11,8 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
+import org.joda.time.LocalDate;
+import org.joda.time.format.DateTimeFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -56,7 +61,7 @@ public class ControllerNilai extends ControllerSession{
 	private TglSmtService serviceTglSmt;
 	
 	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.GET)
-	public ModelAndView tampilkanDaftarKelas(HttpSession session) {
+	public ModelAndView tampilkanDaftarKelas(HttpSession session, Locale locale) {
 		ModelAndView mav = new ModelAndView();
 		
 		if(!isLogin(session)){ mav.setViewName("redirect:/login/");	return mav;}
@@ -64,11 +69,23 @@ public class ControllerNilai extends ControllerSession{
 		
 		Ptk ptk = (Ptk) session.getAttribute("ptk");
 		
-		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
-		List<Pemb> kelas = servicePemb.ambilBerdasarkanTglSmtPtk(tglSmtAktif.getIdTglSmt(), ptk.getIdPtk());	
+		Date date = new Date();
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", locale);
+		//DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, locale);
 		
+		String formattedDate = simpleDateFormat.format(date);
+		LocalDate localDate = LocalDate.parse(formattedDate);
+		
+		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
+		if(localDate.isBefore(tglSmtAktif.getTglAkhirPenilaian())) {
+			List<Pemb> kelas = servicePemb.ambilBerdasarkanTglSmtPtk(tglSmtAktif.getIdTglSmt(), ptk.getIdPtk());
+			mav.addObject("listKelas", kelas);
+		}
+		else {
+			String pesan = "Anda sudah melewati batas waktu penilaian.";
+			mav.addObject("pesan", pesan);
+		}
 		mav.setViewName("daftar_kelas_aktif");
-		mav.addObject("listKelas", kelas);
 		return mav;
 	}
 	

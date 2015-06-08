@@ -162,7 +162,7 @@ public class ControllerBeranda extends ControllerSession {
 			}
 			mav.addObject("listPeranPengguna", listPeranPengguna);
 			mav.addObject("pengguna",pengguna);
-			mav.setViewName("HakAkses");
+			mav.setViewName("hak_akses");
 			return mav;
 		}
 	}

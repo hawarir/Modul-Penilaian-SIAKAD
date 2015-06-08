@@ -133,7 +133,7 @@ public class ControllerIP extends ControllerSession {
 		for (Pd pd : listAllPd) {
 			double jumlahMutu = 0.0;
 			int jumlahSks = 0;
-			List<Krs> listSemuaKrsPd = serviceKrs.ambilSemuaBerdasarkanPd(pd.getIdPd());
+			List<Krs> listSemuaKrsPd = serviceKrs.ambilKrsTerakhirBerdasarkanPd(pd.getIdPd());
 			for (Krs krs : listSemuaKrsPd) {
 				jumlahMutu += serviceKrs.ambilNilaiMutu(krs.getIdKrs());
 				jumlahSks += krs.getPemb().getMk().getJumlahSKS();

@@ -62,5 +62,13 @@ public class KrsRepositoryImpl implements KrsRepository{
 		Query query = sessionFactory.getCurrentSession().createQuery("SELECT krs FROM Krs krs WHERE krs.pd.idPd = '" + idPd + "' AND " + kondisiKrsOke + specialCond);
 		return query.list();
 	}
+
+	@Override
+	public List<Krs> getTerakhirByPd(UUID idPd) {
+		// TODO Auto-generated method stub
+		String queryString = "SELECT krs FROM Krs krs WHERE krs.pd.idPd = '" + idPd + "' AND krs.id.pemb IN (SELECT krs.pemb FROM krs WHERE krs.pd.idPd = '" + idPd + "' GROUP BY krs.pemb, krs.waktuAmbil ORDER BY krs.waktuAmbil DESC)";
+		Query query = sessionFactory.getCurrentSession().createQuery(queryString);
+		return query.list();
+	}
 	
 }

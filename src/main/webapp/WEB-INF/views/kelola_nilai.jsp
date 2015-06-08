@@ -281,7 +281,7 @@
 				"sDom": "<'row'<'dataTables_header clearfix'<'col-md-3'<l>><'col-md-9'f<'pull-right'CT>>r>>t<'row-fluid'<'dataTables_footer clearfix'<'col-md-6'i><'col-md-6'p>>>",
 				tableTools: {
 					"sSwfPath": context_path+"resources/plugins/jquery.datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
-					"aButtons" : ["csv", "pdf"]
+					"aButtons" : ["csv"]
 				}
 			});
 			
