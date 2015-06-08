@@ -101,25 +101,29 @@ public class ControllerIP extends ControllerSession {
 			for (TglSmt tglSmt : daftartglSmt) {
 				double jumlahMutu = 0.0;
 				int jumlahSks = 0;
+				int count = 0;
 				List<Krs> listKrsAktif = serviceKrs.ambilKrsAktifBerdasarkanPd(pd.getIdPd(), tglSmt.getIdTglSmt());
 				for (Krs krs : listKrsAktif) {
 					jumlahMutu += serviceKrs.ambilNilaiMutu(krs.getIdKrs());
 					jumlahSks += krs.getPemb().getMk().getJumlahSKS();
+					count++;
 				}
 				
-				double nilaiIps;
-				if(jumlahMutu > 0)
-					nilaiIps = jumlahMutu/jumlahSks;
-				else
-					nilaiIps = 0;
-				
-				Ips ips = new Ips();
-				ips.setNilaiIps(nilaiIps);
-				ips.setPd(pd);
-				ips.setTglSmt(tglSmt);
-				ips.setTglBuatIps(LocalDateTime.now());
-				
-				serviceIps.masukkanIps(ips);
+				if(count > 0) {
+					double nilaiIps;
+					if(jumlahMutu > 0)
+						nilaiIps = jumlahMutu/jumlahSks;
+					else
+						nilaiIps = 0;
+					
+					Ips ips = new Ips();
+					ips.setNilaiIps(nilaiIps);
+					ips.setPd(pd);
+					ips.setTglSmt(tglSmt);
+					ips.setTglBuatIps(LocalDateTime.now());
+					
+					serviceIps.masukkanIps(ips);
+				}
 			}			
 		}
 		

@@ -135,7 +135,9 @@
 								<h4 class="panel-title">Kelola Nilai</h4>
 							</div>
 							<div class="panel-body">
-								<form action="simpan_nilai/">					
+								<form action="simpan_nilai/">
+									<div class="pull-right" id="buttonGroupAtas">
+									</div>
 									<table class="table" id="tabelNilai">
 										<thead>
 											<tr>
@@ -168,9 +170,10 @@
 											</c:forEach>
 										</tbody>
 									</table>
-									<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload"><span class="glyphicon glyphicon-upload"></span> Unggah File</button>
+									<br />
 									<div class="pull-right">
-										<button type="button" class="btn btn-primary" id="tombolSimpanNilai">Simpan</button>
+										<button type="button" class="btn btn-success" id="tombolSimpanNilai">Simpan</button>
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUpload"><span class="glyphicon glyphicon-upload"></span> Unggah File</button>
 										<button type="button" class="btn btn-warning" data-toggle="modal" data-target="#modalKomponen">Atur Komponen</button>
 									</div>
 								</form>
@@ -277,13 +280,21 @@
 					  "hideMethod": "fadeOut"
 					}
 			
-			$("#tabelNilai").DataTable({
-				"sDom": "<'row'<'dataTables_header clearfix'<'col-md-3'<l>><'col-md-9'f<'pull-right'CT>>r>>t<'row-fluid'<'dataTables_footer clearfix'<'col-md-6'i><'col-md-6'p>>>",
+			/*$("#tabelNilai").DataTable({
+				dom: "<'row'<'dataTables_header clearfix'<'col-md-3'<l>><'col-md-9'f<'pull-right'CT>>r>>t<'row-fluid'<'dataTables_footer clearfix'<'col-md-6'i><'col-md-6'p>>>",
 				tableTools: {
 					"sSwfPath": context_path+"resources/plugins/jquery.datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
-					"aButtons" : ["csv"]
+					"aButtons" : [{"sExtends" : "csv", "sButtonText" : "Unduh File"}]
 				}
+			});*/
+			var table = $("#tabelNilai").DataTable();
+			
+			var tableTools = new $.fn.dataTable.TableTools(table, {
+				"sSwfPath": context_path+"resources/plugins/jquery.datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
+				"aButtons" : [{"sExtends" : "csv", "sButtonText" : "Unduh File"}]
 			});
+			
+			$("#buttonGroupAtas").append($(tableTools.fnContainer()));
 			
 			//script merubah nilai akhir di tabel
 			$(".nilai").change(function() {

@@ -106,25 +106,27 @@ public class ControllerNilai extends ControllerSession{
 	}
 
 	@RequestMapping(value = "/kelola_nilai/", method = RequestMethod.POST)
-	public ModelAndView tampilkanKelolaNilai(@RequestParam("idPemb") UUID idPemb) {
+	public ModelAndView tampilkanKelolaNilai(@RequestParam("idPemb") UUID idPemb, HttpSession session) {
+		Ptk ptk = (Ptk) session.getAttribute("ptk");
+		
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
-		List<Pemb> kelas = servicePemb.ambilBerdasarkanTglSmt(tglSmtAktif.getIdTglSmt());
+		List<Pemb> kelas = servicePemb.ambilBerdasarkanTglSmtPtk(tglSmtAktif.getIdTglSmt(), ptk.getIdPtk());
 		List<Krs> krsInfo = serviceKrs.ambilKrsBerdasarkanPemb(idPemb);
 		List<KomponenNilai> komp = serviceKomp.ambilSemuaKomponen(idPemb);
 		List<Nilai> listNilai = serviceNilai.ambilNilaiKelas(krsInfo);
 		Pemb pemb = servicePemb.ambilPemb(idPemb);
 		String namaKelas = pemb.getMk().getNamaMK() + " " + pemb.getNmPemb();
 		
-		ModelAndView kelolaNilai = new ModelAndView();
-		kelolaNilai.setViewName("kelola_nilai");
-		kelolaNilai.addObject("krsInfo", krsInfo);
-		kelolaNilai.addObject("listKomponen", komp);
-		kelolaNilai.addObject("listNilai", listNilai);
-		kelolaNilai.addObject("namaKelas", namaKelas);
-		kelolaNilai.addObject("idPemb", idPemb);
-		kelolaNilai.addObject("listKelas", kelas);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("kelola_nilai");
+		mav.addObject("krsInfo", krsInfo);
+		mav.addObject("listKomponen", komp);
+		mav.addObject("listNilai", listNilai);
+		mav.addObject("namaKelas", namaKelas);
+		mav.addObject("idPemb", idPemb);
+		mav.addObject("listKelas", kelas);
 		
-		return kelolaNilai;
+		return mav;
 	}
 	
 	@RequestMapping(value = "/lihat_nilai/", method = RequestMethod.POST)
