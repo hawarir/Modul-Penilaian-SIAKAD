@@ -101,12 +101,14 @@ public class ControllerKuisioner extends ControllerSession{
 	public ModelAndView tampilkanIsiKuisioner(@RequestParam("idKrs") UUID idKrs, @RequestParam("idKuisioner") UUID idKuisioner) {
 		Kuisioner kuisioner = serviceKuisioner.ambilKuisioner(idKuisioner);
 		List<PertanyaanKuisioner> daftarPertanyaan = servicePertanyaan.ambilBerdasarKuisioner(idKuisioner);
+		Pemb pemb = serviceKrs.ambilKrs(idKrs).getPemb();
 		
 		ModelAndView isiKuisioner = new ModelAndView();
 		isiKuisioner.setViewName("isi_kuisioner");
 		isiKuisioner.addObject("kuisioner", kuisioner);
 		isiKuisioner.addObject("daftarPertanyaan", daftarPertanyaan);
 		isiKuisioner.addObject("idKrs", idKrs);
+		isiKuisioner.addObject("pemb", pemb);
 		
 		return isiKuisioner;
 	}

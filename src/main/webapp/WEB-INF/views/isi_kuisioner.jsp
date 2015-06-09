@@ -103,6 +103,9 @@
 								<h4 class="panel-title"><c:out value="${kuisioner.getNmKuisioner()}"></c:out></h4>
 							</div>
 							<div class="panel-body">
+								<h2>Kelas <c:out value="${pemb.getMk().getNamaMK()} ${pemb.getNmPemb()}"></c:out> </h2>
+								<p>Silahkan masukkan nilai yang ingin anda berikan untuk setiap pertanyaan anda.
+								Semakin besar nilai yang ingin anda berikan, berarti semakin baik tanggapan anda terhadap poin yang ditanyakan pada pertanyaan.</p>
 								<table class="table">
 									<thead>
 										<tr>
@@ -128,7 +131,13 @@
 				</div>
 			</div>
 	<!-- end of content -->
-	
+	<style>
+	.slider-tip {
+		opacity:1;
+    	bottom:120%;
+    	}
+	</style>
+
 	<script>
 	$(document).ready(function() {
 		var idKrs = "${idKrs}";
@@ -156,7 +165,20 @@
 		$(".slider").slider({
 			value : max/2,
 			min : 1,
-			max : max
+			max : max,
+			slide: function (event, ui) {
+				$(ui.handle).html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + ui.value + '</div></div>');
+			}
+		});
+		
+		$(".ui-slider-handle").mouseenter(function() {
+			var slider = $(this).closest(".slider");
+			var value = $(slider).slider("value");
+			$(this).html('<div class="tooltip top slider-tip"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + value + '</div></div>');
+		});
+		
+		$(".slider").mouseleave(function() {
+			$(this).find(".ui-slider-handle").html('');
 		});
 		
 		$("#submitKuisioner").click(function() {

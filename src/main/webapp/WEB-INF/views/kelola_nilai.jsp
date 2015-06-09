@@ -185,15 +185,16 @@
 	<!-- end of content -->
 	
 	<!-- modal komponen -->
-	<div class="modal fade" id="modalKomponen" tabindex="-1" role="dialog" aria-labelledby="modalKomponenTitle" aria-hidden="true">
+	<div class="modal fade" id="modalKomponen" tabindex="-1" role="dialog" aria-labelledby="modalKomponenTitle" aria-hidden="true" data-backdrop="static">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<button type="button" class="close" id="closeKomponen" data-dismiss="modal" aria-hidden="true">×</button>
 					<h4 class="modal-title" id="modalKomponenTitle">Atur Komponen Nilai</h4>
 				</div>
 				<div class="modal-body">
-					<p>Silahkan atur nama komponen penilaian dan persentase setiap komponen di bawah. 
+					<p>Silahkan atur nama komponen penilaian dan persentase setiap komponen di bawah.
+					Untuk persentase komponen cukup tuliskan angkanya saja, tidak perlu memakai simbol %.
 					Total persentase komponen tidak boleh melebihi 100%.</p>
 					<div class="row">
 						<div class="col-md-12">
@@ -262,6 +263,8 @@
 			var idPemb = "${idPemb}";
 			var context_path = "${pageContext.servletContext.contextPath}/";
 			
+			updateNilaiAkhir();
+			
 			toastr.options = {
 					  "closeButton": true,
 					  "debug": false,
@@ -291,7 +294,16 @@
 			
 			var tableTools = new $.fn.dataTable.TableTools(table, {
 				"sSwfPath": context_path+"resources/plugins/jquery.datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",
-				"aButtons" : [{"sExtends" : "csv", "sButtonText" : "Unduh File"}]
+				"aButtons" : [{
+					"sExtends" : "csv", 
+					"sButtonText" : "Unduh File",
+					"fnCellRender" : function ( sValue, iColumn, nTr, iDataIndex ) {
+						if($(sValue).is("input")) {
+							return $(sValue).val();
+						}
+						return sValue;
+					}
+					}]
 			});
 			
 			$("#buttonGroupAtas").append($(tableTools.fnContainer()));
@@ -312,6 +324,24 @@
 				
 				$(baris).find("input.nilai-akhir").val(nilaiAkhir);
 			});
+			
+			function updateNilaiAkhir() {
+				$(".mahasiswa").each(function(index, element) {
+					var baris = $(element);
+					var elemenNilai = $(baris).find("input.nilai");
+					var nilaiAkhir = 0;
+					
+					$(elemenNilai).each(function(index, element) {
+						var nilai = $(element).val();
+						var idKomp = $(element).closest("td").attr("name");
+						var persenKomp = $("#" + idKomp).find("input.persentase-komponen").val();
+						
+						nilaiAkhir += (nilai*persenKomp)/100;
+					});
+					
+					$(baris).find("input.nilai-akhir").val(nilaiAkhir);
+				});
+			}
 			
 			//script tambah komponen
 			$("#tombolTambahKomponen").click(function() {
@@ -427,10 +457,16 @@
 				}
 			});
 			
+			//tombol close komponen
+			$("#closeKomponen").click(function() {
+				location.reload();
+			});
+			
 			//submit nilai
 			$("#tombolSimpanNilai").click(function() {
 				var listNilai = new Array();
-				$.blockUI({message : '<p>Sedang menyimpan nilai...</p>'});
+				var nilaiValid = true;
+				
 				$("tr.mahasiswa").each(function(index, element) {
 					var idKrs = $(element).attr("name");
 					var komponens = $(element).find("td.komponen-nilai");
@@ -438,6 +474,14 @@
 					$(komponens).each(function(index, element) {
 						var idKomp = $(element).attr("name");
 						var nilai = $(element).find("input").val();
+						
+						if(!((nilai <= 100) && (nilai >= 0))) {
+							$(element).find("input").addClass("has-error");
+							nilaiValid = false;
+						}
+						else {
+							$(element).find("input").removeClass("has-error");
+						}
 						
 						var objNilai = {
 								"idKrs" : idKrs,
@@ -449,18 +493,24 @@
 					});
 				});
 				
-				$.ajax({
-					url : idPemb + "/simpan_nilai/",
-					type : "POST",
-					contentType : "application/json",
-					data : JSON.stringify(listNilai),
-					success : function(data) {
-						if(data.status == "ok") {
-							$.unblockUI();
-							toastr["success"](data.message, "Sukses");
+				if(nilaiValid) {
+					$.blockUI({message : '<p>Sedang menyimpan nilai...</p>'});
+					$.ajax({
+						url : idPemb + "/simpan_nilai/",
+						type : "POST",
+						contentType : "application/json",
+						data : JSON.stringify(listNilai),
+						success : function(data) {
+							if(data.status == "ok") {
+								$.unblockUI();
+								toastr["success"](data.message, "Sukses");
+							}
 						}
-					}
-				});
+					});
+				}
+				else {
+					toastr["warning"]("Nilai harus berupa angka dan berada pada rentang 0 - 100.", "Peringatan");
+				}
 			});
 			
 			//upload file
