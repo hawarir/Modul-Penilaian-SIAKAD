@@ -143,7 +143,7 @@
 									<table class="table">
 										<thead>
 											<tr>
-												<th>Pertanyaan</th>
+												<th style="width:90%">Pertanyaan</th>
 												<th>Skor</th>
 											</tr>
 										</thead>

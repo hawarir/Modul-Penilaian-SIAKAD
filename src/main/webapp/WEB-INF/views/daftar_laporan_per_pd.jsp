@@ -89,11 +89,11 @@
 	<!-- content -->
 	<div class="page-inner">
 		<div class="page-title">
-			<h3>Daftar Nilai Peserta Didik Per Periode</h3>
+			<h3><c:out value="${judul}"></c:out></h3>
 			<div class="page-breadcrumb">
 				<ol class="breadcrumb">
 					<li><a href="${pageContext.servletContext.contextPath}/">Beranda</a></li>
-					<li class="active">Daftar Nilai Peserta Didik Per Periode</li>
+					<li class="active"><c:out value="${judul}"></c:out></li>
 				</ol>
 			</div>
 		</div>

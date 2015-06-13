@@ -23,21 +23,21 @@ public class PembRepositoryImpl implements PembRepository {
 	@Override
 	public List<Pemb> getByTglSmt(UUID idTglSmt) {
 		// TODO Auto-generated method stub
-		Query query = sessionFactory.getCurrentSession().createQuery("SELECT pemb FROM Pemb pemb WHERE pemb.tglSmt.idTglSmt = '" + idTglSmt + "'");
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT pemb FROM Pemb pemb WHERE pemb.tglSmt.idTglSmt = '" + idTglSmt + "' AND pemb.aPembTerhapus = FALSE");
 		return query.list();
 	}
 	
 	@Override
 	public List<Pemb> getByTglSmtPtk(UUID idTglSmt, UUID idPtk) {
 		// TODO Auto-generated method stub
-		String queryString = "SELECT pp.pemb FROM PendidikPengajar pp WHERE pp.pemb.tglSmt.idTglSmt = '" + idTglSmt + "' AND pp.ptk.idPtk = '" + idPtk + "'";
+		String queryString = "SELECT pp.pemb FROM PendidikPengajar pp WHERE pp.pemb.tglSmt.idTglSmt = '" + idTglSmt + "' AND pp.ptk.idPtk = '" + idPtk + "' AND pp.pemb.aPembTerhapus = FALSE";
 		Query query = sessionFactory.getCurrentSession().createQuery(queryString);
 		return query.list();
 	}
 	
 	@Override
 	public List<Pemb> getAll() {
-		Query query = sessionFactory.getCurrentSession().createQuery("FROM Pemb");
+		Query query = sessionFactory.getCurrentSession().createQuery("SELECT pemb FROM Pemb pemb WHERE pemb.aPembTerhapus = FALSE");
 		return query.list();
 	}
 

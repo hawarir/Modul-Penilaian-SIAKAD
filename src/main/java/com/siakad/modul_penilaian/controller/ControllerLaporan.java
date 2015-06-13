@@ -1,10 +1,15 @@
 package com.siakad.modul_penilaian.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
+
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +27,7 @@ import com.siakad.modul_penilaian.service.IpkService;
 import com.siakad.modul_penilaian.service.IpsService;
 import com.siakad.modul_penilaian.service.KrsService;
 import com.siakad.modul_penilaian.service.PdService;
+import com.siakad.modul_penilaian.service.dataTranskrip;
 
 @Controller
 public class ControllerLaporan extends ControllerSession{
@@ -56,6 +62,7 @@ public class ControllerLaporan extends ControllerSession{
 		
 		mav.setViewName("daftar_laporan_per_pd");
 		mav.addObject("daftarPd", daftarPd);
+		mav.addObject("judul", "Daftar Nilai Peserta Didik Per Periode");
 		return mav;
 	}
 	
@@ -94,6 +101,7 @@ public class ControllerLaporan extends ControllerSession{
 		
 		mav.setViewName("daftar_laporan_per_pd");
 		mav.addObject("daftarPd", daftarPd);
+		mav.addObject("judul", "Daftar Transkrip Peserta Didik");
 		return mav;
 	}
 	
@@ -110,6 +118,42 @@ public class ControllerLaporan extends ControllerSession{
 		mav.addObject("pd", pesertaDidik);
 		mav.addObject("ipk", ipk);
 		
+		return mav;
+	}
+	
+	@RequestMapping(value="/cetak_transkrip/", method = RequestMethod.POST)
+	public ModelAndView tampilkanPdfTranskrip(@RequestParam("idPd") UUID idPd) {
+		List<Krs> daftarKrs = serviceKrs.ambilKrsTerakhirBerdasarkanPd(idPd);
+		Pd pesertaDidik = servicePd.ambilPd(idPd);
+		Ipk ipk = serviceIpk.ambilIpkBerdasarkanPd(idPd);
+		List<dataTranskrip> listData = new ArrayList<dataTranskrip>();
+		Double nilaiIpk = (Math.round(ipk.getNilaiIpk() * 100.00) / 100.00);
+		
+		for (Krs krs : daftarKrs) {
+			dataTranskrip data = new dataTranskrip();
+			data.setKodeMk(krs.getPemb().getMk().getKodeMK());
+			data.setNamaMk(krs.getPemb().getMk().getNamaMK());
+			
+			if(krs.getKonversiNilai() != null) {
+				data.setNilaiHuruf(krs.getKonversiNilai().getHuruf());
+			}
+			else {
+				data.setNilaiHuruf("-");
+			}
+				
+			data.setSks(krs.getPemb().getMk().getJumlahSKS());
+			
+			listData.add(data);
+		}
+		
+		JRDataSource jrDataSource = new JRBeanCollectionDataSource(listData);
+		
+		Map<String, Object> parameter = new HashMap<String, Object>();
+		parameter.put("pd", pesertaDidik);
+		parameter.put("ipk", nilaiIpk);
+		parameter.put("datasource", jrDataSource);
+		
+		ModelAndView mav = new ModelAndView("pdfTranskrip", parameter);
 		return mav;
 	}
 }

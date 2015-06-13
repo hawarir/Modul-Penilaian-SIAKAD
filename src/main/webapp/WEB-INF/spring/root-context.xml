@@ -18,7 +18,7 @@
 	<beans:bean id="dataSource" name="dataSource"
 		class="org.apache.commons.dbcp2.BasicDataSource">
 		<beans:property name="driverClassName" value="org.postgresql.Driver" />
-		<beans:property name="url" value="jdbc:postgresql://10.151.31.33:5432/sia-modul" />
+		<beans:property name="url" value="jdbc:postgresql://localhost:5432/sia-modul" />
 		<beans:property name="username" value="postgres" />
 		<beans:property name="password" value="admin" />
 		<beans:property name="validationQuery" value="SELECT 1" />

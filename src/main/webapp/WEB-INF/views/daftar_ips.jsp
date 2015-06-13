@@ -113,7 +113,6 @@
 											<div class="form-inline">
 												<label for="filterPeriode">Periode</label>
 												<select class="form-control" id="filterPeriode">
-													<option value=""></option>
 													<c:forEach var="tglSmt" items="${listTglSmt}">
 														<option value="${tglSmt.getIdTglSmt()}"><c:out value="${tglSmt.getSmt().getNmSmt()} ${tglSmt.getThnAjaran().getThnThnAjaran()}"></c:out></option>
 													</c:forEach>
@@ -175,6 +174,8 @@
 			tabel.column(3).cache("search").sort().unique().each(function(d) {
 				$("#filterAngkatan").append($('<option value="'+d+'">'+d+'</option>'));
 			});
+			
+			tabel.column(4).search($("#filterPeriode").val()).draw();
 			
 			$("#filterAngkatan").on("change", function() {
 				tabel.column(3).search($(this).val()).draw();

@@ -1,15 +1,19 @@
 package com.siakad.modul_penilaian.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.sia.main.domain.Krs;
+import com.sia.main.domain.MK;
 
 @Repository
 public class KrsRepositoryImpl implements KrsRepository{
@@ -66,9 +70,22 @@ public class KrsRepositoryImpl implements KrsRepository{
 	@Override
 	public List<Krs> getTerakhirByPd(UUID idPd) {
 		// TODO Auto-generated method stub
-		String queryString = "SELECT krs FROM Krs krs WHERE krs.pd.idPd = '" + idPd + "' AND krs.id.pemb IN (SELECT krs.pemb FROM krs WHERE krs.pd.idPd = '" + idPd + "' GROUP BY krs.pemb, krs.waktuAmbil ORDER BY krs.waktuAmbil DESC)";
+		//String queryString = "SELECT krs FROM Krs krs WHERE krs.pd.idPd = '" + idPd + "' GROUP BY krs.pd, krs.pemb.mk)";
+		String queryString = "SELECT krs.pemb.mk FROM Krs krs WHERE krs.pd.idPd = '" + idPd + "' AND " + kondisiKrsOke;
 		Query query = sessionFactory.getCurrentSession().createQuery(queryString);
-		return query.list();
+		List<MK> listMk = (List<MK>) query.list();
+		
+		List<Krs> listKrs = new ArrayList<Krs>();
+		for (MK mk : listMk) {
+			System.out.println(mk.getNamaMK());
+			queryString = "SELECT krs FROM Krs krs WHERE krs.pd.idPd = '" + idPd + "' AND krs.pemb.mk.idMK = '" + mk.getIdMK() + "' AND " + kondisiKrsOke + " ORDER BY krs.waktuAmbil DESC";
+			query = sessionFactory.getCurrentSession().createQuery(queryString);
+			if(!query.list().isEmpty()) {
+				Krs krs = (Krs) query.list().get(0);
+				listKrs.add(krs);
+			}
+		}
+		return listKrs;
 	}
 	
 }

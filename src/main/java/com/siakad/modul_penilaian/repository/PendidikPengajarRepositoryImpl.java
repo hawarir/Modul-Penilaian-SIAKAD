@@ -28,7 +28,10 @@ public class PendidikPengajarRepositoryImpl implements
 		// TODO Auto-generated method stub
 		String queryString = "SELECT pp FROM PendidikPengajar pp WHERE pp.pemb.idPemb='" + idPemb + "' AND aPendidikPengajarKetua = TRUE";
 		Query query = sessionFactory.getCurrentSession().createQuery(queryString);
-		return (PendidikPengajar) query.list().get(0);
+		if(!query.list().isEmpty())
+			return (PendidikPengajar) query.list().get(0);
+		else
+			return null;
 	}
 
 	@Override

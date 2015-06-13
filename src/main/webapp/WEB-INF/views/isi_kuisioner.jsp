@@ -143,6 +143,7 @@
 		var idKrs = "${idKrs}";
 		var idKuisioner = "${kuisioner.getIdKuisioner()}";
 		var max = "${kuisioner.getSkalaKuisioner()}";
+		var context_path = "${pageContext.servletContext.contextPath}";
 		
 		toastr.options = {
 				  "closeButton": true,
@@ -208,7 +209,7 @@
 					if(data.status == "ok") {
 						toastr["success"](data.message, "Sukses");
 						$(tombol).button("reset");
-						location.replace("");
+						location.replace(context_path + "/isi_kuisioner/");
 					}
 				}
 			});

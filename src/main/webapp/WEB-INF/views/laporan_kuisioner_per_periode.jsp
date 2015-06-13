@@ -147,12 +147,18 @@
 										<c:forEach var="pemb" items="${daftarPemb}">
 											<tr id="${pemb.getIdPemb()}">
 												<td><c:out value="${pemb.getMk().getNamaMK()} ${pemb.getNmPemb()}"></c:out></td>
+												<c:set var="dosenFound" value="false" scope="page"></c:set>
 												<c:forEach var="dosen" items="${daftarKetuaPendidik}">
 													<c:if test="${dosen.getPemb().getIdPemb() == pemb.getIdPemb()}">
+														<c:set var="dosenFound" value="true" scope="page"></c:set>
 														<td><c:out value="${dosen.getPtk().getNmPtk()}"></c:out></td>
 														<td><fmt:formatNumber value="${dosen.getNilaiIpd()}" maxFractionDigits="2"></fmt:formatNumber></td>
 													</c:if>
 												</c:forEach>
+												<c:if test="${dosenFound == false}">
+													<td>-</td>
+													<td>-</td>
+												</c:if>
 												<c:forEach var="kuisioner" items="${daftarKuisioner}">
 													<c:forEach var="nilai" items="${daftarNilai}">
 														<c:if test="${nilai.getIdPemb() == pemb.getIdPemb() && nilai.getIdKuisioner() == kuisioner.getIdKuisioner()}">

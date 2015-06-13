@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.1.0.final using JasperReports Library version 6.1.0  -->
+<!-- 2015-06-10T14:49:20 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="pdfTranskrip" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7172b08a-5039-46be-9728-9f3b32074a95">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="pd" class="com.sia.main.domain.Pd"/>
+	<parameter name="ipk" class="java.lang.Double"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="kodeMk" class="java.lang.String"/>
+	<field name="namaMk" class="java.lang.String"/>
+	<field name="sks" class="java.lang.Integer"/>
+	<field name="nilaiHuruf" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="116" splitType="Stretch">
+			<staticText>
+				<reportElement x="180" y="0" width="200" height="30" uuid="26e33294-3377-4153-b05f-5f29d7e7600a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[Transkrip Nilai Mata Kuliah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="39" width="50" height="20" uuid="427db35b-d7f5-49a9-8ee7-345c949c69a1"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Nama:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="59" width="50" height="20" uuid="684739ee-d248-4e42-aa64-b9ae5df593dc"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[NIM:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="230" y="59" width="160" height="20" uuid="36efbaa5-2fe6-4184-9728-58918aa79c88"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{pd}.getNimPd()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="230" y="39" width="160" height="20" uuid="8b2c5b8e-c32d-4f3b-85d4-97d7abd36254"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{pd}.getNmPd()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="180" y="79" width="50" height="20" uuid="7d0ab667-e5c7-41aa-b7f4-b7e50ac87c1a"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[IPK:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="230" y="80" width="160" height="19" uuid="8a9b2f6f-efdb-446d-9522-9aa4a6ff0ecb"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{ipk}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="27" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="30" splitType="Stretch">
+			<staticText>
+				<reportElement x="80" y="0" width="100" height="30" uuid="ade42b9e-6baa-45f0-a375-5b2ad55ad4d3"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Kode Mata Kuliah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="180" y="0" width="170" height="30" uuid="a7741dd7-cc4c-4978-9ae2-3789ece21f36"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama Mata Kuliah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="350" y="0" width="70" height="30" uuid="135616c2-2a0e-4883-a122-cb7083b9484b"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Jumlah SKS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="420" y="0" width="60" height="30" uuid="d17ec896-fddc-45b0-911a-ab525e17f4d9"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nilai]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="80" y="0" width="100" height="20" uuid="7e2ee3f6-023e-4a5f-89ce-6740a7bbb233"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kodeMk}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="180" y="0" width="170" height="20" uuid="85b6afcc-f62c-4131-8ce1-471981512ad0"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{namaMk}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="0" width="70" height="20" uuid="b6dfdd00-cfb6-4667-8591-623df9b80f3f"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{sks}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="0" width="60" height="20" uuid="bebfc2f6-1710-49c5-926f-a7212d9d0f40"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nilaiHuruf}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

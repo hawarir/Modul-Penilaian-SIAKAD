@@ -94,7 +94,7 @@
 		<div id="main-wrapper">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-12">
+					<div class="col-md-8 col-md-offset-2">
 						<div class="panel panel-white">
 							<div class="panel-heading">
 								<h4 class="panel-title">Transkrip Nilai</h4>
@@ -104,30 +104,31 @@
 								<p>NIM : <c:out value="${pd.getNimPd()}"></c:out></p>
 								<p>IPK : <fmt:formatNumber value="${ipk.getNilaiIpk()}" maxFractionDigits="2"></fmt:formatNumber></p>
 								
-								<div class="row">
-									<div class="col-md-8 col-md-offset-2">
-										<table class="table">
-											<thead>
-												<tr>
-													<th>Kode MK</th>
-													<th>Mata Kuliah</th>
-													<th>SKS</th>
-													<th>Nilai</th>
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach var="krs" items="${daftarKrs}">
-													<tr>
-														<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
-														<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
-														<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
-														<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
-													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
-									</div>
-								</div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Kode MK</th>
+											<th>Mata Kuliah</th>
+											<th>SKS</th>
+											<th>Nilai</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="krs" items="${daftarKrs}">
+											<tr>
+												<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
+												<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
+												<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
+												<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+								
+								<form action="${pageContext.servletContext.contextPath}/cetak_transkrip/" method="post" target="_blank">
+									<input type="hidden" value="${pd.getIdPd()}" name="idPd" />
+									<button type="submit" class="btn btn-primary center"><span class="glyphicon glyphicon-print"></span> Versi Cetak</button>
+								</form>
 							</div>
 						</div>
 					</div>

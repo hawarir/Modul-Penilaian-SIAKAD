@@ -122,16 +122,27 @@
 													</tr>
 												</thead>
 												<tbody>
+													<c:set var="jumlahSks" value="0" scope="page"></c:set>
 													<c:forEach var="krs" items="${daftarKrs}">
-														<c:if test="${krs.getPemb().getTglSmt().getIdTglSmt() == ips.getTglSmt().getIdTglSmt()}"></c:if>
+														<c:if test="${krs.getPemb().getTglSmt().getIdTglSmt() == ips.getTglSmt().getIdTglSmt()}">
 														<tr>
 															<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
 															<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
 															<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
 															<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
 														</tr>
+														<c:set var="jumlahSks" value="${jumlahSks + krs.getPemb().getMk().getJumlahSKS()}" scope="page"></c:set>
+														</c:if>
 													</c:forEach>
 												</tbody>
+												<tfoot>
+													<tr>
+														<th></th>
+														<th>Jumlah SKS</th>
+														<th><c:out value="${jumlahSks}"></c:out></th>
+														<th></th>
+													</tr>
+												</tfoot>
 											</table>
 										</div>
 									</div>

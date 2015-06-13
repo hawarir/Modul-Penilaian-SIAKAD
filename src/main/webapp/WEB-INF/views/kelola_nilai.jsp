@@ -549,6 +549,7 @@
 									$(element).find("input").val(daftarNilai[i][index+2]);
 								});
 							}
+							updateNilaiAkhir();
 						}
 						else if(data.status == "warning") {
 							toastr["warning"](data.message, "Peringatan");
