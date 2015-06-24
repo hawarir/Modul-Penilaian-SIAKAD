@@ -129,7 +129,14 @@
 															<td><c:out value="${krs.getPemb().getMk().getKodeMK()}"></c:out></td>
 															<td><c:out value="${krs.getPemb().getMk().getNamaMK()}"></c:out></td>
 															<td><c:out value="${krs.getPemb().getMk().getJumlahSKS()}"></c:out></td>
-															<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
+															<c:choose>
+																<c:when test="${krs.getKonversiNilai() != null}">
+																	<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
+																</c:when>
+																<c:otherwise>
+																	<td>-</td>
+																</c:otherwise>
+															</c:choose>															
 														</tr>
 														<c:set var="jumlahSks" value="${jumlahSks + krs.getPemb().getMk().getJumlahSKS()}" scope="page"></c:set>
 														</c:if>

@@ -114,7 +114,7 @@
 											<td><input type="text" class="form-control hurufKonversi" value="${konversi.getHuruf()}" /></td>
 											<td><input type="text" class="form-control nilaiKonversi" value="${konversi.getNilaiHuruf()}" /></td>
 											<td><input type="text" class="form-control batasKonversi" value="${konversi.getBatasBawah()}" /></td>
-											<td><button type="button" class="btn btn-danger tombolHapusKonversi" name="${konversi.getIdKonversi()}"><i class="glyphicon glyphicon-minus"></i></button></td>
+											<td><button type="button" class="btn btn-danger tombolHapusKonversi" name="${konversi.getIdKonversi()}"><i class="glyphicon glyphicon-remove"></i></button></td>
 										</tr>
 										</c:forEach>
 										<tr id="newKonversi">

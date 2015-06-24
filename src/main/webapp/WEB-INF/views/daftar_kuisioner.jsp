@@ -111,13 +111,15 @@
 														<c:choose>
 															<c:when test="${daftarStatus[count]}">
 																<c:set var="disabled" value="disabled" scope="page"/>
+																<c:set var="keterangan" value="-Sudah Terisi-" scope="page"/>
 															</c:when>
 															<c:otherwise>
 																<c:set var="disabled" value="" scope="page"/>
+																<c:set var="keterangan" value="" scope="page"/>
 															</c:otherwise>
 														</c:choose>
 														
-														<option value="${kuisioner.getIdKuisioner()}" ${empty disabled ? '' : 'disabled'}><c:out value="${kuisioner.getNmKuisioner()}"></c:out></option>
+														<option value="${kuisioner.getIdKuisioner()}" ${empty disabled ? '' : 'disabled'}><c:out value="${kuisioner.getNmKuisioner()} ${keterangan}"></c:out></option>
 														<c:set var="count" value="${count + 1}" scope="page"/>
 													</c:forEach>
 												</optgroup>

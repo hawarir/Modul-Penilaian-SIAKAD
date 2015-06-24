@@ -17,6 +17,12 @@ public class StatusKuisionerRepositoryImpl implements StatusKuisionerRepository 
 	private SessionFactory sessionFactory;
 	
 	@Override
+	public StatusKuisioner getById(UUID idStatus) {
+		// TODO Auto-generated method stub
+		return (StatusKuisioner) sessionFactory.getCurrentSession().get(StatusKuisioner.class, idStatus);
+	}
+	
+	@Override
 	public List<StatusKuisioner> getByKrsKuisioner(UUID idKrs, UUID idKuisioner) {
 		// TODO Auto-generated method stub
 		Query query = sessionFactory.getCurrentSession().createQuery("FROM StatusKuisioner WHERE id_krs='" + idKrs + "' AND id_kuisioner='" + idKuisioner + "'");
@@ -40,6 +46,16 @@ public class StatusKuisionerRepositoryImpl implements StatusKuisionerRepository 
 		session.flush();
 		session.close();
 		return insertId;
+	}
+	
+	@Override
+	public void update(StatusKuisioner status) {
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		session.update(status);
+		tx.commit();
+		session.flush();
+		session.close();
 	}
 
 	@Override

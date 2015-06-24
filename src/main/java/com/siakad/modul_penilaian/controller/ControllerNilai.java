@@ -71,7 +71,6 @@ public class ControllerNilai extends ControllerSession{
 		
 		Date date = new Date();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", locale);
-		//DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG, locale);
 		
 		String formattedDate = simpleDateFormat.format(date);
 		LocalDate localDate = LocalDate.parse(formattedDate);
@@ -85,6 +84,7 @@ public class ControllerNilai extends ControllerSession{
 			String pesan = "Anda sudah melewati batas waktu penilaian.";
 			mav.addObject("pesan", pesan);
 		}
+		
 		mav.setViewName("daftar_kelas_aktif");
 		return mav;
 	}

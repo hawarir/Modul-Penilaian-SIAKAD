@@ -79,7 +79,8 @@ public class ControllerKuisioner extends ControllerSession{
 		Pd pd = (Pd) session.getAttribute("pd");
 		
 		TglSmt tglSmtAktif = serviceTglSmt.ambilTglSmtAktif();
-		List<Krs> daftarKrs = serviceKrs.ambilKrsAktifBerdasarkanPd(pd.getIdPd(), tglSmtAktif.getIdTglSmt());
+		List<Krs> daftarKrs = serviceKrs.ambilSemuaBerdasarkanPd(pd.getIdPd());
+		//List<Krs> daftarKrs = serviceKrs.ambilKrsAktifBerdasarkanPd(pd.getIdPd(), tglSmtAktif.getIdTglSmt());
 		List<Kuisioner> daftarKuisioner = serviceKuisioner.ambilSemuaKuisioner();
 		List<Boolean> daftarStatus = new ArrayList<Boolean>();
 		

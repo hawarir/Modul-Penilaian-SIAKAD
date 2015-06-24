@@ -142,8 +142,7 @@
 										<tr>
 											<th>NRP</th>
 											<th>Nama Mahasiswa</th>
-											<th>Nilai Akhir</th>
-											<th>Nilai Huruf</th>
+											<th>Nilai</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -151,7 +150,6 @@
 										<tr>
 											<td><c:out value="${krs.getPd().getNimPd()}"></c:out></td>
 											<td><c:out value="${krs.getPd().getNmPd()}"></c:out></td>
-											<td><fmt:formatNumber value="${krs.getNilaiAkhir()}" maxFractionDigits="2"></fmt:formatNumber></td>
 											<td><c:out value="${krs.getKonversiNilai().getHuruf()}"></c:out></td>
 										</tr>
 										</c:forEach>

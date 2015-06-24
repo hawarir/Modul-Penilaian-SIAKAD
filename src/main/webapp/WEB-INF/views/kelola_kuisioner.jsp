@@ -115,7 +115,7 @@
 													<i class="glyphicon glyphicon-pencil"></i>
 												</button>
 												<button type="button" class="btn btn-danger tombolHapusKuisioner">
-													<i class="glyphicon glyphicon-minus"></i>
+													<i class="glyphicon glyphicon-remove"></i>
 												</button>
 											</td>
 										</tr>
@@ -136,7 +136,7 @@
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-					<h4 class="modal-title">Nama Kuisioner</h4>
+					<h4 class="modal-title">Edit Kuisioner</h4>
 				</div>
 				<div id="contentNamaKuisioner">					
 					<div class="modal-body">
@@ -159,7 +159,7 @@
 				
 				<div class="hide" id="contentPertanyaanKuisioner">
 					<div class="modal-body">
-						<p>Silahkan masukkan pertanyaan-pertanyaan dari kuisioner yang akan dibuat.</p>
+						<p>Silahkan masukkan pertanyaan-pertanyaan dari kuisioner yang akan dibuat. Usahakan pertanyaan yang dibuat bisa terjawab dengan skor.</p>
 						<form id="formPertanyaanKuisioner">
 							<table class="table">
 								<thead>

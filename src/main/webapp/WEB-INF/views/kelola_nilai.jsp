@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
     <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -212,7 +213,7 @@
 										<tr class="komponen-modal" id="${komp.getIdKomponen()}" name="${komp.getIdKomponen()}">													
 											<td><input type="text" class="form-control nama-komponen" value="<c:out value="${komp.getNamaKomponen()}"></c:out>"/></td>
 											<td><input type="text" class="form-control persentase-komponen" value="<c:out value="${komp.getPersentaseKomponen()}"></c:out>"/></td>
-											<td><button type="button" class="btn btn-danger tombolHapusKomponen"><i class="glyphicon glyphicon-minus"></i></button></td>
+											<td><button type="button" class="btn btn-danger tombolHapusKomponen"><i class="glyphicon glyphicon-remove"></i></button></td>
 										</tr>
 										</c:forEach>
 										<tr id="newRowKomponen">
@@ -290,7 +291,7 @@
 					"aButtons" : [{"sExtends" : "csv", "sButtonText" : "Unduh File"}]
 				}
 			});*/
-			var table = $("#tabelNilai").DataTable();
+			var table = $("#tabelNilai").DataTable({paging:false});
 			
 			var tableTools = new $.fn.dataTable.TableTools(table, {
 				"sSwfPath": context_path+"resources/plugins/jquery.datatables/extensions/TableTools/swf/copy_csv_xls_pdf.swf",

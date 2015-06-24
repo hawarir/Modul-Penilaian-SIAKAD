@@ -153,7 +153,7 @@
 													<tr>
 														<c:set var="key" scope="page" value="${pertanyaan.getIdPertanyaanKuisioner()}"></c:set>
 														<td><c:out value="${pertanyaan.getPertanyaan()}"></c:out></td>
-														<td><c:out value="${daftarNilai[key]}"></c:out></td>
+														<td><fmt:formatNumber value="${daftarNilai[key]}" maxFractionDigits="2"></fmt:formatNumber></td>
 													</tr>
 												</c:if>
 											</c:forEach>

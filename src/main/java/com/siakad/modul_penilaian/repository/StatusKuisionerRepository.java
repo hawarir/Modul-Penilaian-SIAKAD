@@ -6,9 +6,11 @@ import java.util.UUID;
 import com.sia.main.domain.StatusKuisioner;
 
 public interface StatusKuisionerRepository {
+	public StatusKuisioner getById(UUID idStatus);
 	public List<StatusKuisioner> getByKrsKuisioner(UUID idKrs, UUID idKuisioner);
 	public List<StatusKuisioner> getByKrs(UUID idKrs);
 	public UUID insert(StatusKuisioner status);
+	public void update(StatusKuisioner status);
 	public List<StatusKuisioner> getByPemb(UUID idPemb);
 	public List<StatusKuisioner> getByPembKuisioner(UUID idPemb, UUID idKuisioner);
 }
