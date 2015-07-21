@@ -22,7 +22,6 @@ import com.sia.main.domain.Ipk;
 import com.sia.main.domain.Ips;
 import com.sia.main.domain.Krs;
 import com.sia.main.domain.Pd;
-import com.sia.main.domain.Ptk;
 import com.siakad.modul_penilaian.service.IpkService;
 import com.siakad.modul_penilaian.service.IpsService;
 import com.siakad.modul_penilaian.service.KrsService;
